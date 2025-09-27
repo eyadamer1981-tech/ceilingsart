@@ -8,19 +8,17 @@ yarn-error.log*
 # Large image files and uploads
 uploads/
 art_images/
-public/*.png
-public/*.jpg
-public/*.jpeg
-public/*.webp
-public/*.avif
 src/assets/
 homepage/src/assets/
 *.zip
-*.jpg
-*.jpeg
-*.png
-*.webp
-*.avif
+
+# Exclude large images but allow essential public assets
+public/large-images/
+public/uploads/
+!public/logo.png
+!public/Vector.png
+!public/image.png
+!public/background-blob-service-1.png.png
 
 # Build outputs
 .next/
