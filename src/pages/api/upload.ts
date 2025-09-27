@@ -8,7 +8,7 @@ export const config = { api: { bodyParser: false } };
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-function runMulter(req: NextApiRequest, res: NextApiResponse): Promise<{ file?: Express.Multer.File }>
+function runMulter(req: NextApiRequest, res: NextApiResponse): Promise<{ file?: multer.File }>
 {
   return new Promise((resolve, reject) => {
     upload.single('image')(req as any, res as any, (err: any) => {

@@ -6,7 +6,7 @@ import multer from 'multer';
 // Use memory storage to keep files in RAM and store in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
 
-function bufferToDataUrl(file: Express.Multer.File) {
+function bufferToDataUrl(file: multer.File) {
   const mime = file.mimetype || 'application/octet-stream';
   const base64 = file.buffer.toString('base64');
   return `data:${mime};base64,${base64}`;

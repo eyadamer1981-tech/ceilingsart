@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
+import path from 'path';
 
 function verifyToken(req: NextApiRequest, res: NextApiResponse): boolean {
   const token = req.headers.authorization?.replace('Bearer ', '');

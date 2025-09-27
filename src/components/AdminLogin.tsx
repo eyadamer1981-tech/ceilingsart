@@ -128,7 +128,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-3">
-              {t('email')}
+              {t('adminEmail')}
             </label>
             <input
               type="email"

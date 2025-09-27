@@ -96,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const created: any[] = [];
     const skipped: any[] = [];
 
-    function walk(dir: string) {
+    const walk = (dir: string) => {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
@@ -120,7 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           created.push({ title, category, path: relative });
         }
       }
-    }
+    };
 
     walk(artImagesRoot);
 

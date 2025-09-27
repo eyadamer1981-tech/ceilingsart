@@ -6,7 +6,7 @@ import multer from 'multer';
 // Use memory storage to keep files in RAM and store in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
 
-function bufferToDataUrl(file: Express.Multer.File) {
+function bufferToDataUrl(file: multer.File) {
   const mime = file.mimetype || 'application/octet-stream';
   const base64 = file.buffer.toString('base64');
   return `data:${mime};base64,${base64}`;
@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const detailImagesFiles = files.detailImages || [];
 
         const image = mainImageFile ? bufferToDataUrl(mainImageFile) : '';
-        const detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+        const detailImages = detailImagesFiles.map((f: multer.File) => bufferToDataUrl(f));
         if (!title || !descriptionEn || !descriptionAr || !category) {
           return res.status(400).json({ message: 'Missing required fields (title, descriptionEn, descriptionAr, category).' });
         }

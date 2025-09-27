@@ -6,7 +6,7 @@ import multer from 'multer';
 // Use memory storage and store as data URL in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
 
-function bufferToDataUrl(file: Express.Multer.File) {
+function bufferToDataUrl(file: multer.File) {
   const mime = file.mimetype || 'application/octet-stream';
   const base64 = file.buffer.toString('base64');
   return `data:${mime};base64,${base64}`;
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       try {
         const { title, content, excerpt, author, featured } = req.body;
-        const updateData = {
+        const updateData: any = {
           title,
           content,
           excerpt,
