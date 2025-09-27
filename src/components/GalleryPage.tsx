@@ -116,44 +116,29 @@ export function GalleryPage({ onSelect, onStartProject }: { onSelect?: (item: Ga
   }, [activeCategory]);
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-      {/* Header Section */}
-      <div className="relative py-20 text-center">
-        {/* Decorative wave at top */}
-        <div className="absolute top-0 left-0 w-full opacity-30">
-          <svg
-            viewBox="0 0 1200 60"
-            fill="none"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0,30C150,20 300,40 600,30C900,20 1050,40 1200,30L1200,60L0,60Z"
-              fill="white"
-            />
-          </svg>
+    <section className="min-h-screen">
+      {/* Header Section with Cover Image */}
+      <div className="relative h-screen flex items-center justify-center">
+        {/* Cover Image Background */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYWxsZXJ5JTIwY2VpbGluZyUyMGRlc2lnbnxlbnwxfHx8fDE3NTg1ODU5NTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Gallery cover"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4">
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
+
+        {/* Content over the cover */}
+        <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4">
             GALLERY
           </h1>
           <p className="text-xl text-white tracking-wide">
             Explore our portfolio of exceptional ceiling designs
           </p>
-        </div>
-
-        {/* Decorative wave at bottom */}
-        <div className="absolute bottom-0 left-0 w-full opacity-30">
-          <svg
-            viewBox="0 0 1200 60"
-            fill="none"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0,30C150,40 300,20 600,30C900,40 1050,20 1200,30L1200,0L0,0Z"
-              fill="white"
-            />
-          </svg>
         </div>
       </div>
 
