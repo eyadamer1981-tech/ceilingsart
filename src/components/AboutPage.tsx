@@ -30,14 +30,14 @@ export function AboutPage() {
       {/* Header Section */}
       <div className="relative py-20 text-center">
         {/* Decorative wave at top */}
-        <div className="absolute top-0 left-0 w-full">
+        <div className="absolute top-0 left-0 w-full opacity-30">
           <svg
-            viewBox="0 0 1200 120"
+            viewBox="0 0 1200 60"
             fill="none"
-            className="w-full h-auto transform rotate-180"
+            className="w-full h-auto"
           >
             <path
-              d="M0,64L48,74.7C96,85,192,107,288,112C384,117,480,107,576,90.7C672,75,768,53,864,48C960,43,1056,53,1152,64C1200,75,1248,85,1296,90.7L1344,96L1344,0L1296,0C1248,0,1152,0,1056,0C960,0,864,0,768,0C672,0,576,0,480,0C384,0,288,0,192,0C96,0,48,0,24,0L0,0Z"
+              d="M0,30C150,20 300,40 600,30C900,20 1050,40 1200,30L1200,60L0,60Z"
               fill="white"
             />
           </svg>
@@ -50,14 +50,14 @@ export function AboutPage() {
         </div>
 
         {/* Decorative wave at bottom */}
-        <div className="absolute bottom-0 left-0 w-full">
+        <div className="absolute bottom-0 left-0 w-full opacity-30">
           <svg
-            viewBox="0 0 1200 120"
+            viewBox="0 0 1200 60"
             fill="none"
             className="w-full h-auto"
           >
             <path
-              d="M0,64L48,74.7C96,85,192,107,288,112C384,117,480,107,576,90.7C672,75,768,53,864,48C960,43,1056,53,1152,64C1200,75,1248,85,1296,90.7L1344,96L1344,120L1296,120C1248,120,1152,120,1056,120C960,120,864,120,768,120C672,120,576,120,480,120C384,120,288,120,192,120C96,120,48,120,24,120L0,120Z"
+              d="M0,30C150,40 300,20 600,30C900,40 1050,20 1200,30L1200,0L0,0Z"
               fill="white"
             />
           </svg>
