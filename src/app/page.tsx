@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Header } from '../components/Header';
 import { MobileMenu } from '../components/MobileMenu';
 import HomepageHero from '../components/HomepageHero';
+import { AboutUsSection } from '../components/AboutUsSection';
+import { MainServicesSection } from '../components/MainServicesSection';
 import { Gallery } from '../components/Gallery';
 import { Footer } from '../components/Footer';
 import { AboutPage } from '../components/AboutPage';
@@ -97,6 +99,8 @@ export default function Home() {
         return (
           <>
             <HomepageHero />
+            <AboutUsSection />
+            <MainServicesSection />
             <Gallery onSelect={(img) => {
               setSelectedItem({ title: img.alt, image: img.src, category: 'Gallery' });
               setSelectedIsService(false);
