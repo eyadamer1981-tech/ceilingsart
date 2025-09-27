@@ -233,7 +233,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
           <div className={`hidden lg:flex items-center space-x-4`}>
             <div className="flex items-center space-x-2 text-orange-400">
               <Phone size={16} />
-              <span className="text-sm">+966 575474699</span>
+              <span className="text-sm" dir="ltr">+966 575474699</span>
             </div>
             <LanguageSwitcher />
             {showAdmin && (

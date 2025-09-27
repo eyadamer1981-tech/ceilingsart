@@ -97,7 +97,7 @@ export function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">{phoneLabel}</h3>
-                    <p className="text-gray-600">+966 575474699</p>
+                    <p className="text-gray-600" dir="ltr">+966 575474699</p>
                   </div>
                 </div>
 
@@ -107,7 +107,7 @@ export function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">{emailLabel}</h3>
-                    <p className="text-gray-600">info@ceilingsatr.com</p>
+                    <p className="text-gray-600" dir="ltr">info@ceilingsatr.com</p>
                   </div>
                 </div>
 
@@ -192,6 +192,7 @@ export function ContactPage() {
                     type="tel"
                     className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
                     placeholder={phonePlaceholder}
+                    dir="ltr"
                   />
                 </div>
 

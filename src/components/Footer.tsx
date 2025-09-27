@@ -49,8 +49,8 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-medium mb-4">{t('contactInfo')}</h3>
             <div className="space-y-2 text-sm text-gray-400">
-              <p>+966 575474699</p>
-              <p>info@ceilingsatr.com</p>
+              <p dir="ltr">+966 575474699</p>
+              <p dir="ltr">info@ceilingsatr.com</p>
               <p>{language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}</p>
               <p>{language === 'ar' ? 'السبت - الخميس: 9 صباحاً - 6 مساءً' : 'Sat - Thu: 9AM - 6PM'}</p>
             </div>
