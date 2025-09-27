@@ -1,23 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface ImageItem {
   src: string;
   alt: string;
   category: string;
+  title?: string;
+  description?: string;
+}
+
+interface FeaturedContent {
+  services: any[];
+  projects: any[];
+  blogs: any[];
 }
 
 interface ImageCarouselProps {
-  images: ImageItem[];
   onSelect?: (image: ImageItem) => void;
 }
 
-export function ImageCarousel({ images, onSelect }: ImageCarouselProps) {
+export function ImageCarousel({ onSelect }: ImageCarouselProps) {
   const { isRTL } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
+    services: [],
+    projects: [],
+    blogs: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedContent();
+  }, []);
+
+  const fetchFeaturedContent = async () => {
+    try {
+      const response = await fetch('/api/featured');
+      const data = await response.json();
+      setFeaturedContent(data);
+    } catch (error) {
+      console.error('Error fetching featured content:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Convert featured content to image items
+  const convertToImageItems = (items: any[], category: string): ImageItem[] => {
+    return items.map(item => ({
+      src: item.image || '/image.png',
+      alt: item.title || 'Image',
+      category: category,
+      title: item.title,
+      description: item.description
+    }));
+  };
+
+  // Combine services and projects into one array
+  const servicesImages = convertToImageItems(featuredContent.services, 'Services');
+  const projectsImages = convertToImageItems(featuredContent.projects, 'Projects');
+  const allImages = [...servicesImages, ...projectsImages];
+
+  // Ensure images is an array
+  const imagesArray = Array.isArray(allImages) ? allImages : [];
 
   // Group images by category
-  const groupedImages = images.reduce((acc, image) => {
+  const groupedImages = imagesArray.reduce((acc, image) => {
     if (!acc[image.category]) {
       acc[image.category] = [];
     }
@@ -25,28 +73,50 @@ export function ImageCarousel({ images, onSelect }: ImageCarouselProps) {
     return acc;
   }, {} as Record<string, ImageItem[]>);
 
+  const currentCategory = Object.keys(groupedImages)[0] || 'Gallery';
+  const categoryImages = Object.values(groupedImages).flat();
+
+  // Fallback images if no data is available
+  const fallbackImages: ImageItem[] = [
+    {
+      src: '/image.png',
+      alt: 'Stretch Ceiling Design',
+      category: 'Stretch Ceilings'
+    },
+    {
+      src: '/image.png', 
+      alt: 'Acoustic Panel Installation',
+      category: 'Acoustic Panels'
+    }
+  ];
+
+  const displayImages = categoryImages.length > 0 ? categoryImages : fallbackImages;
+
   const nextImage = () => {
-    const categoryImages = Object.values(groupedImages).flat();
-    setCurrentIndex((prev) => (prev + 1) % categoryImages.length);
+    setCurrentIndex((prev) => (prev + 1) % displayImages.length);
   };
 
   const prevImage = () => {
-    const categoryImages = Object.values(groupedImages).flat();
-    setCurrentIndex((prev) => (prev - 1 + categoryImages.length) % categoryImages.length);
+    setCurrentIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
   };
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
 
-  const currentCategory = Object.keys(groupedImages)[0] || 'Gallery';
-  const categoryImages = Object.values(groupedImages).flat();
-
-  if (categoryImages.length === 0) {
+  if (loading) {
     return (
       <div className="text-center py-20">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-400 mx-auto mb-4"></div>
         <p className="text-gray-600">Loading gallery...</p>
+      </div>
+    );
+  }
+
+  if (imagesArray.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-gray-600">No featured content available</p>
       </div>
     );
   }
@@ -70,7 +140,7 @@ export function ImageCarousel({ images, onSelect }: ImageCarouselProps) {
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              {categoryImages.map((image, index) => (
+              {displayImages.map((image, index) => (
                 <div key={index} className="w-full flex-shrink-0 relative">
                   <img
                     src={image.src}
@@ -110,7 +180,7 @@ export function ImageCarousel({ images, onSelect }: ImageCarouselProps) {
 
           {/* Dots Indicator */}
           <div className="flex justify-center mt-6 space-x-2">
-            {categoryImages.map((_, index) => (
+            {displayImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
@@ -127,7 +197,7 @@ export function ImageCarousel({ images, onSelect }: ImageCarouselProps) {
           {/* Image Counter */}
           <div className="text-center mt-4">
             <span className="text-sm text-gray-600">
-              {currentIndex + 1} / {categoryImages.length}
+              {currentIndex + 1} / {displayImages.length}
             </span>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Header } from '../components/Header';
 import { MobileMenu } from '../components/MobileMenu';
 import HomepageHero from '../components/HomepageHero';
@@ -20,23 +20,6 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
   const [selectedIsService, setSelectedIsService] = useState(false);
-  const [carouselImages, setCarouselImages] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (currentPage === 'HOME') {
-      fetchGalleryImages();
-    }
-  }, [currentPage]);
-
-  const fetchGalleryImages = async () => {
-    try {
-      const response = await fetch('/api/gallery');
-      const data = await response.json();
-      setCarouselImages(data);
-    } catch (error) {
-      console.error('Error fetching gallery images:', error);
-    }
-  };
 
   const handleMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -119,10 +102,9 @@ export default function Home() {
             <AboutUsSection />
             <MainServicesSection />
             <ImageCarousel 
-              images={carouselImages} 
               onSelect={(img) => {
                 setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
-                setSelectedIsService(false);
+                setSelectedIsService(img.category === 'Services');
               }} 
             />
             <Footer />
