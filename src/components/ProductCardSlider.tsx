@@ -107,22 +107,23 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
               onClick={() => onSelect?.(item)}
               style={{ width: `${cardWidth}px` }}
             >
-              <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+              <div className="bg-white rounded-lg shadow-lg group-hover:shadow-2xl transition-all duration-500 ease-out overflow-hidden">
                 {/* Image */}
-                <div className="aspect-square overflow-hidden">
+                <div className="aspect-square overflow-hidden relative">
                   <ImageWithFallback
                     src={item.src}
                     alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-500 ease-out"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
                 </div>
                 
                 {/* Content */}
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2">
+                <div className="p-4 group-hover:bg-gradient-to-br group-hover:from-orange-50 group-hover:to-yellow-50 transition-all duration-500">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-800 transition-colors duration-500">
                     {item.title}
                   </h3>
-                  <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium group-hover:from-orange-500 group-hover:to-yellow-600 transition-all duration-500">
                     {item.category}
                   </span>
                 </div>

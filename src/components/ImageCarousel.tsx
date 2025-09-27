@@ -140,16 +140,20 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {displayImages.map((image, index) => (
-                <div key={index} className="w-full flex-shrink-0 relative">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-[300px] md:h-[500px] lg:h-[600px] object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-                    onClick={() => onSelect?.(image)}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-medium">{image.alt}</h3>
+                <div key={index} className="w-full flex-shrink-0 relative group">
+                  <div className="relative overflow-hidden rounded-2xl">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-[300px] md:h-[500px] lg:h-[600px] object-cover cursor-pointer transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
+                      onClick={() => onSelect?.(image)}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-100 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
+                  </div>
+                  <div className="absolute bottom-6 left-6 right-6 transform translate-y-0 group-hover:translate-y-[-8px] transition-all duration-500 ease-out">
+                    <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-medium group-hover:text-orange-200 transition-colors duration-500">{image.alt}</h3>
+                    <div className="w-0 group-hover:w-16 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-500 mt-2 transition-all duration-500 ease-out"></div>
                   </div>
                 </div>
               ))}

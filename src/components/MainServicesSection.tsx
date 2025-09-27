@@ -69,13 +69,13 @@ export function MainServicesSection() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
               {/* Service Image */}
-              <div className="relative h-64">
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
@@ -113,7 +113,7 @@ export function MainServicesSection() {
 
                 {/* CTA Button */}
                 <div className={`mt-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg">
+                  <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-md">
                     {isRTL ? 'اعرف المزيد' : 'Learn More'}
                   </button>
                 </div>
