@@ -13,7 +13,7 @@ export function AboutUsSection() {
               <img
                 src="/image.png"
                 alt="About Us"
-                className="w-full h-96 object-cover rounded-2xl shadow-lg"
+                className="w-full h-[500px] object-cover rounded-2xl shadow-lg"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             </div>

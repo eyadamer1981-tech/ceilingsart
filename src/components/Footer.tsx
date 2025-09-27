@@ -10,7 +10,11 @@ export function Footer() {
           <div>
             <div className="mb-4">
               <div className="text-2xl font-bold tracking-wider">CA</div>
-              <div className="text-sm tracking-widest opacity-80">CEILINGS ART</div>
+              <img 
+                src="/footer-text.png" 
+                alt="Ceilings Art" 
+                className="h-6 w-auto opacity-80"
+              />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               {t('footerDescription')}

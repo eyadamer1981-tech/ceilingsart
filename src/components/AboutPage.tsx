@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 export function AboutPage() {
   const { language, t, isRTL } = useLanguage();
 
-  const aboutHeading = language === 'ar' ? 'بصمات الأندلس' : 'Busmat Alandalus';
+  const aboutHeading = language === 'ar' ? 'سيلينجز آرت' : 'Ceilings Art';
   const aboutTitle = language === 'ar' ? 'من نحن' : 'About Us';
   const sectionHeading = language === 'ar' ? 'تصميم أسقف متميّز مع حلول صوتية متقدمة' : 'Premium Stretch Ceilings & Advanced Acoustic Solutions';
   const p1 = language === 'ar'

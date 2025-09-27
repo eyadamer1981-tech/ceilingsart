@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import { MobileMenu } from '../components/MobileMenu';
 import HomepageHero from '../components/HomepageHero';
 import { AboutUsSection } from '../components/AboutUsSection';
 import { MainServicesSection } from '../components/MainServicesSection';
-import { Gallery } from '../components/Gallery';
+import { ImageCarousel } from '../components/ImageCarousel';
 import { Footer } from '../components/Footer';
 import { AboutPage } from '../components/AboutPage';
 import { ServicesPage } from '../components/ServicesPage';
@@ -20,6 +20,23 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
   const [selectedIsService, setSelectedIsService] = useState(false);
+  const [carouselImages, setCarouselImages] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (currentPage === 'HOME') {
+      fetchGalleryImages();
+    }
+  }, [currentPage]);
+
+  const fetchGalleryImages = async () => {
+    try {
+      const response = await fetch('/api/gallery');
+      const data = await response.json();
+      setCarouselImages(data);
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+    }
+  };
 
   const handleMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -101,10 +118,13 @@ export default function Home() {
             <HomepageHero />
             <AboutUsSection />
             <MainServicesSection />
-            <Gallery onSelect={(img) => {
-              setSelectedItem({ title: img.alt, image: img.src, category: 'Gallery' });
-              setSelectedIsService(false);
-            }} />
+            <ImageCarousel 
+              images={carouselImages} 
+              onSelect={(img) => {
+                setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
+                setSelectedIsService(false);
+              }} 
+            />
             <Footer />
           </>
         );
