@@ -57,7 +57,6 @@ export interface Translations {
   contactInfo: string;
   location: string;
   phone: string;
-  email: string;
   sendMessage: string;
   yourName: string;
   yourEmail: string;
@@ -76,11 +75,8 @@ export interface Translations {
   adminAccess: string;
   login: string;
   logout: string;
-  email: string;
   password: string;
   dashboard: string;
-  services: string;
-  projects: string;
   blogs: string;
   addNew: string;
   edit: string;
@@ -182,11 +178,8 @@ export const translations: Record<Language, Translations> = {
     adminAccess: 'Admin Access',
     login: 'Login',
     logout: 'Logout',
-    email: 'Email',
     password: 'Password',
     dashboard: 'Dashboard',
-    services: 'Services',
-    projects: 'Projects',
     blogs: 'Blogs',
     addNew: 'Add New',
     edit: 'Edit',
@@ -286,11 +279,8 @@ export const translations: Record<Language, Translations> = {
     adminAccess: 'الوصول للإدارة',
     login: 'تسجيل الدخول',
     logout: 'تسجيل الخروج',
-    email: 'البريد الإلكتروني',
     password: 'كلمة المرور',
     dashboard: 'لوحة التحكم',
-    services: 'الخدمات',
-    projects: 'المشاريع',
     blogs: 'المدونات',
     addNew: 'إضافة جديد',
     edit: 'تعديل',
