@@ -3,6 +3,7 @@ import { AdminSidebar } from './AdminSidebar';
 import { ServicesManager } from './ServicesManager';
 import { ProjectsManager } from './ProjectsManager';
 import { BlogsManager } from './BlogsManager';
+import { CustomSlidersManager } from './CustomSlidersManager';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -19,6 +20,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
         return <ProjectsManager />;
       case 'blogs':
         return <BlogsManager />;
+      case 'sliders':
+        return <CustomSlidersManager />;
       default:
         return <ServicesManager />;
     }

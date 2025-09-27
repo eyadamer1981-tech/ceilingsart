@@ -42,9 +42,20 @@ const blogSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+const customSliderSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, default: '' },
+  projectIds: { type: [mongoose.Schema.Types.ObjectId], ref: 'Project', required: true },
+  order: { type: Number, default: 0 },
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 
 export const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 export const Service = mongoose.models.Service || mongoose.model('Service', serviceSchema);
 export const Project = mongoose.models.Project || mongoose.model('Project', projectSchema);
 export const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+export const CustomSlider = mongoose.models.CustomSlider || mongoose.model('CustomSlider', customSliderSchema);
 // GalleryImage removed per requirements

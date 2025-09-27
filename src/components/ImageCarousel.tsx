@@ -46,11 +46,11 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
   };
 
   // Convert featured content to image items
-  const convertToImageItems = (items: any[], category: string): ImageItem[] => {
+  const convertToImageItems = (items: any[], defaultCategory: string): ImageItem[] => {
     return items.map(item => ({
       src: item.image || '/image.png',
       alt: item.title || 'Image',
-      category: category,
+      category: item.category || defaultCategory,
       title: item.title,
       description: item.description
     }));
@@ -73,7 +73,6 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
     return acc;
   }, {} as Record<string, ImageItem[]>);
 
-  const currentCategory = Object.keys(groupedImages)[0] || 'Gallery';
   const categoryImages = Object.values(groupedImages).flat();
 
   // Fallback images if no data is available
@@ -123,11 +122,11 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
 
   return (
     <div className="py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Category Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-light text-gray-900 mb-4">
-            {currentCategory}
+            {displayImages[currentIndex]?.category || 'Gallery'}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-yellow-500 mx-auto"></div>
         </div>
@@ -145,12 +144,12 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-96 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                    className="w-full h-[300px] md:h-[500px] lg:h-[600px] object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
                     onClick={() => onSelect?.(image)}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-white text-xl font-medium">{image.alt}</h3>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-medium">{image.alt}</h3>
                   </div>
                 </div>
               ))}
@@ -160,31 +159,31 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
           {/* Navigation Arrows */}
           <button
             onClick={prevImage}
-            className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? 'right-4' : 'left-4'} bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10`}
+            className="absolute top-1/2 -translate-y-1/2 left-6 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10"
             aria-label="Previous image"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
             </svg>
           </button>
 
           <button
             onClick={nextImage}
-            className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? 'left-4' : 'right-4'} bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10`}
+            className="absolute top-1/2 -translate-y-1/2 right-6 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10"
             aria-label="Next image"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
             </svg>
           </button>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-6 space-x-2">
+          <div className="flex justify-center mt-8 space-x-3">
             {displayImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-4 h-4 rounded-full transition-all duration-300 ${
                   index === currentIndex
                     ? 'bg-gradient-to-r from-orange-400 to-yellow-500 scale-125'
                     : 'bg-gray-300 hover:bg-gray-400'

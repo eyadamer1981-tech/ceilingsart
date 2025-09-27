@@ -37,25 +37,26 @@ export function HomepageHero() {
         }} />
 
       {/* Rotated background blob like homepage asset */}
-      <div className="absolute top-30 flex items-center justify-center pointer-events-none z-10" aria-hidden>
-        <div
-          className="flex-none bg-blob-bg"
-          style={{
-            width: '1000.09px',
-            height: '1930.64px',
-            transform: 'translate(500px, -271.97px) rotate(30.298deg) skewX(2.627deg)',
-            opacity: 0.59,
-            backgroundImage: "url('/background-blob-service-1.png.png')",
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: '100% 104.77%',
-            backgroundPosition: 'left top',
-            filter: 'saturate(105%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
-            maskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
-            willChange: 'transform'
-          }}
-        />
-      </div>
+      <div 
+        className="absolute pointer-events-none z-10" 
+        aria-hidden
+        style={{
+          left: '500px',
+          top: '-271.97px',
+          width: '1000.09px',
+          height: '1930.64px',
+          transform: 'rotate(30.298deg) skewX(2.627deg)',
+          opacity: 0.59,
+          backgroundImage: "url('/background-blob-service-1.png.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100% 104.77%',
+          backgroundPosition: 'left top',
+          filter: 'saturate(105%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
+          maskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
+          willChange: 'transform'
+        }}
+      />
 
       {/* Center ellipse 870x870 with inner vignette (raised slightly) */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10" aria-hidden>

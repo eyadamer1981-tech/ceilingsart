@@ -1,4 +1,4 @@
-import { LogOut, Settings, Image, FileText, Briefcase } from 'lucide-react';
+import { LogOut, Settings, Image, FileText, Briefcase, Sliders } from 'lucide-react';
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -11,6 +11,7 @@ export function AdminSidebar({ activeTab, setActiveTab, onLogout }: AdminSidebar
     { id: 'services', label: 'Services', icon: Settings },
     { id: 'projects', label: 'Projects', icon: Image },
     { id: 'blogs', label: 'Blogs', icon: FileText },
+    { id: 'sliders', label: 'Custom Sliders', icon: Sliders },
   ];
 
   return (
