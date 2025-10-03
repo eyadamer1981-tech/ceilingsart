@@ -17,6 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
+      // Set cache headers for 10 minutes
+      res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
       // Return only the latest 8 blogs
       const blogs = await Blog.find().sort({ createdAt: -1 }).limit(8);
       res.json(blogs);

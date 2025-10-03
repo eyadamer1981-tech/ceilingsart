@@ -98,9 +98,9 @@ export default function Home() {
       default:
         return (
           <>
-            <HomepageHero />
+            <HomepageHero onGetStarted={() => handlePageChange('CONTACT US')} />
             <AboutUsSection />
-            <MainServicesSection />
+            <MainServicesSection onLearnMore={() => handlePageChange('OUR SERVICES')} />
             <ImageCarousel 
               onSelect={(img) => {
                 setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });

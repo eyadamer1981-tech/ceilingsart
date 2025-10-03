@@ -8,10 +8,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (req.method) {
     case 'GET':
       try {
+        // Set cache headers for 10 minutes
+        res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
         const sliders = await CustomSlider.find({ isActive: true })
           .populate('projectIds', 'title image category')
           .sort({ order: 1, createdAt: -1 });
-        
+
         res.json(sliders);
       } catch (error) {
         res.status(500).json({ message: 'Server error' });

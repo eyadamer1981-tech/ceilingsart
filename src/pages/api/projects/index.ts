@@ -14,6 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
+      // Set cache headers for 10 minutes
+      res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
       // Fall back: read without sort to avoid memory limit
       const projects = await Project.find();
       res.json(projects);

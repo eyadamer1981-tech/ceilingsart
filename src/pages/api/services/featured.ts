@@ -7,6 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
+      // Set cache headers for 10 minutes
+      res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
       const services = await Service.find({ featured: true }).sort({ createdAt: -1 });
       res.json(services);
     } catch (error) {

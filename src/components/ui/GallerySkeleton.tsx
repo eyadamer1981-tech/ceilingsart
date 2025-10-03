@@ -50,6 +50,28 @@ export function GallerySkeletonCard() {
   );
 }
 
+// New: skeletons that match gallery slider dimensions (three horizontal sliders)
+export function GallerySlidersSkeleton() {
+  return (
+    <div className="space-y-10">
+      {Array.from({ length: 3 }).map((_, rowIndex) => (
+        <div key={rowIndex} className="w-full">
+          <div className="flex space-x-4 overflow-hidden">
+            {Array.from({ length: 6 }).map((__, i) => (
+              <div key={i} className="flex-shrink-0 w-64">
+                <div className="w-full h-40 rounded-lg bg-gray-200 animate-pulse" />
+                <div className="mt-3 h-4 w-3/4 mx-auto rounded bg-gray-200 animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+
 
 
 

@@ -6,6 +6,9 @@ import { Admin } from '../../../lib/models';
 import { initializeAdmin } from '../../../lib/init-admin';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Ensure admin routes are never cached
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }

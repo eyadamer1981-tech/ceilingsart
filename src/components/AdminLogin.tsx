@@ -137,7 +137,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
               onChange={(e) => setEmail(e.target.value)}
               required
               className={`w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 text-lg text-black ${isRTL ? 'text-right' : 'text-left'}`}
-              placeholder="admin@admin.com"
+              placeholder={isRTL ? 'البريد الإلكتروني' : 'Email'}
             />
           </div>
 
@@ -152,7 +152,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
               onChange={(e) => setPassword(e.target.value)}
               required
               className={`w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 text-lg text-black ${isRTL ? 'text-right' : 'text-left'}`}
-              placeholder="admin@123"
+              placeholder={isRTL ? 'كلمة المرور' : 'Password'}
             />
           </div>
 

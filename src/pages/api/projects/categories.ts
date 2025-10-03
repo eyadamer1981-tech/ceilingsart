@@ -10,6 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    // Set cache headers for 10 minutes
+    res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
     const categories: string[] = await Project.distinct('category');
     res.json(categories.filter(Boolean).sort());
   } catch (error) {

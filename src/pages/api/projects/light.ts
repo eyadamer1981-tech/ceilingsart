@@ -10,6 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    // Set cache headers for 10 minutes
+    res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+
     const { category } = req.query;
     const page = Math.max(1, parseInt((req.query.page as string) || '1', 10));
     const pageSize = Math.min(50, Math.max(1, parseInt((req.query.pageSize as string) || '24', 10)));

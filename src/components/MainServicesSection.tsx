@@ -1,6 +1,6 @@
 import { useLanguage } from '../contexts/LanguageContext';
 
-export function MainServicesSection() {
+export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void }) {
   const { t, isRTL } = useLanguage();
 
   const services = [
@@ -113,7 +113,7 @@ export function MainServicesSection() {
 
                 {/* CTA Button */}
                 <div className={`mt-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-md">
+                  <button onClick={() => onLearnMore?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-md">
                     {isRTL ? 'اعرف المزيد' : 'Learn More'}
                   </button>
                 </div>

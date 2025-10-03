@@ -7,7 +7,7 @@ interface FeaturedContent {
   blogs: any[];
 }
 
-export function HomepageHero() {
+export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
   const { t, isRTL } = useLanguage();
   const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
     services: [],
@@ -111,7 +111,7 @@ export function HomepageHero() {
             </>
           )}
         </h1>
-        <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg">
+        <button onClick={() => onGetStarted?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg">
           {t('getStarted')}
         </button>
       </div>

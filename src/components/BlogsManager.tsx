@@ -17,6 +17,7 @@ export function BlogsManager() {
   const [showForm, setShowForm] = useState(false);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -39,6 +40,7 @@ export function BlogsManager() {
     } catch (error) {
       console.error('Error fetching blogs:', error);
     }
+    setInitialLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -247,7 +249,20 @@ export function BlogsManager() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogs.map((blog) => (
+        {initialLoading && (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={`blog-skel-${i}`} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="w-full h-48 bg-gray-200 animate-pulse" />
+              <div className="p-4">
+                <div className="h-5 w-2/3 bg-gray-200 rounded animate-pulse mb-2" />
+                <div className="h-4 w-1/3 bg-gray-200 rounded animate-pulse mb-2" />
+                <div className="h-4 w-full bg-gray-200 rounded animate-pulse mb-2" />
+                <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
+              </div>
+            </div>
+          ))
+        )}
+        {!initialLoading && blogs.map((blog) => (
           <div key={blog._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
             <img
               src={blog.image}

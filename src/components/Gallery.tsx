@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { GallerySlidersSkeleton } from './ui/GallerySkeleton';
 
 export function Gallery({ onSelect }: { onSelect?: (item: { src: string; alt: string }) => void }) {
   const [galleryImages, setGalleryImages] = React.useState<{ src: string; alt: string }[]>([]);
@@ -25,9 +26,7 @@ export function Gallery({ onSelect }: { onSelect?: (item: { src: string; alt: st
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         {/* Gallery Grid */}
-        {loading && (
-          <div className="text-center text-gray-500">Loading gallery...</div>
-        )}
+        {loading && (<GallerySlidersSkeleton />)}
         {!loading && galleryImages.length === 0 && (
           <div className="text-center text-gray-500">No images found. Use the admin ingestion to import from art_images.</div>
         )}

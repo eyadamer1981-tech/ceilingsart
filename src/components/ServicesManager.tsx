@@ -18,6 +18,7 @@ export function ServicesManager() {
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -41,6 +42,7 @@ export function ServicesManager() {
     } catch (error) {
       console.error('Error fetching services:', error);
     }
+    setInitialLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -290,7 +292,23 @@ export function ServicesManager() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {services.map((service) => (
+        {initialLoading && (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={`svc-skel-${i}`} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+              <div className="w-full h-56 bg-gray-200 animate-pulse" />
+              <div className="p-6">
+                <div className="h-6 w-2/3 bg-gray-200 rounded animate-pulse mb-3" />
+                <div className="h-4 w-full bg-gray-200 rounded animate-pulse mb-2" />
+                <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse mb-6" />
+                <div className="flex justify-center space-x-3">
+                  <div className="h-10 w-24 bg-gray-200 rounded-full animate-pulse" />
+                  <div className="h-10 w-24 bg-gray-200 rounded-full animate-pulse" />
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+        {!initialLoading && services.map((service) => (
           <div key={service._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
             <div className="relative">
               <img

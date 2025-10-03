@@ -26,3 +26,18 @@ body {
   }
 }
 
+/* Ensure form text is always visible (black) */
+input,
+textarea,
+select {
+  color: #000 !important;
+  background-color: #ffffff;
+  caret-color: #000;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #000 !important;
+  opacity: 0.6;
+}
+
