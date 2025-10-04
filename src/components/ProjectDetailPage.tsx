@@ -32,7 +32,9 @@ export function ProjectDetailPage({
     let isMounted = true;
     const load = async () => {
       try {
-        const res = await fetch('/api/projects');
+        // Fetch from the correct API endpoint based on whether it's a service or project
+        const apiEndpoint = isService ? '/api/services' : '/api/projects';
+        const res = await fetch(apiEndpoint);
         const data = await res.json();
         const items: DetailItem[] = (Array.isArray(data) ? data : []).map((p: any) => ({
           title: p.title,
@@ -42,15 +44,21 @@ export function ProjectDetailPage({
           category: p.category,
           detailImages: p.detailImages || [],
         }));
+        
+        // Filter related items: exclude current item and optionally match by category
         const filtered = items
-          .filter(p => p.title !== item.title && (!!item.category ? p.category === item.category : true))
-          .slice(0, 3);
+          .filter(p => p.title !== item.title) // Exclude current item
+          .slice(0, 3); // Take first 3 items
+        
         if (isMounted) setRelated(filtered);
-      } catch {}
+      } catch (error) {
+        console.error('Error fetching related items:', error);
+        if (isMounted) setRelated([]);
+      }
     };
     load();
     return () => { isMounted = false; };
-  }, [item.title, item.category]);
+  }, [item.title, item.category, isService]);
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#2C2C2C" }}>
       {/* Note: Global site header remains rendered by the main page layout */}
