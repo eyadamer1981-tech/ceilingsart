@@ -10,9 +10,19 @@ interface StretchCeilingDetailPageProps {
   descriptionEn: string;
   descriptionAr: string;
   features: string[];
+  featuresAr?: string[];
   benefits: string[];
+  benefitsAr?: string[];
   applications: string[];
+  applicationsAr?: string[];
   specifications: {
+    material: string;
+    thickness: string;
+    colors: string;
+    warranty: string;
+    installation: string;
+  };
+  specificationsAr?: {
     material: string;
     thickness: string;
     colors: string;
@@ -33,13 +43,23 @@ export function StretchCeilingDetailPage({
   descriptionEn,
   descriptionAr,
   features,
+  featuresAr,
   benefits,
+  benefitsAr,
   applications,
+  applicationsAr,
   specifications,
+  specificationsAr,
   images,
   onBack
 }: StretchCeilingDetailPageProps) {
   const { language, isRTL, t } = useLanguage();
+
+  // Get the appropriate arrays based on language
+  const displayFeatures = isRTL && featuresAr ? featuresAr : features;
+  const displayBenefits = isRTL && benefitsAr ? benefitsAr : benefits;
+  const displayApplications = isRTL && applicationsAr ? applicationsAr : applications;
+  const displaySpecifications = isRTL && specificationsAr ? specificationsAr : specifications;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -103,7 +123,7 @@ export function StretchCeilingDetailPage({
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
+            {displayFeatures.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -134,7 +154,7 @@ export function StretchCeilingDetailPage({
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {benefits.map((benefit, index) => (
+            {displayBenefits.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
@@ -165,7 +185,7 @@ export function StretchCeilingDetailPage({
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {applications.map((application, index) => (
+            {displayApplications.map((application, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -207,7 +227,7 @@ export function StretchCeilingDetailPage({
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {t('material')}
                 </h3>
-                <p className="text-gray-300">{specifications.material}</p>
+                <p className="text-gray-300">{displaySpecifications.material}</p>
               </motion.div>
 
               <motion.div
@@ -220,7 +240,7 @@ export function StretchCeilingDetailPage({
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {t('thickness')}
                 </h3>
-                <p className="text-gray-300">{specifications.thickness}</p>
+                <p className="text-gray-300">{displaySpecifications.thickness}</p>
               </motion.div>
 
               <motion.div
@@ -233,7 +253,7 @@ export function StretchCeilingDetailPage({
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {t('colors')}
                 </h3>
-                <p className="text-gray-300">{specifications.colors}</p>
+                <p className="text-gray-300">{displaySpecifications.colors}</p>
               </motion.div>
 
               <motion.div
@@ -246,7 +266,7 @@ export function StretchCeilingDetailPage({
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {t('warranty')}
                 </h3>
-                <p className="text-gray-300">{specifications.warranty}</p>
+                <p className="text-gray-300">{displaySpecifications.warranty}</p>
               </motion.div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { WoodWoolPanelContent } from './WoodWoolPanelContent';
 
 export function WoodWoolPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const isRTL = language === 'ar';
 
   const titleEn = 'Wood Wool Panels';
@@ -47,7 +47,7 @@ export function WoodWoolPage() {
           <div className="mb-12 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-white mb-6">
-                {isRTL ? 'وصف المنتج' : 'Product Description'}
+                {t('productDescription')}
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed">
                 {description}
@@ -64,25 +64,22 @@ export function WoodWoolPage() {
       <div className="bg-gray-900 py-16">
         <div className="max-w-7xl mx-auto px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-8">
-            {isRTL ? 'هل تريد معرفة المزيد؟' : 'Want to Know More?'}
+            {t('wantToKnowMore')}
           </h2>
           <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-            {isRTL
-              ? 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح الصوتية المناسبة لمساحتك.'
-              : 'Contact us for a free consultation about acoustic panel solutions suitable for your space.'
-            }
+            {t('contactUsForConsultation')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               onClick={() => window.history.back()}
               className="px-8 py-3 text-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
             >
-              {isRTL ? 'العودة' : 'Back'}
+              {t('back')}
             </Button>
             <Button
               className="px-8 py-3 text-lg bg-green-500 hover:bg-green-600 text-white font-semibold"
             >
-              {isRTL ? 'تواصل معنا' : 'Contact Us'}
+              {t('contactUs')}
             </Button>
           </div>
         </div>

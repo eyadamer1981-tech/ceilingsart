@@ -236,6 +236,11 @@ export interface Translations {
   thickness: string;
   colors: string;
   warranty: string;
+  
+  // Common page text translations
+  productDescription: string;
+  wantToKnowMore: string;
+  contactUsForConsultation: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -475,6 +480,11 @@ export const translations: Record<Language, Translations> = {
     thickness: 'Thickness',
     colors: 'Colors',
     warranty: 'Warranty',
+    
+    // Common page text translations
+    productDescription: 'Product Description',
+    wantToKnowMore: 'Want to Know More?',
+    contactUsForConsultation: 'Contact us for a free consultation about acoustic panel solutions suitable for your space.',
   },
   ar: {
     // Navigation
@@ -712,6 +722,11 @@ export const translations: Record<Language, Translations> = {
     thickness: 'السماكة',
     colors: 'الألوان',
     warranty: 'الضمان',
+    
+    // Common page text translations
+    productDescription: 'وصف المنتج',
+    wantToKnowMore: 'هل تريد معرفة المزيد؟',
+    contactUsForConsultation: 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح الصوتية المناسبة لمساحتك.',
   }
 };
 

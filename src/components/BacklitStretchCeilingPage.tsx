@@ -20,6 +20,14 @@ export function BacklitStretchCeilingPage({ onBack }: BacklitStretchCeilingPageP
       'Seamless installation',
       'Customizable light patterns'
     ],
+    featuresAr: [
+      'نظام إضاءة LED متكامل',
+      'توزيع ضوئي متساوي',
+      'تقنية LED موفرة للطاقة',
+      'تحكم في الإضاءة قابل للتعتيم',
+      'تركيب سلس',
+      'أنماط إضاءة قابلة للتخصيص'
+    ],
     benefits: [
       'Creates dramatic ambient lighting',
       'Reduces need for additional light fixtures',
@@ -27,6 +35,14 @@ export function BacklitStretchCeilingPage({ onBack }: BacklitStretchCeilingPageP
       'Customizable lighting patterns',
       'Perfect for mood lighting',
       'Modern and sophisticated appearance'
+    ],
+    benefitsAr: [
+      'يخلق إضاءة محيطة درامية',
+      'يقلل الحاجة إلى تركيبات إضاءة إضافية',
+      'تقنية LED موفرة للطاقة',
+      'أنماط إضاءة قابلة للتخصيص',
+      'مثالي للإضاءة المزاجية',
+      'مظهر حديث وراقي'
     ],
     applications: [
       'Luxury hotels',
@@ -36,12 +52,27 @@ export function BacklitStretchCeilingPage({ onBack }: BacklitStretchCeilingPageP
       'Modern offices',
       'Residential master bedrooms'
     ],
+    applicationsAr: [
+      'الفنادق الفاخرة',
+      'المطاعم الراقية',
+      'مراكز السبا والعافية',
+      'دور السينما ومراكز الترفيه',
+      'المكاتب الحديثة',
+      'غرف النوم الرئيسية السكنية'
+    ],
     specifications: {
       material: 'Translucent PVC membrane with LED integration',
       thickness: '0.20mm - 0.30mm',
       colors: 'White, cream, and translucent options',
       warranty: '10-year warranty on ceiling, 5-year on LED system',
       installation: 'Professional installation with electrical integration'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC شفاف مع تكامل LED',
+      thickness: '0.20 مم - 0.30 مم',
+      colors: 'أبيض، كريمي، وخيارات شفافة',
+      warranty: 'ضمان 10 سنوات على السقف، 5 سنوات على نظام LED',
+      installation: 'تركيب مهني مع تكامل كهربائي'
     },
     images: {
       main: '/art-images/stretch-ceiling/backlit/pool-spa1.jpg',
