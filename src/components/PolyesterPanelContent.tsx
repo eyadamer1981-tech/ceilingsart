@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { motion } from './ui/MotionWrapper';
 
 export function PolyesterPanelContent() {
   const { language } = useLanguage();
@@ -8,7 +9,12 @@ export function PolyesterPanelContent() {
   return (
     <div className="space-y-16">
       {/* Polyester Acoustic Panels Felt Acoustic Wall Panel */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'ألواح الجدار الصوتية المصنوعة من اللباد' : 'Polyester Acoustic Panels Felt Acoustic Wall Panel'}
         </h2>
@@ -32,10 +38,15 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: أبيض، رمادي فاتح، رمادي داكن. خيارات الصباغة أو تغطية القماش الصوتي متاحة.' : 'Primary Color: White, Light Gray, Dark Gray. Dyeing or acoustic fabric covering options available.'}</li>
           <li>• {isRTL ? 'طرق التركيب: التركيب بالغراء ونظام التثبيت Clips-Z' : 'Installation Methods: Adhesive installation and Clips-Z mounting system.'}</li>
         </ul>
-      </div>
+      </motion.div>
 
       {/* 3D Acoustic Felt Panels */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'ألواح اللباد الصوتية ثلاثية الأبعاد' : '3D Acoustic Felt Panels'}
         </h2>
@@ -58,10 +69,15 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: أبيض، رمادي فاتح، رمادي داكن. خيار التلوين متاح.' : 'Base Color: White, Light Grey, Dark Grey. Coloring option available.'}</li>
           <li>• {isRTL ? 'طرق التركيب: التطبيق بالغراء ونظام التثبيت clips-Z' : 'Installation Methods: Adhesive application and clips-Z mounting system.'}</li>
         </ul>
-      </div>
+      </motion.div>
 
       {/* Acoustic Table Divider Panels */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'ألواح تقسيم الطاولة الصوتية' : 'Acoustic Table Divider Panels'}
         </h2>
@@ -85,10 +101,15 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'مقاومة الحريق: 1G مكافئ لـ 0D1-S-B' : 'Fire Resistance: 1G equivalent to 0D1-S-B'}</li>
           <li>• {isRTL ? 'التطبيق: قدم التقسيم، التركيب بالمسامير.' : 'Application: Divider foot, installation with screws.'}</li>
         </ul>
-      </div>
+      </motion.div>
 
       {/* Acoustic Felt Cassette Ceiling Panel */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'لوح السقف المعلق من اللباد الصوتي' : 'Acoustic Felt Cassette Ceiling Panel'}
         </h2>
@@ -110,10 +131,15 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Base Color: Limited to white, light gray, and dark gray. Acoustic fabric covering is optional.'}</li>
           <li>• {isRTL ? 'التطبيق: تعليق لوح السقف باستخدام الملحقات' : 'Application: Ceiling panel suspension using accessories'}</li>
         </ul>
-      </div>
+      </motion.div>
 
       {/* Acoustic Ceiling Panel Made of Felt */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'لوح السقف الصوتي المصنوع من اللباد' : 'Acoustic Ceiling Panel Made of Felt'}
         </h2>
@@ -136,10 +162,15 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Primary Color: Limited to white, light gray, and dark gray. Acoustic fabric covering optional.'}</li>
           <li>• {isRTL ? 'التطبيق: الألواح معلقة من السقف باستخدام الملحقات.' : 'Application: Panels are suspended from the ceiling using accessories.'}</li>
         </ul>
-      </div>
+      </motion.div>
 
       {/* Acoustic Floating Ceiling Panel */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'لوح السقف المعلق الصوتي' : 'Acoustic Floating Ceiling Panel'}
         </h2>
@@ -162,7 +193,8 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Primary Color: Limited to white, light gray, and dark gray. Acoustic fabric covering is optional.'}</li>
           <li>• {isRTL ? 'التطبيق: ألواح السقف معلقة باستخدام الملحقات.' : 'Application: Ceiling panels suspended using accessories.'}</li>
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }
+

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { motion } from './ui/MotionWrapper';
 
 export function AcousticFabricContent() {
   const { language } = useLanguage();
@@ -8,7 +9,12 @@ export function AcousticFabricContent() {
   return (
     <div className="grid lg:grid-cols-2 gap-16">
       {/* Left Column */}
-      <div className="space-y-12">
+      <motion.div 
+        initial={{ opacity: 0, x: -30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="space-y-12"
+      >
         {/* What Are Acoustic Panels */}
         <div className="flex items-start space-x-4 rtl:space-x-reverse">
           <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -91,10 +97,15 @@ export function AcousticFabricContent() {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right Column */}
-      <div className="space-y-12">
+      <motion.div 
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="space-y-12"
+      >
         
         {/* Acoustic Performance */}
         <div className="flex items-start space-x-4 rtl:space-x-reverse">
@@ -181,7 +192,7 @@ export function AcousticFabricContent() {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

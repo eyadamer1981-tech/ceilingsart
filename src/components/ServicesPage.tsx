@@ -2,6 +2,17 @@ import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BookOpen, Droplets, Building, Wine, Globe, Briefcase } from 'lucide-react';
+import { motion } from './ui/MotionWrapper';
+import { GlossyStretchCeilingPage } from './GlossyStretchCeilingPage';
+import { BacklitStretchCeilingPage } from './BacklitStretchCeilingPage';
+import { AcousticStretchCeilingPage } from './AcousticStretchCeilingPage';
+import { ThreeDStretchCeilingPage } from './ThreeDStretchCeilingPage';
+import { ReflectiveStretchCeilingPage } from './ReflectiveStretchCeilingPage';
+import { MatteStretchCeilingPage } from './MatteStretchCeilingPage';
+import { FiberOpticStretchCeilingPage } from './FiberOpticStretchCeilingPage';
+import { PrintedStretchCeilingPage } from './PrintedStretchCeilingPage';
+import { TranslucentStretchCeilingPage } from './TranslucentStretchCeilingPage';
+import { PaperStretchCeilingPage } from './PaperStretchCeilingPage';
 
 interface Service {
   _id: string;
@@ -29,6 +40,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
   const { t, language, isRTL } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCeilingType, setSelectedCeilingType] = useState<string | null>(null);
 
   useEffect(() => {
     fetchServices();
@@ -60,6 +72,42 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
     }
   };
 
+  const handleCeilingTypeSelect = (ceilingType: string) => {
+    setSelectedCeilingType(ceilingType);
+  };
+
+  const handleBackToServices = () => {
+    setSelectedCeilingType(null);
+  };
+
+  // Render individual ceiling type pages
+  if (selectedCeilingType) {
+    switch (selectedCeilingType) {
+      case 'glossy':
+        return <GlossyStretchCeilingPage onBack={handleBackToServices} />;
+      case 'backlit':
+        return <BacklitStretchCeilingPage onBack={handleBackToServices} />;
+      case 'acoustic':
+        return <AcousticStretchCeilingPage onBack={handleBackToServices} />;
+      case '3d':
+        return <ThreeDStretchCeilingPage onBack={handleBackToServices} />;
+      case 'reflective':
+        return <ReflectiveStretchCeilingPage onBack={handleBackToServices} />;
+      case 'matte':
+        return <MatteStretchCeilingPage onBack={handleBackToServices} />;
+      case 'fiber-optic':
+        return <FiberOpticStretchCeilingPage onBack={handleBackToServices} />;
+      case 'printed':
+        return <PrintedStretchCeilingPage onBack={handleBackToServices} />;
+      case 'translucent':
+        return <TranslucentStretchCeilingPage onBack={handleBackToServices} />;
+      case 'paper':
+        return <PaperStretchCeilingPage onBack={handleBackToServices} />;
+      default:
+        return <div>Ceiling type not found</div>;
+    }
+  }
+
   return (
     <section className="min-h-screen">
       {/* Header Section with Cover Image */}
@@ -75,13 +123,23 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
 
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
+          >
             {pageTitle || t('servicesPageTitle')}
-          </h1>
+          </motion.h1>
           {pageSubtitle && (
-            <p className="text-xl md:text-2xl text-white/90 mt-4 font-light">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-xl md:text-2xl text-white/90 mt-4 font-light"
+            >
               {pageSubtitle}
-            </p>
+            </motion.p>
           )}
         </div>
       </div>
@@ -90,7 +148,12 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       <div className="bg-gray-800 py-20">
         <div className="container mx-auto px-4">
           {/* Introduction Section */}
-          <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {pageTitle || t('servicesPageTitle')}
             </h2>
@@ -100,26 +163,41 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
             
             {/* Benefits */}
             <div className="flex flex-wrap justify-center gap-8 mb-12">
-              <div className="flex items-center gap-3 text-white">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="flex items-center gap-3 text-white"
+              >
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">10-Year Warranty on all installations</span>
-              </div>
-              <div className="flex items-center gap-3 text-white">
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex items-center gap-3 text-white"
+              >
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">European Materials at competitive prices</span>
-              </div>
-              <div className="flex items-center gap-3 text-white">
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex items-center gap-3 text-white"
+              >
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">Certified Installation Team with expertise</span>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {loading ? (
             <div className="flex justify-center items-center py-20">
@@ -127,35 +205,70 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {services.map((service) => (
-                <div key={service._id} className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
-                  {/* Image */}
-                  <div className="aspect-square overflow-hidden">
-                    <ImageWithFallback
-                      src={service.image.startsWith('http') ? service.image : service.image}
-                      alt={service.titleEn || service.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="p-6 text-center">
-                    <h3 className="text-lg font-semibold text-white mb-4">
-                      {(() => {
-                        return language === 'ar' 
-                          ? (service.titleAr || service.titleEn || service.title)
-                          : (service.titleEn || service.title);
-                      })()}
-                    </h3>
-                    <button 
-                      onClick={() => onSelect?.(service, true)} 
-                      className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
-                    >
-                      MORE
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {services.map((service, index) => {
+                // Map service titles to ceiling types for navigation
+                const getCeilingType = (title: string) => {
+                  const titleLower = title.toLowerCase();
+                  if (titleLower.includes('glossy')) return 'glossy';
+                  if (titleLower.includes('hidden lighting') || titleLower.includes('backlit')) return 'backlit';
+                  if (titleLower.includes('perforated') || titleLower.includes('acoustic')) return 'acoustic';
+                  if (titleLower.includes('3d')) return '3d';
+                  if (titleLower.includes('reflective')) return 'reflective';
+                  if (titleLower.includes('matte')) return 'matte';
+                  if (titleLower.includes('fiber optic')) return 'fiber-optic';
+                  if (titleLower.includes('printed')) return 'printed';
+                  if (titleLower.includes('light transmitting') || titleLower.includes('translucent')) return 'translucent';
+                  if (titleLower.includes('paper')) return 'paper';
+                  return null;
+                };
+
+                const ceilingType = getCeilingType(service.titleEn || service.title || '');
+
+                return (
+                  <motion.div 
+                    key={service._id} 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300"
+                  >
+                    {/* Image */}
+                    <div className="aspect-square overflow-hidden">
+                      <ImageWithFallback
+                        src={service.image.startsWith('http') ? service.image : service.image}
+                        alt={service.titleEn || service.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="p-6 text-center">
+                      <h3 className="text-lg font-semibold text-white mb-4">
+                        {(() => {
+                          return language === 'ar' 
+                            ? (service.titleAr || service.titleEn || service.title)
+                            : (service.titleEn || service.title);
+                        })()}
+                      </h3>
+                      {ceilingType ? (
+                        <button 
+                          onClick={() => handleCeilingTypeSelect(ceilingType)} 
+                          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
+                        >
+                          {isRTL ? 'عرض التفاصيل' : 'VIEW DETAILS'}
+                        </button>
+                      ) : (
+                        <button 
+                          onClick={() => onSelect?.(service, true)} 
+                          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
+                        >
+                          MORE
+                        </button>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -165,19 +278,29 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       <div className="bg-gray-800 py-20">
         <div className="container mx-auto px-4">
           {/* Header */}
-          <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-center'}`}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-center'}`}
+          >
             <h2 className="text-4xl md:text-5xl font-light text-white mb-6 tracking-wide">
               {t('stretchCeilingsFeatures')}
             </h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
               {t('stretchCeilingsFeaturesDescription')}
             </p>
-          </div>
+          </motion.div>
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="bg-gray-100 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-gray-100 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <BookOpen className="w-12 h-12 text-gray-700 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsMaterialsColors')}
@@ -185,10 +308,15 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsMaterialsColorsDescription')}
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 2 */}
-            <div className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <Droplets className="w-12 h-12 text-blue-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsProtectionLeakage')}
@@ -196,10 +324,15 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsProtectionLeakageDescription')}
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 3 */}
-            <div className="bg-pink-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-pink-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <Building className="w-12 h-12 text-pink-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('modernStretchCeilingsInstallation')}
@@ -207,10 +340,15 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('modernStretchCeilingsInstallationDescription')}
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 4 */}
-            <div className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <Wine className="w-12 h-12 text-blue-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('easyStretchCeilingsTransportSetup')}
@@ -218,10 +356,15 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('easyStretchCeilingsTransportSetupDescription')}
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 5 */}
-            <div className="bg-purple-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="bg-purple-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <Globe className="w-12 h-12 text-purple-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('fireMoistureProtection')}
@@ -229,10 +372,15 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('fireMoistureProtectionDescription')}
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 6 */}
-            <div className="bg-green-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="bg-green-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+            >
               <Briefcase className="w-12 h-12 text-green-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingSupportInfrastructureSystems')}
@@ -240,7 +388,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingSupportInfrastructureSystemsDescription')}
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -11,6 +11,9 @@ import { Footer } from '../components/Footer';
 import { AboutPage } from '../components/AboutPage';
 import { ServicesPage } from '../components/ServicesPage';
 import { AcousticPanelsPage } from '../components/AcousticPanelsPage';
+import { WoodWoolPage } from '../components/WoodWoolPage';
+import { PolyesterPanelPage } from '../components/PolyesterPanelPage';
+import { FabricWrapsPage } from '../components/FabricWrapsPage';
 import { OurWorkPage } from '../components/OurWorkPage';
 import { FAQsPage } from '../components/FAQsPage';
 import { BlogPage } from '../components/BlogPage';
@@ -187,9 +190,6 @@ export default function Home() {
         );
       // Acoustic Panels dropdown items
       case 'ACOUSTIC_PANELS_ALANDALUS':
-      case 'FLOOR_INSULATION':
-      case 'POLYESTER_ACOUSTIC':
-      case 'ACOUSTIC_FABRIC_WRAPS':
         return (
           <>
             <AcousticPanelsPage
@@ -206,6 +206,27 @@ export default function Home() {
                 setSelectedIsService(isService);
               }}
             />
+            <Footer />
+          </>
+        );
+      case 'FLOOR_INSULATION':
+        return (
+          <>
+            <WoodWoolPage />
+            <Footer />
+          </>
+        );
+      case 'POLYESTER_ACOUSTIC':
+        return (
+          <>
+            <PolyesterPanelPage />
+            <Footer />
+          </>
+        );
+      case 'ACOUSTIC_FABRIC_WRAPS':
+        return (
+          <>
+            <FabricWrapsPage />
             <Footer />
           </>
         );

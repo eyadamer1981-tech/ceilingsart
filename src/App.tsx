@@ -11,6 +11,9 @@ import { BlogPage } from './components/BlogPage';
 import { ContactPage } from './components/ContactPage';
 import { FAQsPage } from './components/FAQsPage';
 import { AcousticPanelsPage } from './components/AcousticPanelsPage';
+import { WoodWoolPage } from './components/WoodWoolPage';
+import { PolyesterPanelPage } from './components/PolyesterPanelPage';
+import { FabricWrapsPage } from './components/FabricWrapsPage';
 import { AdminLogin } from './components/AdminLogin';
 import { AdminDashboard } from './components/AdminDashboard';
 import { ProjectDetailPage, DetailItem } from './components/ProjectDetailPage';
@@ -208,12 +211,10 @@ export default function App() {
         );
       // Acoustic Panels dropdown items
       case 'ACOUSTIC_PANELS_ALANDALUS':
-      case 'FLOOR_INSULATION':
-      case 'POLYESTER_ACOUSTIC':
-      case 'ACOUSTIC_FABRIC_WRAPS':
         return (
           <>
             <AcousticPanelsPage
+              panelType="alandalus"
               onSelect={(panel, isService) => {
                 setSelectedItem({
                   title: panel.title,
@@ -227,6 +228,27 @@ export default function App() {
                 setSelectedIsService(isService);
               }}
             />
+            <Footer />
+          </>
+        );
+      case 'FLOOR_INSULATION':
+        return (
+          <>
+            <WoodWoolPage />
+            <Footer />
+          </>
+        );
+      case 'POLYESTER_ACOUSTIC':
+        return (
+          <>
+            <PolyesterPanelPage />
+            <Footer />
+          </>
+        );
+      case 'ACOUSTIC_FABRIC_WRAPS':
+        return (
+          <>
+            <FabricWrapsPage />
             <Footer />
           </>
         );

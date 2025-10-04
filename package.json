@@ -39,6 +39,7 @@
     "cmdk": "^1.1.1",
     "dotenv": "^17.2.2",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.23.22",
     "input-otp": "^1.4.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.487.0",
@@ -71,6 +72,8 @@
     "lint": "next lint",
     "import:projects": "node scripts/import-projects.js",
     "migrate:gridfs": "node scripts/migrate-to-gridfs.js",
-    "import:projects:gridfs": "node scripts/import-projects-gridfs.js"
+    "import:projects:gridfs": "node scripts/import-projects-gridfs.js",
+    "import:stretch-ceilings": "node scripts/import-busmat-stretch-ceilings.js",
+    "verify:stretch-ceilings": "node scripts/verify-stretch-ceilings.js"
   }
 }

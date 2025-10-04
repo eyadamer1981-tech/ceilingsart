@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { motion } from './ui/MotionWrapper';
 
 export function WoodWoolPanelContent() {
   const { language } = useLanguage();
@@ -8,7 +9,12 @@ export function WoodWoolPanelContent() {
   return (
     <div className="space-y-16">
       {/* Wood Wool Panels Main Content */}
-      <div className="bg-gray-700 p-8 rounded-lg">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-gray-700 p-8 rounded-lg"
+      >
         <h2 className="text-2xl font-bold text-white mb-6">
           {isRTL ? 'ألواح الصوف الخشبي الصوتية' : 'Acoustic Wood Wool Panels'}
         </h2>
@@ -25,7 +31,12 @@ export function WoodWoolPanelContent() {
         
         <div className="grid md:grid-cols-3 gap-8">
           {/* Technical Specifications */}
-          <div className="bg-gray-800 p-6 rounded-lg">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-gray-800 p-6 rounded-lg"
+          >
             <h4 className="text-lg font-semibold text-white mb-4">
               {isRTL ? 'المواصفات التقنية' : 'Technical Specifications'}
             </h4>
@@ -36,10 +47,15 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'الصوف الخشبي الصوتي: 1.5 مم' : 'Acoustic Wood Wool: 1.5 mm'}</li>
               <li>• {isRTL ? 'لون الأسمنت: بيج ورمادي' : 'Cement Color: Beige and Gray'}</li>
             </ul>
-          </div>
+          </motion.div>
           
           {/* Advantages */}
-          <div className="bg-gray-800 p-6 rounded-lg">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-gray-800 p-6 rounded-lg"
+          >
             <h4 className="text-lg font-semibold text-white mb-4">
               {isRTL ? 'المزايا' : 'Advantages'}
             </h4>
@@ -55,10 +71,15 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'متوافق مع مواد مختلفة' : 'Compatible with various materials'}</li>
               <li>• {isRTL ? 'مقاوم للنمل والقوارض' : 'Resistant to ants and rodents'}</li>
             </ul>
-          </div>
+          </motion.div>
           
           {/* Applications */}
-          <div className="bg-gray-800 p-6 rounded-lg">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="bg-gray-800 p-6 rounded-lg"
+          >
             <h4 className="text-lg font-semibold text-white mb-4">
               {isRTL ? 'التطبيقات' : 'Applications'}
             </h4>
@@ -71,9 +92,10 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'الجدران' : 'Walls'}</li>
               <li>• {isRTL ? 'الأسقف' : 'Ceilings'}</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
+

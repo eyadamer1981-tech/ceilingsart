@@ -1,9 +1,33 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { motion } from './ui/MotionWrapper';
+import { useState } from 'react';
 
 export function ContactPage() {
   const { language, t, isRTL } = useLanguage();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    projectType: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log('Form submitted:', formData);
+  };
 
   const headerTitle = t('contactTitle');
   const getInTouch = language === 'ar' ? 'تواصل معنا' : 'Get In Touch';
@@ -29,6 +53,32 @@ export function ContactPage() {
   const messageLabel = language === 'ar' ? 'الرسالة' : 'Message';
   const messagePlaceholder = language === 'ar' ? 'أخبرنا عن مشروعك...' : 'Tell us about your project...';
   const sendMessage = t('sendMessage');
+
+  // Contact information array for animations
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: phoneLabel,
+      value: '+966 575474699',
+      link: 'tel:+966575474699'
+    },
+    {
+      icon: Mail,
+      title: emailLabel,
+      value: 'info@ceilingsart.com',
+      link: 'mailto:info@ceilingsart.com'
+    },
+    {
+      icon: MapPin,
+      title: locationLabel,
+      value: 'Riyadh, Saudi Arabia'
+    },
+    {
+      icon: Clock,
+      title: hoursLabel,
+      value: 'Mon - Sat: 9:00 AM - 6:00 PM\nSunday: By Appointment'
+    }
+  ];
 
   // Extended contact content
   const extendedContent = language === 'ar'
@@ -70,9 +120,14 @@ export function ContactPage() {
         </div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
+          >
             {headerTitle}
-          </h1>
+          </motion.h1>
         </div>
 
         {/* Decorative wave at bottom with orange gradient */}
@@ -100,8 +155,142 @@ export function ContactPage() {
       <div className="bg-white py-20">
         <div className="container mx-auto px-4">
           <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 ${isRTL ? 'text-right' : ''}`}>
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-gray-50 rounded-2xl p-8 lg:p-12"
+            >
+              <h3 className="text-2xl lg:text-3xl font-light text-gray-900 mb-8 tracking-wide">
+                {sendUsMsg}
+              </h3>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                  >
+                    <label className="block text-gray-700 mb-2">{firstName}</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                      placeholder={language === 'ar' ? 'أدخل اسمك الأول' : 'Enter your first name'}
+                    />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    <label className="block text-gray-700 mb-2">{lastName}</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                      placeholder={language === 'ar' ? 'أدخل اسم العائلة' : 'Enter your last name'}
+                    />
+                  </motion.div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  <label className="block text-gray-700 mb-2">{t('email')}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                    placeholder={emailPlaceholder}
+                  />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <label className="block text-gray-700 mb-2">{t('phone')}</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                    placeholder={phonePlaceholder}
+                    dir="ltr"
+                  />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <label className="block text-gray-700 mb-2">{projectType}</label>
+                  <select 
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                  >
+                    <option value="">{selectProject}</option>
+                    <option value="residential">{residential}</option>
+                    <option value="commercial">{commercial}</option>
+                    <option value="hospitality">{hospitality}</option>
+                    <option value="retail">{retail}</option>
+                  </select>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  <label className="block text-gray-700 mb-2">{messageLabel}</label>
+                  <textarea
+                    rows={4}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors resize-none text-black"
+                    placeholder={messagePlaceholder}
+                  ></textarea>
+                </motion.div>
+
+                <motion.button 
+                  type="submit"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full bg-gradient-to-r from-orange-400 to-yellow-500 text-white py-4 rounded-lg hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg font-medium tracking-wide flex items-center justify-center gap-2"
+                >
+                  <Send size={20} />
+                  {sendMessage}
+                </motion.button>
+              </form>
+            </motion.div>
+
             {/* Contact Information */}
-            <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
               <div>
                 <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-8 tracking-wide">
                   {getInTouch}
@@ -113,50 +302,41 @@ export function ContactPage() {
 
               {/* Contact Details */}
               <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-3 rounded-full">
-                    <Phone className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-1">{phoneLabel}</h3>
-                    <p className="text-gray-600" dir="ltr">+966 575474699</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-3 rounded-full">
-                    <Mail className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-1">{emailLabel}</h3>
-                    <p className="text-gray-600" dir="ltr">info@ceilingsart.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-3 rounded-full">
-                    <MapPin className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-1">{locationLabel}</h3>
-                    <p className="text-gray-600">Riyadh, Saudi Arabia</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-3 rounded-full">
-                    <Clock className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-1">{hoursLabel}</h3>
-                    <p className="text-gray-600">Mon - Sat: 9:00 AM - 6:00 PM</p>
-                    <p className="text-gray-600">Sunday: By Appointment</p>
-                  </div>
-                </div>
+                {contactInfo.map((info, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="flex items-start space-x-4"
+                  >
+                    <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-3 rounded-full flex-shrink-0">
+                      <info.icon className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-gray-900 mb-1">{info.title}</h3>
+                      {info.link ? (
+                        <a
+                          href={info.link}
+                          className="text-orange-600 hover:text-orange-700 transition-colors"
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="text-gray-600 whitespace-pre-line">{info.value}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Map Section */}
-              <div className="mt-8">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mt-8"
+              >
                 <h3 className="font-medium text-gray-900 mb-4">{findUs}</h3>
                 <div className="bg-gray-100 rounded-lg overflow-hidden h-64">
                   <iframe
@@ -170,79 +350,8 @@ export function ContactPage() {
                     title="Art Ceiling Location"
                   ></iframe>
                 </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-gray-50 rounded-2xl p-8 lg:p-12">
-              <h3 className="text-2xl lg:text-3xl font-light text-gray-900 mb-8 tracking-wide">
-                {sendUsMsg}
-              </h3>
-              
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-gray-700 mb-2">{firstName}</label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                      placeholder={language === 'ar' ? 'أدخل اسمك الأول' : 'Enter your first name'}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 mb-2">{lastName}</label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                      placeholder={language === 'ar' ? 'أدخل اسم العائلة' : 'Enter your last name'}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 mb-2">{t('email')}</label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                    placeholder={emailPlaceholder}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 mb-2">{t('phone')}</label>
-                  <input
-                    type="tel"
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                    placeholder={phonePlaceholder}
-                    dir="ltr"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 mb-2">{projectType}</label>
-                  <select className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black">
-                    <option value="">{selectProject}</option>
-                    <option value="residential">{residential}</option>
-                    <option value="commercial">{commercial}</option>
-                    <option value="hospitality">{hospitality}</option>
-                    <option value="retail">{retail}</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 mb-2">{messageLabel}</label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors resize-none text-black"
-                    placeholder={messagePlaceholder}
-                  ></textarea>
-                </div>
-
-                <button className="w-full bg-gradient-to-r from-orange-400 to-yellow-500 text-white py-4 rounded-lg hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium tracking-wide">
-                  {sendMessage}
-                </button>
-              </form>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -251,19 +360,30 @@ export function ContactPage() {
       <div className="bg-gray-50 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}
+            >
               <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-8 tracking-wide">
                 {extendedContent.title}
               </h2>
               
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {extendedContent.paragraphs.map((paragraph, index) => (
-                  <p key={index} className={isRTL ? 'text-right' : 'text-left'}>
+                  <motion.p 
+                    key={index} 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className={isRTL ? 'text-right' : 'text-left'}
+                  >
                     {paragraph}
-                  </p>
+                  </motion.p>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

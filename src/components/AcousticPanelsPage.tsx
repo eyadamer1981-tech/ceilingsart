@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcousticPanelDetailPage } from './AcousticPanelDetailPage';
+import { motion } from './ui/MotionWrapper';
 
 interface AcousticPanel {
   _id: string;
@@ -17,9 +18,11 @@ interface AcousticPanel {
 
 interface AcousticPanelsPageProps {
   onSelect?: (item: any, isService: boolean) => void;
+  panelType?: string;
 }
 
-export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
+export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPageProps) {
+  console.log('AcousticPanelsPage received props:', { panelType, onSelect: !!onSelect });
   const { t, isRTL } = useLanguage();
   const [acousticPanels, setAcousticPanels] = useState<AcousticPanel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +31,65 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
   useEffect(() => {
     fetchAcousticPanels();
   }, []);
+
+  // Auto-select panel based on panelType prop
+  useEffect(() => {
+    console.log('Auto-select effect triggered:', { panelType, acousticPanelsLength: acousticPanels.length });
+    if (panelType) {
+      let targetPanel: AcousticPanel | null = null;
+
+      switch (panelType) {
+        case 'fabric-wraps':
+          targetPanel = {
+            _id: 'fabric-wraps',
+            titleEn: 'Acoustic Fabric Wraps',
+            titleAr: 'أغلفة القماش الصوتية',
+            descriptionEn: 'Elegant acoustic panels wrapped with high-quality fabric to improve acoustics while maintaining modern design. Perfect for offices, studios, and commercial spaces.',
+            descriptionAr: 'ألواح صوتية أنيقة مغلفة بقماش عالي الجودة لتحسين الصوتيات مع الحفاظ على التصميم العصري. مثالية للمكاتب والاستوديوهات والمساحات التجارية.',
+            category: 'Fabric Wrapped',
+            image: '/fabrice.webp',
+            featured: true,
+            rightLeftSection: false
+          };
+          break;
+        case 'polyester':
+          targetPanel = {
+            _id: 'polyester-panels',
+            titleEn: 'Polyester Acoustic Panels',
+            titleAr: 'الألواح الصوتية البوليستر',
+            descriptionEn: 'Acoustic panels made from high-density polyester fibers for excellent sound absorption and moisture resistance. Ideal for humid environments and high-traffic areas.',
+            descriptionAr: 'ألواح صوتية مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.',
+            category: 'Polyester',
+            image: '/polyeseter.webp',
+            featured: true,
+            rightLeftSection: false
+          };
+          break;
+        case 'wood-wool':
+          targetPanel = {
+            _id: 'wood-wool-panels',
+            titleEn: 'Wood Wool Panels',
+            titleAr: 'ألواح الصوف الخشبي',
+            descriptionEn: 'Natural acoustic panels made from treated wood fibers, providing excellent sound insulation and beautiful natural appearance. Perfect for eco-friendly and sustainable design projects.',
+            descriptionAr: 'ألواح صوتية طبيعية مصنوعة من ألياف الخشب المعالجة، توفر عزل صوتي ممتاز ومظهر طبيعي جميل. مثالية لمشاريع التصميم الصديقة للبيئة والمستدامة.',
+            category: 'Wood Wool',
+            image: '/wood wool.webp',
+            featured: true,
+            rightLeftSection: false
+          };
+          break;
+        case 'alandalus':
+          // For Alandalus, we'll use the first available panel or create a default one
+          targetPanel = acousticPanels.find(panel => panel.category === 'Alandalus') || acousticPanels[0];
+          break;
+      }
+
+      if (targetPanel) {
+        console.log('Setting selected panel:', targetPanel);
+        setSelectedPanel(targetPanel);
+      }
+    }
+  }, [panelType, acousticPanels]);
 
   const fetchAcousticPanels = async () => {
     try {
@@ -88,12 +150,22 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
 
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
+          >
             {t('acousticPanels')}
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 mt-4 font-light">
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl md:text-2xl text-white/90 mt-4 font-light"
+          >
             {t('acousticPanelsDescription')}
-          </p>
+          </motion.p>
         </div>
       </div>
 
@@ -105,7 +177,12 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
         {/* Main Product Categories */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {/* Acoustic Fabric Wraps */}
-          <div className="text-center group">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-center group"
+          >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
                 src="/fabrice.webp"
@@ -141,10 +218,15 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
             >
               MORE
             </button>
-          </div>
+          </motion.div>
 
           {/* Polyester Acoustic Panels */}
-          <div className="text-center group">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-center group"
+          >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
                 src="/polyeseter.webp"
@@ -180,10 +262,15 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
             >
               MORE
             </button>
-          </div>
+          </motion.div>
 
           {/* Wood Wool Panels */}
-          <div className="text-center group">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center group"
+          >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
                 src="/wood wool.webp"
@@ -219,7 +306,7 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
             >
               MORE
             </button>
-          </div>
+          </motion.div>
         </div>
 
         {/* Database Product Categories */}
@@ -230,8 +317,14 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
               <p className="mt-4">Loading acoustic panels...</p>
             </div>
           ) : (
-            featuredPanels.map((panel) => (
-              <div key={panel._id} className="text-center group">
+            featuredPanels.map((panel, index) => (
+              <motion.div 
+                key={panel._id} 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="text-center group"
+              >
                 <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
                   <img
                     src={panel.image}
@@ -254,7 +347,7 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
                 >
                   MORE
                 </button>
-              </div>
+              </motion.div>
             ))
           )}
         </div>
@@ -263,9 +356,15 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
         {rightLeftPanels.length > 0 && (
           <div className="mt-16">
             {rightLeftPanels.map((panel, index) => (
-              <div key={panel._id} className={`flex flex-col lg:flex-row items-center gap-8 mb-16 ${
-                index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-              }`}>
+              <motion.div 
+                key={panel._id} 
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className={`flex flex-col lg:flex-row items-center gap-8 mb-16 ${
+                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+                }`}
+              >
                 <div className="flex-1">
                   <img
                     src={panel.image}
@@ -284,7 +383,7 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
                     {isRTL ? panel.descriptionAr : panel.descriptionEn}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
@@ -298,7 +397,13 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
             </div>
           ) : (
             acousticPanels.filter(panel => !panel.featured && !panel.rightLeftSection).map((panel, index) => (
-              <div key={panel._id} className="text-center group max-w-sm mx-auto">
+              <motion.div 
+                key={panel._id} 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="text-center group max-w-sm mx-auto"
+              >
                 <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
                   <img
                     src={panel.image}
@@ -318,7 +423,7 @@ export function AcousticPanelsPage({ onSelect }: AcousticPanelsPageProps) {
                 >
                   MORE
                 </button>
-              </div>
+              </motion.div>
             ))
           )}
         </div>

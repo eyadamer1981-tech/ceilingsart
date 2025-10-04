@@ -1,0 +1,291 @@
+import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { motion } from './ui/MotionWrapper';
+import { ArrowLeft, CheckCircle, Star, Shield, Zap } from 'lucide-react';
+
+interface StretchCeilingDetailPageProps {
+  ceilingType: string;
+  titleEn: string;
+  titleAr: string;
+  descriptionEn: string;
+  descriptionAr: string;
+  features: string[];
+  benefits: string[];
+  applications: string[];
+  specifications: {
+    material: string;
+    thickness: string;
+    colors: string;
+    warranty: string;
+    installation: string;
+  };
+  images: {
+    main: string;
+    gallery: string[];
+  };
+  onBack: () => void;
+}
+
+export function StretchCeilingDetailPage({
+  ceilingType,
+  titleEn,
+  titleAr,
+  descriptionEn,
+  descriptionAr,
+  features,
+  benefits,
+  applications,
+  specifications,
+  images,
+  onBack
+}: StretchCeilingDetailPageProps) {
+  const { language, isRTL } = useLanguage();
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Header Section */}
+      <div className="relative h-screen flex items-center justify-center">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={images.main}
+            alt={isRTL ? titleAr : titleEn}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <motion.button
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            onClick={onBack}
+            className="mb-8 flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span>{isRTL ? 'العودة' : 'Back'}</span>
+          </motion.button>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-6"
+          >
+            {isRTL ? titleAr : titleEn}
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
+          >
+            {isRTL ? descriptionAr : descriptionEn}
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="bg-gray-800 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {isRTL ? 'المميزات الرئيسية' : 'Key Features'}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-gray-700 rounded-lg p-6 text-center"
+              >
+                <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                <p className="text-white text-lg">{feature}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="bg-gray-900 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {isRTL ? 'الفوائد' : 'Benefits'}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="flex items-start gap-4"
+              >
+                <Star className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
+                <p className="text-gray-300 text-lg leading-relaxed">{benefit}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Applications Section */}
+      <div className="bg-gray-800 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {isRTL ? 'التطبيقات' : 'Applications'}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {applications.map((application, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-gray-700 rounded-lg p-6 text-center hover:bg-gray-600 transition-colors"
+              >
+                <Zap className="w-8 h-8 text-orange-400 mx-auto mb-3" />
+                <p className="text-white font-medium">{application}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Specifications Section */}
+      <div className="bg-gray-900 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {isRTL ? 'المواصفات التقنية' : 'Technical Specifications'}
+            </h2>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="bg-gray-700 rounded-lg p-6"
+              >
+                <Shield className="w-8 h-8 text-blue-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {isRTL ? 'المادة' : 'Material'}
+                </h3>
+                <p className="text-gray-300">{specifications.material}</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="bg-gray-700 rounded-lg p-6"
+              >
+                <Shield className="w-8 h-8 text-green-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {isRTL ? 'السماكة' : 'Thickness'}
+                </h3>
+                <p className="text-gray-300">{specifications.thickness}</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-gray-700 rounded-lg p-6"
+              >
+                <Shield className="w-8 h-8 text-purple-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {isRTL ? 'الألوان' : 'Colors'}
+                </h3>
+                <p className="text-gray-300">{specifications.colors}</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-gray-700 rounded-lg p-6"
+              >
+                <Shield className="w-8 h-8 text-yellow-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {isRTL ? 'الضمان' : 'Warranty'}
+                </h3>
+                <p className="text-gray-300">{specifications.warranty}</p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Gallery Section */}
+      <div className="bg-gray-800 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {isRTL ? 'معرض الصور' : 'Gallery'}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {images.gallery.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="aspect-square overflow-hidden rounded-lg"
+              >
+                <img
+                  src={image}
+                  alt={`${isRTL ? titleAr : titleEn} - Image ${index + 1}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
