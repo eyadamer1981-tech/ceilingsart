@@ -6,13 +6,16 @@ interface Service {
   _id: string;
   title: string;
   description: string;
+  descriptionEn?: string;
+  descriptionAr?: string;
   image: string;
+  detailImages?: string[];
   featured: boolean;
   createdAt: string;
 }
 
 export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isService: boolean) => void }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -91,7 +94,13 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
                         {service.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed text-lg">
-                        {service.description}
+                        {(() => {
+                          // Use language-specific description from backend, fallback to generic description
+                          const description = language === 'ar' 
+                            ? (service.descriptionAr || service.description)
+                            : (service.descriptionEn || service.description);
+                          return description;
+                        })()}
                       </p>
                       <button onClick={() => onSelect?.(service, true)} className="mt-8 bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium tracking-wide self-start">
                         {t('learnMore')}

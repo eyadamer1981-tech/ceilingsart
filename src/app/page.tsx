@@ -60,6 +60,9 @@ export default function Home() {
                 title: service.title,
                 image: service.image,
                 description: service.description,
+                descriptionEn: service.descriptionEn,
+                descriptionAr: service.descriptionAr,
+                detailImages: service.detailImages,
                 category: 'Service',
               });
               setSelectedIsService(isService);

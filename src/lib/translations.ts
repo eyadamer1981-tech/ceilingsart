@@ -144,6 +144,16 @@ export interface Translations {
   maxBlogsMessage: string;
   noBlogPostsAvailable: string;
   checkBackLater: string;
+  
+  // Service Detail Page
+  service: string;
+  project: string;
+  serviceDescription: string;
+  projectDescription: string;
+  relatedServices: string;
+  relatedProjects: string;
+  back: string;
+  noRelatedItems: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -291,6 +301,16 @@ export const translations: Record<Language, Translations> = {
     maxBlogsMessage: 'Maximum of 8 blogs reached. Please delete an old blog to create a new one.',
     noBlogPostsAvailable: 'No blog posts available',
     checkBackLater: 'Check back later for new content!',
+    
+    // Service Detail Page
+    service: 'SERVICE',
+    project: 'PROJECT',
+    serviceDescription: 'SERVICE DESCRIPTION',
+    projectDescription: 'PROJECT DESCRIPTION',
+    relatedServices: 'Related Services',
+    relatedProjects: 'Related Projects',
+    back: 'Back',
+    noRelatedItems: 'No related items found.',
   },
   ar: {
     // Navigation
@@ -436,6 +456,16 @@ export const translations: Record<Language, Translations> = {
     maxBlogsMessage: 'تم الوصول للحد الأقصى من 8 مدونات. يرجى حذف مدونة قديمة لإنشاء واحدة جديدة.',
     noBlogPostsAvailable: 'لا توجد مدونات متاحة',
     checkBackLater: 'تحقق مرة أخرى لاحقاً للحصول على محتوى جديد!',
+    
+    // Service Detail Page
+    service: 'خدمة',
+    project: 'مشروع',
+    serviceDescription: 'وصف الخدمة',
+    projectDescription: 'وصف المشروع',
+    relatedServices: 'خدمات ذات صلة',
+    relatedProjects: 'مشاريع ذات صلة',
+    back: 'رجوع',
+    noRelatedItems: 'لم يتم العثور على عناصر ذات صلة.',
   }
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useLanguage } from "../contexts/LanguageContext";
+import { getTranslation } from "../lib/translations";
 
 export interface DetailItem {
   title: string;
@@ -25,6 +26,8 @@ export function ProjectDetailPage({
   onSelectRelated?: (item: DetailItem) => void;
 }) {
   const [related, setRelated] = useState<DetailItem[]>([]);
+  const { language } = useLanguage();
+  
   useEffect(() => {
     let isMounted = true;
     const load = async () => {
@@ -65,11 +68,11 @@ export function ProjectDetailPage({
                   className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider"
                   style={{ backgroundColor: "#D4B655", color: "#1F1F1F" }}
                 >
-                  {isService ? "SERVICE" : "PROJECT"}
+                  {isService ? getTranslation(language, 'service') : getTranslation(language, 'project')}
                 </span>
               </div>
               <h1 className="text-3xl lg:text-4xl mb-2 tracking-wide">{item.title}</h1>
-              <p className="text-gray-300 text-lg">{item.category ?? (isService ? "Service" : "Project")}</p>
+              <p className="text-gray-300 text-lg">{item.category ?? (isService ? getTranslation(language, 'service') : getTranslation(language, 'project'))}</p>
             </div>
           </div>
 
@@ -105,16 +108,24 @@ export function ProjectDetailPage({
           {/* Right Side - Description */}
           <div className="text-white flex flex-col justify-center">
             <h3 className="text-xl mb-4 tracking-wide" style={{ color: "#D4B655" }}>
-              {isService ? "SERVICE DESCRIPTION" : "PROJECT DESCRIPTION"}
+              {isService ? getTranslation(language, 'serviceDescription') : getTranslation(language, 'projectDescription')}
             </h3>
             <p className="text-gray-300 leading-relaxed text-sm">
               {(() => {
-                const { language } = useLanguage();
+                // Prioritize backend data: descriptionAr/descriptionEn, then fallback to description, then static fallback
                 const byLang = language === 'ar' ? (item.descriptionAr || item.description) : (item.descriptionEn || item.description);
                 if (byLang) return byLang;
-                return isService
-                  ? "Discover our tailored service offering designed to elevate interiors with precision-crafted ceiling artistry and refined details."
-                  : "Ornate mouldings and refined classical details enhance this luxury home. Architectural and structural moldings are designed for sophisticated aesthetic impact throughout.";
+                
+                // Static fallback text in both languages
+                if (isService) {
+                  return language === 'ar' 
+                    ? "اكتشف خدماتنا المخصصة المصممة لرفع مستوى الديكورات الداخلية بفن الأسقف المصنوع بدقة والتفاصيل المكررة."
+                    : "Discover our tailored service offering designed to elevate interiors with precision-crafted ceiling artistry and refined details.";
+                } else {
+                  return language === 'ar'
+                    ? "القوالب المزخرفة والتفاصيل الكلاسيكية المكررة تعزز هذا المنزل الفاخر. القوالب المعمارية والهيكلية مصممة للتأثير الجمالي المتطور في جميع أنحاء المنزل."
+                    : "Ornate mouldings and refined classical details enhance this luxury home. Architectural and structural moldings are designed for sophisticated aesthetic impact throughout.";
+                }
               })()}
             </p>
           </div>
@@ -124,7 +135,7 @@ export function ProjectDetailPage({
       {/* Related Projects Section */}
       <div className="bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-2xl text-gray-900 mb-8">Related {isService ? "Services" : "Projects"}</h2>
+          <h2 className="text-2xl text-gray-900 mb-8">{getTranslation(language, isService ? 'relatedServices' : 'relatedProjects')}</h2>
 
           <div className="flex items-end justify-between">
             <div className="grid grid-cols-3 gap-6 flex-1">
@@ -141,7 +152,7 @@ export function ProjectDetailPage({
                 </div>
               ))}
               {related.length === 0 && (
-                <div className="text-gray-500">No related items found.</div>
+                <div className="text-gray-500">{getTranslation(language, 'noRelatedItems')}</div>
               )}
             </div>
 
@@ -151,7 +162,7 @@ export function ProjectDetailPage({
                 className="px-8 py-3 text-lg"
                 style={{ backgroundColor: "#D4B655", color: "#1F1F1F" }}
               >
-                Back
+                {getTranslation(language, 'back')}
               </Button>
             </div>
           </div>
