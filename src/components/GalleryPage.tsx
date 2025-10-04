@@ -2,10 +2,12 @@ import React from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { GallerySkeleton } from './ui/GallerySkeleton';
 import { ProductCardSlider, ProductCard } from './ProductCardSlider';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export interface GalleryItem { src: string; title: string; category: string; }
 
 export function GalleryPage({ onSelect, onStartProject }: { onSelect?: (item: GalleryItem) => void; onStartProject?: () => void }) {
+  const { t, isRTL } = useLanguage();
   const [galleryImages, setGalleryImages] = React.useState<GalleryItem[]>([]);
   const [customSliders, setCustomSliders] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -83,10 +85,10 @@ export function GalleryPage({ onSelect, onStartProject }: { onSelect?: (item: Ga
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4">
-            GALLERY
+            {t('galleryPageTitle')}
           </h1>
           <p className="text-xl text-white tracking-wide">
-            Explore our portfolio of exceptional ceiling designs
+            {t('galleryPageSubtitle')}
           </p>
         </div>
       </div>
@@ -132,13 +134,13 @@ export function GalleryPage({ onSelect, onStartProject }: { onSelect?: (item: Ga
           {/* Call to Action */}
           <div className="text-center mt-16">
             <h2 className="text-3xl font-light text-gray-900 mb-6 tracking-wide">
-              Ready to Transform Your Space?
+              {t('readyToTransform')}
             </h2>
             <p className="text-black text-lg mb-8 max-w-2xl mx-auto">
-              Let us create a custom ceiling design that reflects your unique style and vision.
+              {t('transformDescription')}
             </p>
             <button onClick={() => onStartProject?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg font-medium tracking-wide">
-              Start Your Project
+              {t('startYourProject')}
             </button>
           </div>
         </div>

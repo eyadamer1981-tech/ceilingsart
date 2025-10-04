@@ -32,6 +32,10 @@ export interface Translations {
   servicesDescription: string;
   viewAllServices: string;
   
+  // Services Page Specific
+  servicesPageTitle: string;
+  loadingServices: string;
+  
   // Projects Section
   projectsTitle: string;
   projectsSubtitle: string;
@@ -49,6 +53,14 @@ export interface Translations {
   blogDescription: string;
   readMore: string;
   viewAllBlogs: string;
+  
+  // Blog Page Specific
+  blogPageTitle: string;
+  blogPageSubtitle: string;
+  stayUpdated: string;
+  newsletterDescription: string;
+  yourEmailAddress: string;
+  subscribe: string;
   
   // Contact Section
   contactTitle: string;
@@ -69,6 +81,35 @@ export interface Translations {
   contactUs: string;
   followUs: string;
   allRightsReserved: string;
+  companyName: string;
+  designedBy: string;
+  
+  // Footer Services
+  luxuryCeilingDesign: string;
+  decorativePatterns: string;
+  modernArchitecture: string;
+  traditionalCoffered: string;
+  vaultedCeilings: string;
+  
+  // Gallery Page
+  galleryPageTitle: string;
+  galleryPageSubtitle: string;
+  readyToTransform: string;
+  transformDescription: string;
+  startYourProject: string;
+  
+  // Category Names
+  stretchCeiling: string;
+  acoustic: string;
+  acousticPanels: string;
+  woodWool: string;
+  fiberOptic: string;
+  fiberOpticCeiling: string;
+  mirrorStretchCeiling: string;
+  glossyStretchCeiling: string;
+  printedStretchCeiling: string;
+  translucentStretchCeiling: string;
+  general: string;
   
   // Admin Panel
   adminLogin: string;
@@ -101,6 +142,8 @@ export interface Translations {
   deleteConfirmation: string;
   maxBlogsReached: string;
   maxBlogsMessage: string;
+  noBlogPostsAvailable: string;
+  checkBackLater: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -136,6 +179,10 @@ export const translations: Record<Language, Translations> = {
     servicesDescription: 'From design to installation, we offer a complete range of ceiling services tailored to your needs.',
     viewAllServices: 'View All Services',
     
+    // Services Page Specific
+    servicesPageTitle: 'OUR SERVICES',
+    loadingServices: 'Loading services...',
+    
     // Projects Section
     projectsTitle: 'Our Projects',
     projectsSubtitle: 'Showcasing Excellence',
@@ -153,6 +200,14 @@ export const translations: Record<Language, Translations> = {
     blogDescription: 'Read our latest articles about ceiling trends, tips, and industry insights.',
     readMore: 'Read More',
     viewAllBlogs: 'View All Blogs',
+    
+    // Blog Page Specific
+    blogPageTitle: 'BLOG',
+    blogPageSubtitle: 'Insights, tips, and inspiration for ceiling design',
+    stayUpdated: 'Stay Updated',
+    newsletterDescription: 'Subscribe to our newsletter for the latest ceiling design trends, tips, and project showcases.',
+    yourEmailAddress: 'Your email address',
+    subscribe: 'Subscribe',
     
     // Contact Section
     contactTitle: 'Contact Us',
@@ -173,6 +228,35 @@ export const translations: Record<Language, Translations> = {
     contactUs: 'Contact Us',
     followUs: 'Follow Us',
     allRightsReserved: 'All rights reserved.',
+    companyName: 'CeilingsArt',
+    designedBy: 'Designed by',
+    
+    // Footer Services
+    luxuryCeilingDesign: 'Luxury Ceiling Design',
+    decorativePatterns: 'Decorative Patterns',
+    modernArchitecture: 'Modern Architecture',
+    traditionalCoffered: 'Traditional Coffered',
+    vaultedCeilings: 'Vaulted Ceilings',
+    
+    // Gallery Page
+    galleryPageTitle: 'GALLERY',
+    galleryPageSubtitle: 'Explore our portfolio of exceptional ceiling designs',
+    readyToTransform: 'Ready to Transform Your Space?',
+    transformDescription: 'Let us create a custom ceiling design that reflects your unique style and vision.',
+    startYourProject: 'Start Your Project',
+    
+    // Category Names
+    stretchCeiling: 'Stretch Ceiling',
+    acoustic: 'Acoustic',
+    acousticPanels: 'Acoustic Panels',
+    woodWool: 'Wood Wool',
+    fiberOptic: 'Fiber Optic',
+    fiberOpticCeiling: 'Fiber Optic Ceiling',
+    mirrorStretchCeiling: 'Mirror Stretch Ceiling',
+    glossyStretchCeiling: 'Glossy Stretch Ceiling',
+    printedStretchCeiling: 'Printed Stretch Ceiling',
+    translucentStretchCeiling: 'Translucent Stretch Ceiling',
+    general: 'General',
     
     // Admin Panel
     adminLogin: 'Admin Login',
@@ -205,6 +289,8 @@ export const translations: Record<Language, Translations> = {
     deleteConfirmation: 'Are you sure you want to delete this item?',
     maxBlogsReached: 'Maximum Blogs Reached',
     maxBlogsMessage: 'Maximum of 8 blogs reached. Please delete an old blog to create a new one.',
+    noBlogPostsAvailable: 'No blog posts available',
+    checkBackLater: 'Check back later for new content!',
   },
   ar: {
     // Navigation
@@ -238,6 +324,10 @@ export const translations: Record<Language, Translations> = {
     servicesDescription: 'من التصميم إلى التركيب، نقدم مجموعة كاملة من خدمات الأسقف المصممة خصيصاً لاحتياجاتك.',
     viewAllServices: 'عرض جميع الخدمات',
     
+    // Services Page Specific
+    servicesPageTitle: 'خدماتنا',
+    loadingServices: 'جاري تحميل الخدمات...',
+    
     // Projects Section
     projectsTitle: 'مشاريعنا',
     projectsSubtitle: 'عرض التميز',
@@ -255,6 +345,14 @@ export const translations: Record<Language, Translations> = {
     blogDescription: 'اقرأ أحدث مقالاتنا حول اتجاهات الأسقف والنصائح ورؤى الصناعة.',
     readMore: 'اقرأ المزيد',
     viewAllBlogs: 'عرض جميع المدونات',
+    
+    // Blog Page Specific
+    blogPageTitle: 'المدونة',
+    blogPageSubtitle: 'رؤى ونصائح وإلهام لتصميم الأسقف',
+    stayUpdated: 'ابق على اطلاع',
+    newsletterDescription: 'اشترك في نشرتنا الإخبارية للحصول على أحدث اتجاهات تصميم الأسقف والنصائح وعروض المشاريع.',
+    yourEmailAddress: 'عنوان بريدك الإلكتروني',
+    subscribe: 'اشترك',
     
     // Contact Section
     contactTitle: 'اتصل بنا',
@@ -275,6 +373,35 @@ export const translations: Record<Language, Translations> = {
     contactUs: 'اتصل بنا',
     followUs: 'تابعنا',
     allRightsReserved: 'جميع الحقوق محفوظة.',
+    companyName: 'سيلينجز آرت',
+    designedBy: 'صمم بواسطة',
+    
+    // Footer Services
+    luxuryCeilingDesign: 'تصميم أسقف فاخرة',
+    decorativePatterns: 'أنماط زخرفية',
+    modernArchitecture: 'عمارة حديثة',
+    traditionalCoffered: 'أسقف تقليدية مجوفة',
+    vaultedCeilings: 'أسقف مقببة',
+    
+    // Gallery Page
+    galleryPageTitle: 'المعرض',
+    galleryPageSubtitle: 'استكشف محفظة تصاميم الأسقف الاستثنائية',
+    readyToTransform: 'مستعد لتحويل مساحتك؟',
+    transformDescription: 'دعنا ننشئ تصميم سقف مخصص يعكس أسلوبك ورؤيتك الفريدة.',
+    startYourProject: 'ابدأ مشروعك',
+    
+    // Category Names
+    stretchCeiling: 'أسقف مشدودة',
+    acoustic: 'عازل للصوت',
+    acousticPanels: 'ألواح عازلة للصوت',
+    woodWool: 'صوف خشبي',
+    fiberOptic: 'ألياف بصرية',
+    fiberOpticCeiling: 'سقف ألياف بصرية',
+    mirrorStretchCeiling: 'سقف مشدود مرآة',
+    glossyStretchCeiling: 'سقف مشدود لامع',
+    printedStretchCeiling: 'سقف مشدود مطبوع',
+    translucentStretchCeiling: 'سقف مشدود شفاف',
+    general: 'عام',
     
     // Admin Panel
     adminLogin: 'تسجيل دخول الإدارة',
@@ -307,10 +434,37 @@ export const translations: Record<Language, Translations> = {
     deleteConfirmation: 'هل أنت متأكد من أنك تريد حذف هذا العنصر؟',
     maxBlogsReached: 'الحد الأقصى للمدونات',
     maxBlogsMessage: 'تم الوصول للحد الأقصى من 8 مدونات. يرجى حذف مدونة قديمة لإنشاء واحدة جديدة.',
+    noBlogPostsAvailable: 'لا توجد مدونات متاحة',
+    checkBackLater: 'تحقق مرة أخرى لاحقاً للحصول على محتوى جديد!',
   }
 };
 
 export const getTranslation = (language: Language, key: keyof Translations): string => {
   return translations[language][key] || translations.en[key] || key;
+};
+
+// Function to translate category names
+export const translateCategory = (category: string, language: Language): string => {
+  const categoryMap: { [key: string]: keyof Translations } = {
+    'Stretch Ceiling': 'stretchCeiling',
+    'Acoustic': 'acoustic',
+    'Acoustic Panels': 'acousticPanels',
+    'Wood Wool': 'woodWool',
+    'Fiber Optic': 'fiberOptic',
+    'Fiber Optic Ceiling': 'fiberOpticCeiling',
+    'Mirror Stretch Ceiling': 'mirrorStretchCeiling',
+    'Glossy Stretch Ceiling': 'glossyStretchCeiling',
+    'Printed Stretch Ceiling': 'printedStretchCeiling',
+    'Translucent Stretch Ceiling': 'translucentStretchCeiling',
+    'General': 'general',
+  };
+  
+  const translationKey = categoryMap[category];
+  if (translationKey) {
+    return getTranslation(language, translationKey);
+  }
+  
+  // If no translation found, return the original category
+  return category;
 };
 

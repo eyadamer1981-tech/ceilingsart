@@ -48,7 +48,7 @@ export default function Home() {
       case 'ABOUT US':
         return (
           <>
-            <AboutPage />
+            <AboutPage onContactClick={() => handlePageChange('CONTACT US')} />
             <Footer />
           </>
         );

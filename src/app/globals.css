@@ -25,6 +25,12 @@ body {
   direction: rtl;
 }
 
+/* Force LTR for sliders to prevent flipping */
+.slider-container,
+.slider-container * {
+  direction: ltr !important;
+}
+
 [dir="rtl"] .space-x-4 > * + * {
   margin-left: 0;
   margin-right: 1rem;

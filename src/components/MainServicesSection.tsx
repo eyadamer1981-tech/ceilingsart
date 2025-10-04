@@ -11,7 +11,7 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void 
       description: isRTL 
         ? 'تصاميم أسقف معلقة مبتكرة وأنيقة تناسب المساحات السكنية والتجارية. نقدم حلول متعددة تشمل الأسقف اللامعة والمطبوعة والشفافة.'
         : 'Innovative and elegant stretch ceiling designs suitable for residential and commercial spaces. We offer multiple solutions including glossy, printed, and translucent ceilings.',
-      image: '/image.png',
+      image: '/stretchceilinginhomepage.png',
       features: isRTL ? [
         'أسقف لامعة',
         'أسقف مطبوعة',
@@ -33,7 +33,7 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void 
       description: isRTL
         ? 'حلول صوتية متقدمة لتحسين جودة الصوت والتحكم في الضوضاء. ألواح عازلة للصوت مصممة للمساحات السكنية والتجارية.'
         : 'Advanced acoustic solutions to improve sound quality and noise control. Soundproof panels designed for residential and commercial spaces.',
-      image: '/image.png',
+      image: '/acusticpanelinhomepage.png',
       features: isRTL ? [
         'ألواح من الألياف',
         'ألواح من البوليستر',

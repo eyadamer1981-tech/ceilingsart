@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
+import { translateCategory } from '../lib/translations';
 
 export interface ProductCard {
   src: string;
@@ -15,12 +16,28 @@ interface ProductCardSliderProps {
 }
 
 export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderProps) {
-  const { isRTL } = useLanguage();
+  const { isRTL, language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardWidth = 300; // Fixed card width
   const gap = 24; // Gap between cards
   const visibleCards = 4; // Number of cards visible at once
+
+  // Handle scroll events to update current index
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      const cardWidthWithGap = cardWidth + gap;
+      const newIndex = Math.round(scrollLeft / cardWidthWithGap);
+      setCurrentIndex(Math.max(0, Math.min(newIndex, items.length - visibleCards)));
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [items.length, visibleCards, cardWidth, gap]);
 
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
@@ -52,42 +69,42 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
   }
 
   return (
-    <div className="mb-16">
+    <div className="mb-16 slider-container" dir="ltr">
       {/* Category Title */}
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-light text-gray-900 tracking-wide">
-          {title}
+          {translateCategory(title, language)}
         </h2>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={prevSlide}
-            disabled={!canGoPrev}
-            className={`p-2 rounded-full transition-all duration-300 ${
-              canGoPrev
-                ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                : 'bg-gray-50 text-gray-300 cursor-not-allowed'
-            }`}
-            aria-label="Previous items"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
-            </svg>
-          </button>
-          <button
-            onClick={nextSlide}
-            disabled={!canGoNext}
-            className={`p-2 rounded-full transition-all duration-300 ${
-              canGoNext
-                ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                : 'bg-gray-50 text-gray-300 cursor-not-allowed'
-            }`}
-            aria-label="Next items"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
-            </svg>
-          </button>
-        </div>
+         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+           <button
+             onClick={isRTL ? nextSlide : prevSlide}
+             disabled={isRTL ? !canGoNext : !canGoPrev}
+             className={`p-2 rounded-full transition-all duration-300 ${
+               (isRTL ? canGoNext : canGoPrev)
+                 ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                 : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+             }`}
+             aria-label={isRTL ? "Next items" : "Previous items"}
+           >
+             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+             </svg>
+           </button>
+           <button
+             onClick={isRTL ? prevSlide : nextSlide}
+             disabled={isRTL ? !canGoPrev : !canGoNext}
+             className={`p-2 rounded-full transition-all duration-300 ${
+               (isRTL ? canGoPrev : canGoNext)
+                 ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                 : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+             }`}
+             aria-label={isRTL ? "Previous items" : "Next items"}
+           >
+             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+             </svg>
+           </button>
+         </div>
       </div>
 
       {/* Slider Container */}
@@ -95,6 +112,7 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
         <div
           ref={scrollContainerRef}
           className="flex gap-6 overflow-x-hidden scrollbar-hide"
+          dir="ltr"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none'
@@ -124,7 +142,7 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
                     {item.title}
                   </h3>
                   <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium group-hover:from-orange-500 group-hover:to-yellow-600 transition-all duration-500">
-                    {item.category}
+                    {translateCategory(item.category, language)}
                   </span>
                 </div>
               </div>

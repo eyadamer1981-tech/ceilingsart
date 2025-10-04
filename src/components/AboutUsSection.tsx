@@ -11,7 +11,7 @@ export function AboutUsSection() {
           <div className={`${isRTL ? 'lg:order-2' : 'lg:order-1'}`}>
             <div className="relative">
               <img
-                src="/image.png"
+                src="/aboutus in homepage.png"
                 alt="About Us"
                 className="w-full h-[500px] object-cover rounded-2xl shadow-lg"
               />

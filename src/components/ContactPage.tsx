@@ -29,6 +29,28 @@ export function ContactPage() {
   const messageLabel = language === 'ar' ? 'الرسالة' : 'Message';
   const messagePlaceholder = language === 'ar' ? 'أخبرنا عن مشروعك...' : 'Tell us about your project...';
   const sendMessage = t('sendMessage');
+
+  // Extended contact content
+  const extendedContent = language === 'ar'
+    ? {
+        title: 'تواصل معنا في سيلينجز آرت بسهولة وسرعة',
+        paragraphs: [
+          'تواصل معنا هو الخيار الأمثل لكل من يبحث عن خدمات احترافية في مجال الأسقف الفرنسية والعزل الصوتي داخل المملكة العربية السعودية. في سيلينجز آرت، نضمن لك تجربة تواصل سهلة، سريعة، ومباشرة سواء عن طريق الاتصال الهاتفي أو البريد الإلكتروني أو عبر نموذج التواصل الموجود في هذه الصفحة. نحن نؤمن بأن بداية التواصل هي أول خطوة نحو تقديم خدمة مميزة، ولذلك نحرص على أن نكون دائمًا متاحين للرد على استفساراتك.',
+          'نحن نعمل طوال الأسبوع ما عدا الجمعة، من الساعة 7 صباحًا وحتى 8 مساءً. يمكنك التواصل معنا عن طريق الرقم 0575474699، أو عبر البريد الإلكتروني info@ceilingsart.com، أو ببساطة تعبئة النموذج الموجود. كما يمكنك زيارة مقرنا في الرياض.',
+          'لماذا تختار التواصل معنا؟ اختيارك لـ التواصل معنا يعني أنك تتعامل مع فريق متخصص يمتلك خبرة طويلة في تنفيذ مشاريع الأسقف الفرنسية، بما في ذلك الأسقف المضيئة، اللامعة، ثلاثية الأبعاد، والأسقف المثقبة العازلة للصوت. فريقنا يقدم استشارات مجانية وتقييمات فنية دقيقة لضمان حصولك على أفضل حلول التصميم والتنفيذ. كما أننا نولي اهتمامًا كبيرًا برضا العملاء وسرعة الاستجابة لكل طلب.',
+          'إذا كنت ترغب في معرفة المزيد عن خدماتنا، يمكنك زيارة صفحة من نحن أو تصفح خدمات الأسقف الفرنسية. لا تتردد في التواصل معنا الآن للحصول على عرض سعر أو استشارة أولية مجانية.'
+        ]
+      }
+    : {
+        title: 'Contact Us at Ceilings Art Easily and Quickly',
+        paragraphs: [
+          'Contacting us is the optimal choice for anyone looking for professional services in French ceilings and acoustic insulation within the Kingdom of Saudi Arabia. At Ceilings Art, we guarantee you an easy, fast, and direct communication experience whether by phone call, email, or through the contact form on this page. We believe that the beginning of communication is the first step towards providing exceptional service, and therefore we ensure that we are always available to respond to your inquiries.',
+          'We work throughout the week except Friday, from 7 AM to 8 PM. You can contact us via phone number 0575474699, or via email info@ceilingsart.com, or simply fill out the form provided. You can also visit our headquarters in Riyadh.',
+          'Why choose to contact us? Choosing to contact us means you are dealing with a specialized team with extensive experience in implementing French ceiling projects, including illuminated, glossy, 3D, and perforated sound-insulating ceilings. Our team provides free consultations and accurate technical assessments to ensure you get the best design and implementation solutions. We also pay great attention to customer satisfaction and quick response to every request.',
+          'If you would like to know more about our services, you can visit our About Us page or browse our French ceiling services. Do not hesitate to contact us now to get a quote or a free initial consultation.'
+        ]
+      };
+
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
       {/* Header Section */}
@@ -107,7 +129,7 @@ export function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">{emailLabel}</h3>
-                    <p className="text-gray-600" dir="ltr">info@ceilingsatr.com</p>
+                    <p className="text-gray-600" dir="ltr">info@ceilingsart.com</p>
                   </div>
                 </div>
 
@@ -220,6 +242,27 @@ export function ContactPage() {
                   {sendMessage}
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Extended Content Section */}
+      <div className="bg-gray-50 py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
+              <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-8 tracking-wide">
+                {extendedContent.title}
+              </h2>
+              
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                {extendedContent.paragraphs.map((paragraph, index) => (
+                  <p key={index} className={isRTL ? 'text-right' : 'text-left'}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

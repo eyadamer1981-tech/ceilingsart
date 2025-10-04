@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Service {
   _id: string;
@@ -11,6 +12,7 @@ interface Service {
 }
 
 export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isService: boolean) => void }) {
+  const { t } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +59,7 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
-            OUR SERVICES
+            {t('servicesPageTitle')}
           </h1>
         </div>
       </div>
@@ -67,7 +69,7 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
         <div className="container mx-auto px-4">
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="text-xl text-gray-600">Loading services...</div>
+              <div className="text-xl text-gray-600">{t('loadingServices')}</div>
             </div>
           ) : (
             <div className="space-y-16">
@@ -92,7 +94,7 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
                         {service.description}
                       </p>
                       <button onClick={() => onSelect?.(service, true)} className="mt-8 bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium tracking-wide self-start">
-                        Learn More
+                        {t('learnMore')}
                       </button>
                     </div>
                   </div>
