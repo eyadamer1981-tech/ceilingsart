@@ -33,7 +33,7 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
           _id: '1',
           title: "Luxury Ceiling Design",
           description: "Transform your space with our bespoke luxury ceiling designs. From coffered ceilings to modern geometric patterns, we create stunning architectural features that elevate any interior.",
-          image: "https://images.unsplash.com/photo-1662261896102-1971998b76c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjZWlsaW5nJTIwaW50ZXJpb3IlMjBkZXNpZ258ZW58MXx8fHwxNzU4NTg1OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          image: "/ourservices.webp",
           featured: false,
           createdAt: new Date().toISOString()
         }
@@ -50,7 +50,7 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
         {/* Cover Image Background */}
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1662261896102-1971998b76c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjZWlsaW5nJTIwaW50ZXJpb3IlMjBkZXNpZ258ZW58MXx8fHwxNzU4NTg1OTU1fDA&ixlib=rb-4.1.0&q=80&w=1080"
+            src="/ourservices.webp"
             alt="Services cover"
             className="w-full h-full object-cover"
           />
