@@ -216,7 +216,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               })}
               className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2 rounded font-semibold transition-colors"
             >
-              MORE
+              {t('viewDetails')}
             </button>
           </motion.div>
 
@@ -260,7 +260,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               })}
               className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2 rounded font-semibold transition-colors"
             >
-              MORE
+              {t('viewDetails')}
             </button>
           </motion.div>
 
@@ -304,7 +304,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               })}
               className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2 rounded font-semibold transition-colors"
             >
-              MORE
+              {t('viewDetails')}
             </button>
           </motion.div>
         </div>
@@ -345,7 +345,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                   onClick={() => handlePanelSelect(panel)}
                   className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2 rounded font-semibold transition-colors"
                 >
-                  MORE
+                  {t('viewDetails')}
                 </button>
               </motion.div>
             ))
@@ -421,7 +421,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                   onClick={() => handlePanelSelect(panel)}
                   className="px-4 py-2 bg-stone-700 text-white rounded-md hover:bg-stone-800 transition-colors duration-300 text-sm"
                 >
-                  MORE
+                  {t('viewDetails')}
                 </button>
               </motion.div>
             ))

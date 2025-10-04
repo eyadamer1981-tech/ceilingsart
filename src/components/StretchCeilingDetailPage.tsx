@@ -39,7 +39,7 @@ export function StretchCeilingDetailPage({
   images,
   onBack
 }: StretchCeilingDetailPageProps) {
-  const { language, isRTL } = useLanguage();
+  const { language, isRTL, t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -65,7 +65,7 @@ export function StretchCeilingDetailPage({
             className="mb-8 flex items-center gap-2 text-white/80 hover:text-white transition-colors"
           >
             <ArrowLeft size={20} />
-            <span>{isRTL ? 'العودة' : 'Back'}</span>
+            <span>{t('back')}</span>
           </motion.button>
 
           <motion.h1 
@@ -98,7 +98,7 @@ export function StretchCeilingDetailPage({
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
-              {isRTL ? 'المميزات الرئيسية' : 'Key Features'}
+              {t('keyFeatures')}
             </h2>
           </motion.div>
 
@@ -129,7 +129,7 @@ export function StretchCeilingDetailPage({
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
-              {isRTL ? 'الفوائد' : 'Benefits'}
+              {t('benefits')}
             </h2>
           </motion.div>
 
@@ -160,7 +160,7 @@ export function StretchCeilingDetailPage({
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
-              {isRTL ? 'التطبيقات' : 'Applications'}
+              {t('applications')}
             </h2>
           </motion.div>
 
@@ -191,7 +191,7 @@ export function StretchCeilingDetailPage({
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
-              {isRTL ? 'المواصفات التقنية' : 'Technical Specifications'}
+              {t('technicalSpecifications')}
             </h2>
           </motion.div>
 
@@ -205,7 +205,7 @@ export function StretchCeilingDetailPage({
               >
                 <Shield className="w-8 h-8 text-blue-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  {isRTL ? 'المادة' : 'Material'}
+                  {t('material')}
                 </h3>
                 <p className="text-gray-300">{specifications.material}</p>
               </motion.div>
@@ -218,7 +218,7 @@ export function StretchCeilingDetailPage({
               >
                 <Shield className="w-8 h-8 text-green-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  {isRTL ? 'السماكة' : 'Thickness'}
+                  {t('thickness')}
                 </h3>
                 <p className="text-gray-300">{specifications.thickness}</p>
               </motion.div>
@@ -231,7 +231,7 @@ export function StretchCeilingDetailPage({
               >
                 <Shield className="w-8 h-8 text-purple-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  {isRTL ? 'الألوان' : 'Colors'}
+                  {t('colors')}
                 </h3>
                 <p className="text-gray-300">{specifications.colors}</p>
               </motion.div>
@@ -244,7 +244,7 @@ export function StretchCeilingDetailPage({
               >
                 <Shield className="w-8 h-8 text-yellow-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  {isRTL ? 'الضمان' : 'Warranty'}
+                  {t('warranty')}
                 </h3>
                 <p className="text-gray-300">{specifications.warranty}</p>
               </motion.div>
@@ -263,7 +263,7 @@ export function StretchCeilingDetailPage({
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
-              {isRTL ? 'معرض الصور' : 'Gallery'}
+              {t('gallery')}
             </h2>
           </motion.div>
 

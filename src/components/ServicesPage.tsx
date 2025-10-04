@@ -158,7 +158,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               {pageTitle || t('servicesPageTitle')}
             </h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-8">
-              {pageSubtitle || 'Elegant, Modern, and Hassle-Free Ceilings perfect for homes, offices, and commercial spaces across Saudi Arabia'}
+              {pageSubtitle || t('stretchCeilingPageDescription')}
             </p>
             
             {/* Benefits */}
@@ -172,7 +172,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
-                <span className="text-lg">10-Year Warranty on all installations</span>
+                <span className="text-lg">{t('warranty10Years')}</span>
               </motion.div>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -183,7 +183,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
-                <span className="text-lg">European Materials at competitive prices</span>
+                <span className="text-lg">{t('europeanMaterials')}</span>
               </motion.div>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -194,7 +194,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm">✓</span>
                 </div>
-                <span className="text-lg">Certified Installation Team with expertise</span>
+                <span className="text-lg">{t('certifiedInstallationTeam')}</span>
               </motion.div>
             </div>
           </motion.div>
@@ -255,14 +255,14 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                           onClick={() => handleCeilingTypeSelect(ceilingType)} 
                           className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
                         >
-                          {isRTL ? 'عرض التفاصيل' : 'VIEW DETAILS'}
+                          {t('viewDetails')}
                         </button>
                       ) : (
                         <button 
                           onClick={() => onSelect?.(service, true)} 
                           className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
                         >
-                          MORE
+                          {t('more')}
                         </button>
                       )}
                     </div>

@@ -219,6 +219,23 @@ export interface Translations {
   fireMoistureProtectionDescription: string;
   ceilingSupportInfrastructureSystems: string;
   ceilingSupportInfrastructureSystemsDescription: string;
+  
+  // Stretch Ceiling Page Specific Translations
+  stretchCeilingPageTitle: string;
+  stretchCeilingPageSubtitle: string;
+  stretchCeilingPageDescription: string;
+  warranty10Years: string;
+  certifiedInstallationTeam: string;
+  viewDetails: string;
+  more: string;
+  keyFeatures: string;
+  benefits: string;
+  applications: string;
+  technicalSpecifications: string;
+  material: string;
+  thickness: string;
+  colors: string;
+  warranty: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -441,6 +458,23 @@ export const translations: Record<Language, Translations> = {
     fireMoistureProtectionDescription: 'The stretch ceiling is fire-resistant and emits no toxic substances in case of fire. It complies with international safety standards [M1 classification], offers excellent sound insulation, and resists moisture effectively.',
     ceilingSupportInfrastructureSystems: 'Ceiling Support for Infrastructure Systems',
     ceilingSupportInfrastructureSystemsDescription: 'The stretch ceiling allows you to implement your design with lighting. Furthermore, it also supports air conditioning vents and accommodates all plumbing installations.',
+    
+    // Stretch Ceiling Page Specific Translations
+    stretchCeilingPageTitle: 'Stretch Ceilings',
+    stretchCeilingPageSubtitle: 'French Ceiling Solutions',
+    stretchCeilingPageDescription: 'Elegant, Modern, and Hassle-Free Ceilings perfect for homes, offices, and commercial spaces across Saudi Arabia',
+    warranty10Years: '10-Year Warranty on all installations',
+    certifiedInstallationTeam: 'Certified Installation Team with expertise',
+    viewDetails: 'VIEW DETAILS',
+    more: 'MORE',
+    keyFeatures: 'Key Features',
+    benefits: 'Benefits',
+    applications: 'Applications',
+    technicalSpecifications: 'Technical Specifications',
+    material: 'Material',
+    thickness: 'Thickness',
+    colors: 'Colors',
+    warranty: 'Warranty',
   },
   ar: {
     // Navigation
@@ -661,6 +695,23 @@ export const translations: Record<Language, Translations> = {
     fireMoistureProtectionDescription: 'السقف المعلق مقاوم للحريق ولا ينبعث منه مواد سامة في حالة الحريق. يتوافق مع معايير السلامة الدولية [تصنيف M1]، ويوفر عزل صوتي ممتاز، ومقاوم للرطوبة بفعالية.',
     ceilingSupportInfrastructureSystems: 'دعم السقف لأنظمة البنية التحتية',
     ceilingSupportInfrastructureSystemsDescription: 'السقف المعلق يسمح لك بتنفيذ تصميمك مع الإضاءة. علاوة على ذلك، يدعم أيضاً فتحات التكييف ويستوعب جميع تركيبات السباكة.',
+    
+    // Stretch Ceiling Page Specific Translations
+    stretchCeilingPageTitle: 'الأسقف المشدودة',
+    stretchCeilingPageSubtitle: 'حلول الأسقف الفرنسية',
+    stretchCeilingPageDescription: 'أسقف أنيقة وعصرية وخالية من المتاعب مثالية للمنازل والمكاتب والمساحات التجارية في جميع أنحاء المملكة العربية السعودية',
+    warranty10Years: 'ضمان 10 سنوات على جميع التركيبات',
+    certifiedInstallationTeam: 'فريق تركيب معتمد بخبرة',
+    viewDetails: 'عرض التفاصيل',
+    more: 'المزيد',
+    keyFeatures: 'المميزات الرئيسية',
+    benefits: 'الفوائد',
+    applications: 'التطبيقات',
+    technicalSpecifications: 'المواصفات التقنية',
+    material: 'المادة',
+    thickness: 'السماكة',
+    colors: 'الألوان',
+    warranty: 'الضمان',
   }
 };
 

@@ -8,6 +8,7 @@ import { AboutUsSection } from '../components/AboutUsSection';
 import { MainServicesSection } from '../components/MainServicesSection';
 import { ImageCarousel } from '../components/ImageCarousel';
 import { Footer } from '../components/Footer';
+import { useLanguage } from '../contexts/LanguageContext';
 import { AboutPage } from '../components/AboutPage';
 import { ServicesPage } from '../components/ServicesPage';
 import { AcousticPanelsPage } from '../components/AcousticPanelsPage';
@@ -25,6 +26,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
   const [selectedIsService, setSelectedIsService] = useState(false);
+  const { t } = useLanguage();
 
   const handleMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -118,8 +120,8 @@ export default function Home() {
           <>
             <ServicesPage
               category="stretch"
-              pageTitle="Stretch Ceilings"
-              pageSubtitle="French Ceiling Solutions"
+              pageTitle={t('stretchCeilingPageTitle')}
+              pageSubtitle={t('stretchCeilingPageSubtitle')}
               onSelect={(service, isService) => {
                 setSelectedItem({
                   title: service.title || service.titleEn || 'Untitled',
@@ -245,8 +247,8 @@ export default function Home() {
           <>
             <ServicesPage
               category="stretch"
-              pageTitle="Stretch Ceilings"
-              pageSubtitle="French Ceiling Solutions"
+              pageTitle={t('stretchCeilingPageTitle')}
+              pageSubtitle={t('stretchCeilingPageSubtitle')}
               onSelect={(service, isService) => {
                 setSelectedItem({
                   title: service.title || service.titleEn || 'Untitled',
