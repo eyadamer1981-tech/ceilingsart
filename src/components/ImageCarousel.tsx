@@ -20,7 +20,7 @@ interface ImageCarouselProps {
 }
 
 export function ImageCarousel({ onSelect }: ImageCarouselProps) {
-  const { isRTL } = useLanguage();
+  const { language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
     services: [],
@@ -37,6 +37,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
     try {
       const response = await fetch('/api/featured');
       const data = await response.json();
+      console.log('Featured content fetched:', data);
       setFeaturedContent(data);
     } catch (error) {
       console.error('Error fetching featured content:', error);
@@ -91,6 +92,11 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
 
   const displayImages = categoryImages.length > 0 ? categoryImages : fallbackImages;
 
+  // Debug logging
+  console.log('Display images:', displayImages);
+  console.log('Current index:', currentIndex);
+  console.log('Current image:', displayImages[currentIndex]);
+
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % displayImages.length);
   };
@@ -140,13 +146,18 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {displayImages.map((image, index) => (
-                <div key={index} className="w-full flex-shrink-0 relative group">
+                <div key={`${index}-${language}`} className="w-full flex-shrink-0 relative group">
                   <div className="relative overflow-hidden rounded-2xl">
                     <img
+                      key={`img-${index}-${language}`}
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-[300px] md:h-[500px] lg:h-[600px] object-cover cursor-pointer transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
                       onClick={() => onSelect?.(image)}
+                      onError={(e) => {
+                        console.error('Image failed to load:', image.src, e);
+                        e.currentTarget.src = '/image.png';
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-100 group-hover:opacity-80 transition-opacity duration-500"></div>
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
@@ -167,7 +178,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
             aria-label="Previous image"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
@@ -177,7 +188,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
             aria-label="Next image"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
