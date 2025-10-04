@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
 import fs from 'fs';
 import connectDB from '../../../lib/mongodb';
-import { Service } from '../../../lib/models';
+import { AcousticPanel, StretchCeiling, Project } from '../../../lib/models';
 
 // Simple JWT guard (reuse logic inline to avoid importing middleware)
 function verifyToken(req: NextApiRequest, res: NextApiResponse): boolean {
@@ -127,15 +127,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let actuallyCreated = 0;
     if (!dryRun) {
       for (const item of created) {
-        const existing = await Service.findOne({ title: item.title });
+        // Determine which model to use based on category
+        let Model, existing;
+        
+        if (item.category.toLowerCase().includes('acoustic')) {
+          Model = AcousticPanel;
+          existing = await Model.findOne({ titleEn: item.title });
+        } else if (item.category.toLowerCase().includes('stretch') || item.category.toLowerCase().includes('ceiling')) {
+          Model = StretchCeiling;
+          existing = await Model.findOne({ titleEn: item.title });
+        } else {
+          // For other categories, use Project
+          Model = Project;
+          existing = await Model.findOne({ titleEn: item.title });
+        }
+        
         if (existing) {
           skipped.push({ title: item.title, reason: 'exists' });
           continue;
         }
+        
         const abs = path.join(artImagesRoot, item.path);
         const dataUrl = fileToDataUrl(abs);
-        const doc = new Service({
-          title: item.title,
+        
+        const doc = new Model({
+          titleEn: item.title,
+          titleAr: item.title,
           descriptionEn: item.title,
           descriptionAr: item.title,
           category: item.category,
@@ -143,8 +160,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           detailImages: [],
           featured: false,
         });
+        
         await doc.save();
         actuallyCreated += 1;
+        
+        // Also add to projects collection for "Our Work" section
+        if (Model !== Project) {
+          const projectDoc = new Project({
+            titleEn: item.title,
+            titleAr: item.title,
+            descriptionEn: item.title,
+            descriptionAr: item.title,
+            category: item.category,
+            image: dataUrl,
+            detailImages: [],
+            featured: false,
+          });
+          await projectDoc.save();
+        }
       }
     }
 

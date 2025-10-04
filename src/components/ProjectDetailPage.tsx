@@ -32,12 +32,25 @@ export function ProjectDetailPage({
     let isMounted = true;
     const load = async () => {
       try {
-        // Fetch from the correct API endpoint based on whether it's a service or project
-        const apiEndpoint = isService ? '/api/services' : '/api/projects';
+        // Determine the correct API endpoint based on category
+        let apiEndpoint = '/api/projects'; // Default to projects
+        
+        if (isService) {
+          // For services, determine which API to use based on category
+          if (item.category?.toLowerCase().includes('acoustic')) {
+            apiEndpoint = '/api/acoustic-panels';
+          } else if (item.category?.toLowerCase().includes('stretch') || item.category?.toLowerCase().includes('ceiling')) {
+            apiEndpoint = '/api/stretch-ceilings';
+          } else {
+            // For other service categories, use projects since services API no longer exists
+            apiEndpoint = '/api/projects';
+          }
+        }
+        
         const res = await fetch(apiEndpoint);
         const data = await res.json();
         const items: DetailItem[] = (Array.isArray(data) ? data : []).map((p: any) => ({
-          title: p.title,
+          title: p.title || p.titleEn,
           image: p.image,
           descriptionEn: p.descriptionEn,
           descriptionAr: p.descriptionAr,

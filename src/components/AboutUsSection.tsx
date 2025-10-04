@@ -1,7 +1,36 @@
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+
+interface PageCovers {
+  home?: {
+    hero?: string;
+    about?: string;
+    services?: string;
+  };
+}
 
 export function AboutUsSection() {
   const { t, isRTL } = useLanguage();
+  const [aboutImage, setAboutImage] = useState<string>('/aboutus in homepage.png'); // Fallback image
+
+  useEffect(() => {
+    fetchPageCovers();
+  }, []);
+
+  const fetchPageCovers = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=home');
+      const data = await response.json();
+      
+      // Set about image from MongoDB or use fallback
+      if (data.home?.about) {
+        setAboutImage(data.home.about);
+      }
+    } catch (error) {
+      console.error('Error fetching page covers:', error);
+      // Keep fallback image if API fails
+    }
+  };
 
   return (
     <section className="py-20 bg-white">
@@ -11,7 +40,7 @@ export function AboutUsSection() {
           <div className={`${isRTL ? 'lg:order-2' : 'lg:order-1'}`}>
             <div className="relative">
               <img
-                src="/aboutus in homepage.png"
+                src={aboutImage}
                 alt="About Us"
                 className="w-full h-[500px] object-cover rounded-2xl shadow-lg"
               />

@@ -6,7 +6,7 @@ import multer from 'multer';
 // Use memory storage and store as data URL in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
 
-function bufferToDataUrl(file: multer.File) {
+function bufferToDataUrl(file: Express.Multer.File) {
   const mime = file.mimetype || 'application/octet-stream';
   const base64 = file.buffer.toString('base64');
   return `data:${mime};base64,${base64}`;
@@ -28,13 +28,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       try {
-        const { title, descriptionEn, descriptionAr, category, featured } = req.body;
+        const { titleEn, titleAr, descriptionEn, descriptionAr, category, featured } = req.body;
         const files = (req as any).files || {};
         const mainImageFile = files.image?.[0];
         const detailImagesFiles = files.detailImages || [];
 
         const updateData: any = {
-          title,
+          titleEn,
+          titleAr,
           descriptionEn,
           descriptionAr,
           category,
@@ -45,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           updateData.image = bufferToDataUrl(mainImageFile);
         }
         if (detailImagesFiles.length > 0) {
-          updateData.detailImages = detailImagesFiles.map((f: multer.File) => bufferToDataUrl(f));
+          updateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
         }
 
         const project = await Project.findByIdAndUpdate(id, updateData, { new: true });

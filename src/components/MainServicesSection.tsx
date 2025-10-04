@@ -1,17 +1,47 @@
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void }) {
+interface PageCovers {
+  home?: {
+    hero?: string;
+    about?: string;
+    services?: string;
+  };
+}
+
+export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceType: string) => void }) {
   const { t, isRTL } = useLanguage();
+  const [servicesImage, setServicesImage] = useState<string>('/stretchceilinginhomepage.png'); // Fallback image
+
+  useEffect(() => {
+    fetchPageCovers();
+  }, []);
+
+  const fetchPageCovers = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=home');
+      const data = await response.json();
+      
+      // Set services image from MongoDB or use fallback
+      if (data.home?.services) {
+        setServicesImage(data.home.services);
+      }
+    } catch (error) {
+      console.error('Error fetching page covers:', error);
+      // Keep fallback image if API fails
+    }
+  };
 
   const services = [
     {
+      type: 'STRETCH CEILINGS',
       title: isRTL ? 'الأسقف المعلقة' : 'Stretch Ceilings',
       titleAr: 'الأسقف المعلقة',
       titleEn: 'Stretch Ceilings',
       description: isRTL 
         ? 'تصاميم أسقف معلقة مبتكرة وأنيقة تناسب المساحات السكنية والتجارية. نقدم حلول متعددة تشمل الأسقف اللامعة والمطبوعة والشفافة.'
         : 'Innovative and elegant stretch ceiling designs suitable for residential and commercial spaces. We offer multiple solutions including glossy, printed, and translucent ceilings.',
-      image: '/stretchceilinginhomepage.png',
+      image: servicesImage,
       features: isRTL ? [
         'أسقف لامعة',
         'أسقف مطبوعة',
@@ -27,13 +57,14 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void 
       ]
     },
     {
+      type: 'ACOUSTIC PANELS',
       title: isRTL ? 'الألواح الصوتية' : 'Acoustic Panels',
       titleAr: 'الألواح الصوتية',
       titleEn: 'Acoustic Panels',
       description: isRTL
         ? 'حلول صوتية متقدمة لتحسين جودة الصوت والتحكم في الضوضاء. ألواح عازلة للصوت مصممة للمساحات السكنية والتجارية.'
         : 'Advanced acoustic solutions to improve sound quality and noise control. Soundproof panels designed for residential and commercial spaces.',
-      image: '/acusticpanelinhomepage.png',
+      image: servicesImage,
       features: isRTL ? [
         'ألواح من الألياف',
         'ألواح من البوليستر',
@@ -113,7 +144,7 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: () => void 
 
                 {/* CTA Button */}
                 <div className={`mt-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <button onClick={() => onLearnMore?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-md">
+                  <button onClick={() => onLearnMore?.(service.type)} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-md">
                     {isRTL ? 'اعرف المزيد' : 'Learn More'}
                   </button>
                 </div>

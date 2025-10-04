@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -12,12 +12,64 @@ interface MobileMenuProps {
 export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange }: MobileMenuProps) {
   const { t, isRTL } = useLanguage();
   const showAdmin = typeof window !== 'undefined' && localStorage.getItem('hasAdminAccess') === 'true';
+  const [isAcousticDropdownOpen, setIsAcousticDropdownOpen] = useState(false);
+  const [isStretchDropdownOpen, setIsStretchDropdownOpen] = useState(false);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      // Disable body scroll
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      // Re-enable body scroll
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isOpen]);
   
   const navItems = [
     { key: 'HOME', translation: t('home') },
     { key: 'ABOUT US', translation: t('about') },
-    { key: 'OUR SERVICES', translation: t('services') },
-    { key: 'GALLERY', translation: t('gallery') },
+    { 
+      key: 'ACOUSTIC PANELS', 
+      translation: t('acousticPanels'),
+      hasDropdown: true,
+      dropdownItems: [
+        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: 'Acoustic Panels-B.Alandalus' },
+        { key: 'FLOOR_INSULATION', translation: 'Floor insulation' },
+        { key: 'POLYESTER_ACOUSTIC', translation: 'Polyester Acoustic Panels' },
+        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: 'Acoustic Fabric Wraps' }
+      ]
+    },
+    { 
+      key: 'STRETCH CEILINGS', 
+      translation: t('stretchCeilings'),
+      hasDropdown: true,
+      dropdownItems: [
+        { key: 'STRETCH_GLOSSY', translation: 'Stretch ceilings - Glossy' },
+        { key: 'STRETCH_HIDDEN_LIGHTING', translation: 'Stretch ceilings with hidden lighting' },
+        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: 'Stretch ceilings - Perforated and acoustic' },
+        { key: 'STRETCH_3D', translation: 'Stretch ceilings - 3D' },
+        { key: 'STRETCH_REFLECTIVE', translation: 'Stretch ceilings - Reflective' },
+        { key: 'STRETCH_MATTE', translation: 'Stretch ceilings - Matte' },
+        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: 'Stretch ceilings - Fiber optic ceilings (Rose)' },
+        { key: 'STRETCH_PRINTED', translation: 'Stretch Ceilings printed' },
+        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: 'Stretch ceilings - Light transmitting' },
+        { key: 'STRETCH_PAPER', translation: 'Stretch ceilings - Paper' }
+      ]
+    },
+    { key: 'OUR WORK', translation: t('ourWork') },
+    { key: 'FAQS', translation: t('faqs') },
     { key: 'BLOG', translation: t('blog') },
     { key: 'CONTACT US', translation: t('contact') }
   ];
@@ -51,27 +103,81 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
       <div className="relative h-full flex flex-col">
         {/* Menu Items */}
         <div className="flex-1 flex flex-col justify-center items-center space-y-8">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-light text-white tracking-wider mb-8">
-              {isRTL ? 'القائمة' : 'MENU'}
-            </h2>
-          </div>
           
-          {navItems.map((item, index) => (
-            <button
-              key={item.key}
-              onClick={() => {
-                onPageChange(item.key);
-                onClose();
-              }}
-              className={`text-xl tracking-wider transition-colors hover:text-orange-400 ${
-                currentPage === item.key ? 'text-orange-400' : 'text-white'
-              }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {item.translation}
-            </button>
-          ))}
+          {navItems.map((item, index) => {
+            if (item.hasDropdown) {
+              const isAcoustic = item.key === 'ACOUSTIC PANELS';
+              const isStretch = item.key === 'STRETCH CEILINGS';
+              const isDropdownOpen = isAcoustic ? isAcousticDropdownOpen : isStretchDropdownOpen;
+              const setDropdownOpen = isAcoustic ? setIsAcousticDropdownOpen : setIsStretchDropdownOpen;
+              
+              return (
+                <div key={item.key} className="w-full flex flex-col items-center">
+                  <div className="flex items-center justify-center w-full max-w-xs">
+                    <button
+                      onClick={() => {
+                        onPageChange(item.key);
+                        onClose();
+                      }}
+                      className={`text-2xl font-medium uppercase tracking-widest transition-colors hover:text-orange-400 text-center ${
+                        currentPage === item.key ? 'text-orange-400' : 'text-white'
+                      }`}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      {item.translation}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(!isDropdownOpen);
+                      }}
+                      className="text-white hover:text-orange-400 transition-colors p-2 ml-2"
+                    >
+                      <svg className={`w-5 h-5 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  {/* Mobile Dropdown */}
+                  {isDropdownOpen && (
+                    <div className="mt-4 space-y-2 w-full max-w-xs">
+                      {item.dropdownItems?.map((dropdownItem, dropdownIndex) => (
+                        <button
+                          key={dropdownItem.key}
+                          onClick={() => {
+                            onPageChange(dropdownItem.key);
+                            onClose();
+                          }}
+                          className={`text-lg font-normal uppercase tracking-wide transition-colors hover:text-orange-400 w-full text-center ${
+                            currentPage === dropdownItem.key ? 'text-orange-400' : 'text-gray-300'
+                          }`}
+                          style={{ animationDelay: `${(index + dropdownIndex + 1) * 0.1}s` }}
+                        >
+                          {dropdownItem.translation}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            
+            return (
+              <button
+                key={item.key}
+                onClick={() => {
+                  onPageChange(item.key);
+                  onClose();
+                }}
+                className={`text-2xl font-medium uppercase tracking-widest transition-colors hover:text-orange-400 text-center ${
+                  currentPage === item.key ? 'text-orange-400' : 'text-white'
+                }`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {item.translation}
+              </button>
+            );
+          })}
           
           {/* Language Switcher */}
           <div className="mt-4">

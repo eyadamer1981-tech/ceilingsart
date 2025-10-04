@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Plus, Edit, Trash2, Star } from 'lucide-react';
 
 interface Project {
   _id: string;
-  title: string;
+  title?: string; // For backward compatibility
+  titleEn: string;
+  titleAr: string;
   descriptionEn: string;
   descriptionAr: string;
   image: string;
@@ -20,7 +22,8 @@ export function ProjectsManager() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: '',
+    titleEn: '',
+    titleAr: '',
     descriptionEn: '',
     descriptionAr: '',
     category: '',
@@ -31,15 +34,7 @@ export function ProjectsManager() {
 
   const [categories, setCategories] = useState<string[]>([]);
 
-  useEffect(() => {
-    fetchProjects();
-    fetch('/api/projects/categories')
-      .then((r) => r.json())
-      .then((cats) => setCategories(Array.isArray(cats) ? cats : []))
-      .catch(() => { setCategories([]); });
-  }, []);
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       const response = await fetch('/api/projects');
       const data = await response.json();
@@ -48,14 +43,31 @@ export function ProjectsManager() {
       console.error('Error fetching projects:', error);
       setProjects([]);
     }
-  };
+  }, []);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await fetch('/api/projects/categories');
+      const categories = await response.json();
+      setCategories(Array.isArray(categories) ? categories : []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setCategories([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProjects();
+    fetchCategories();
+  }, [fetchProjects, fetchCategories]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     const formDataToSend = new FormData();
-    formDataToSend.append('title', formData.title);
+    formDataToSend.append('titleEn', formData.titleEn);
+    formDataToSend.append('titleAr', formData.titleAr);
     formDataToSend.append('descriptionEn', formData.descriptionEn);
     formDataToSend.append('descriptionAr', formData.descriptionAr);
     formDataToSend.append('category', formData.category);
@@ -116,7 +128,8 @@ export function ProjectsManager() {
   const handleEdit = (project: Project) => {
     setEditingProject(project);
     setFormData({
-      title: project.title,
+      titleEn: project.titleEn || project.title || '',
+      titleAr: project.titleAr || project.title || '',
       descriptionEn: project.descriptionEn,
       descriptionAr: project.descriptionAr,
       category: project.category,
@@ -126,7 +139,7 @@ export function ProjectsManager() {
   };
 
   const resetForm = () => {
-    setFormData({ title: '', descriptionEn: '', descriptionAr: '', category: '', featured: false });
+    setFormData({ titleEn: '', titleAr: '', descriptionEn: '', descriptionAr: '', category: '', featured: false });
     setImageFile(null);
     setDetailImageFiles([]);
     setEditingProject(null);
@@ -136,38 +149,59 @@ export function ProjectsManager() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-4xl font-light text-gray-900 mb-4 tracking-wide">
+        <h2 className="text-2xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
           Projects Management
         </h2>
-        <p className="text-gray-600 text-lg mb-8">
+        <p className="text-gray-600 text-base lg:text-lg mb-6 lg:mb-8 px-4">
           Manage your projects and portfolio
         </p>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 flex items-center space-x-2 mx-auto shadow-lg hover:shadow-xl transform hover:scale-105"
+          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 lg:px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 flex items-center space-x-2 mx-auto shadow-lg hover:shadow-xl transform hover:scale-105 text-sm lg:text-base"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 lg:w-5 lg:h-5" />
           <span className="font-medium">Add New Project</span>
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-xl font-medium mb-4">
-            {editingProject ? 'Edit Project' : 'Add New Project'}
-          </h3>
+        <div className="bg-white p-4 lg:p-6 rounded-lg shadow-lg mx-2 lg:mx-0">
+          <div className="text-center mb-6">
+            <h3 className="text-lg lg:text-xl font-medium mb-2">
+              {editingProject ? 'Edit Project' : 'Add New Project'}
+            </h3>
+            <h3 className="text-lg lg:text-xl font-medium mb-2 text-gray-600" dir="rtl">
+              {editingProject ? 'تعديل المشروع' : 'إضافة مشروع جديد'}
+            </h3>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title
+                Project Title (English)
               </label>
               <input
                 type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={formData.titleEn}
+                onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black"
+                placeholder="Enter project title in English"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                عنوان المشروع (Arabic)
+              </label>
+              <input
+                type="text"
+                dir="rtl"
+                value={formData.titleAr}
+                onChange={(e) => setFormData({ ...formData, titleAr: e.target.value })}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black"
+                placeholder="أدخل عنوان المشروع بالعربية"
               />
             </div>
 
@@ -258,18 +292,18 @@ export function ProjectsManager() {
               </label>
             </div>
 
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex-1 sm:flex-none"
               >
                 {loading ? 'Saving...' : editingProject ? 'Update' : 'Create'}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors flex-1 sm:flex-none"
               >
                 Cancel
               </button>
@@ -278,38 +312,38 @@ export function ProjectsManager() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {projects.map((project) => (
-          <div key={project._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div key={project._id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
             <img
               src={project.image}
-              alt={project.title}
-              className="w-full h-48 object-cover"
+              alt={project.titleEn || project.title}
+              className="w-full h-40 lg:h-48 object-cover"
             />
-            <div className="p-4">
+            <div className="p-3 lg:p-4">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-medium text-gray-900">{project.title}</h3>
+                <h3 className="text-base lg:text-lg font-medium text-gray-900 line-clamp-1">{project.titleEn || project.title}</h3>
                 {project.featured && (
-                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                  <Star className="w-4 h-4 lg:w-5 lg:h-5 text-yellow-500 fill-current flex-shrink-0" />
                 )}
               </div>
-              <p className="text-orange-600 text-sm font-medium mb-2">{project.category}</p>
-              <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+              <p className="text-orange-600 text-xs lg:text-sm font-medium mb-2">{project.category}</p>
+              <p className="text-gray-600 text-xs lg:text-sm mb-3 lg:mb-4 line-clamp-2 lg:line-clamp-3">
                 {project.descriptionEn}
               </p>
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
                 <button
                   onClick={() => handleEdit(project)}
-                  className="flex items-center space-x-1 text-blue-600 hover:text-blue-800"
+                  className="flex items-center justify-center space-x-1 text-blue-600 hover:text-blue-800 text-xs lg:text-sm py-1 px-2 rounded hover:bg-blue-50 transition-colors"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span>Edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(project._id)}
-                  className="flex items-center space-x-1 text-red-600 hover:text-red-800"
+                  className="flex items-center justify-center space-x-1 text-red-600 hover:text-red-800 text-xs lg:text-sm py-1 px-2 rounded hover:bg-red-50 transition-colors"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span>Delete</span>
                 </button>
               </div>

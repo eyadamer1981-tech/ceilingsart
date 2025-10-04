@@ -10,7 +10,8 @@ interface ImageItem {
 }
 
 interface FeaturedContent {
-  services: any[];
+  acousticPanels: any[];
+  stretchCeilings: any[];
   projects: any[];
   blogs: any[];
 }
@@ -23,7 +24,8 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
   const { language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
-    services: [],
+    acousticPanels: [],
+    stretchCeilings: [],
     projects: [],
     blogs: []
   });
@@ -31,14 +33,18 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
 
   useEffect(() => {
     fetchFeaturedContent();
-  }, []);
+    setCurrentIndex(0); // Reset to first slide when language changes
+  }, [language]);
 
   const fetchFeaturedContent = async () => {
     try {
-      const response = await fetch('/api/featured');
+      const response = await fetch(`/api/featured?lang=${language}`);
       const data = await response.json();
       console.log('Featured content fetched:', data);
-      setFeaturedContent(data);
+      // Only update if we got valid data
+      if (data && (data.acousticPanels?.length > 0 || data.stretchCeilings?.length > 0 || data.projects?.length > 0 || data.blogs?.length > 0)) {
+        setFeaturedContent(data);
+      }
     } catch (error) {
       console.error('Error fetching featured content:', error);
     } finally {
@@ -47,20 +53,25 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
   };
 
   // Convert featured content to image items
-  const convertToImageItems = (items: any[], defaultCategory: string): ImageItem[] => {
+  const convertToImageItems = (items: any[]): ImageItem[] => {
+    if (!items || !Array.isArray(items)) {
+      return [];
+    }
     return items.map(item => ({
       src: item.image || '/image.png',
-      alt: item.title || 'Image',
-      category: item.category || defaultCategory,
-      title: item.title,
-      description: item.description
+      alt: item.title || (language === 'ar' ? (item.titleAr || 'صورة') : (item.titleEn || 'Image')),
+      category: item.category || (language === 'ar' ? 'المعرض' : 'Gallery'),
+      title: item.title || (language === 'ar' ? (item.titleAr || '') : (item.titleEn || '')),
+      description: item.description || (language === 'ar' ? (item.descriptionAr || '') : (item.descriptionEn || ''))
     }));
   };
 
-  // Combine services and projects into one array
-  const servicesImages = convertToImageItems(featuredContent.services, 'Services');
-  const projectsImages = convertToImageItems(featuredContent.projects, 'Projects');
-  const allImages = [...servicesImages, ...projectsImages];
+  // Combine all featured content into one array
+  const acousticImages = convertToImageItems(featuredContent.acousticPanels);
+  const stretchImages = convertToImageItems(featuredContent.stretchCeilings);
+  const projectsImages = convertToImageItems(featuredContent.projects);
+  const blogsImages = convertToImageItems(featuredContent.blogs);
+  const allImages = [...acousticImages, ...stretchImages, ...projectsImages, ...blogsImages];
 
   // Ensure images is an array
   const imagesArray = Array.isArray(allImages) ? allImages : [];
@@ -96,6 +107,8 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
   console.log('Display images:', displayImages);
   console.log('Current index:', currentIndex);
   console.log('Current image:', displayImages[currentIndex]);
+  console.log('Language:', language);
+  console.log('Featured content:', featuredContent);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % displayImages.length);
@@ -132,7 +145,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
         {/* Category Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-light text-gray-900 mb-4">
-            {displayImages[currentIndex]?.category || 'Gallery'}
+            {displayImages[currentIndex]?.category || (language === 'ar' ? 'المعرض' : 'Gallery')}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-yellow-500 mx-auto"></div>
         </div>
@@ -141,22 +154,25 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
         <div className="relative">
           {/* Main Image Display */}
           <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              style={{ transform: `translateX(${language === 'ar' ? currentIndex * 100 : -currentIndex * 100}%)` }}
             >
               {displayImages.map((image, index) => (
-                <div key={`${index}-${language}`} className="w-full flex-shrink-0 relative group">
+                <div key={`image-${index}`} className="w-full flex-shrink-0 relative group">
                   <div className="relative overflow-hidden rounded-2xl">
                     <img
-                      key={`img-${index}-${language}`}
+                      key={`img-${index}`}
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-[300px] md:h-[500px] lg:h-[600px] object-cover cursor-pointer transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
                       onClick={() => onSelect?.(image)}
                       onError={(e) => {
-                        console.error('Image failed to load:', image.src, e);
+                        console.error('Image failed to load:', image.src, 'Language:', language, e);
                         e.currentTarget.src = '/image.png';
+                      }}
+                      onLoad={() => {
+                        console.log('Image loaded successfully:', image.src, 'Language:', language);
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-100 group-hover:opacity-80 transition-opacity duration-500"></div>

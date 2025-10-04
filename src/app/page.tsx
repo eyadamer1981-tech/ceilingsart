@@ -10,7 +10,9 @@ import { ImageCarousel } from '../components/ImageCarousel';
 import { Footer } from '../components/Footer';
 import { AboutPage } from '../components/AboutPage';
 import { ServicesPage } from '../components/ServicesPage';
-import { GalleryPage } from '../components/GalleryPage';
+import { AcousticPanelsPage } from '../components/AcousticPanelsPage';
+import { OurWorkPage } from '../components/OurWorkPage';
+import { FAQsPage } from '../components/FAQsPage';
 import { BlogPage } from '../components/BlogPage';
 import { ContactPage } from '../components/ContactPage';
 import { ProjectDetailPage, DetailItem } from '../components/ProjectDetailPage';
@@ -26,8 +28,10 @@ export default function Home() {
   };
 
   const handlePageChange = (page: string) => {
+    console.log('Changing page to:', page);
     setSelectedItem(null);
     setCurrentPage(page);
+    setIsMobileMenuOpen(false);
   };
 
   const renderPage = () => {
@@ -44,7 +48,23 @@ export default function Home() {
         />
       );
     }
+    console.log('Current page:', currentPage);
     switch (currentPage) {
+      case 'HOME':
+        return (
+          <>
+            <HomepageHero onGetStarted={() => handlePageChange('CONTACT US')} />
+            <AboutUsSection />
+            <MainServicesSection onLearnMore={(serviceType) => handlePageChange(serviceType)} />
+            <ImageCarousel
+              onSelect={(img) => {
+                setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
+                setSelectedIsService(img.category === 'Services');
+              }}
+            />
+            <Footer />
+          </>
+        );
       case 'ABOUT US':
         return (
           <>
@@ -57,12 +77,12 @@ export default function Home() {
           <>
             <ServicesPage onSelect={(service, isService) => {
               setSelectedItem({
-                title: service.title,
+                title: service.title || service.titleEn || 'Untitled',
                 image: service.image,
                 description: service.description,
-                descriptionEn: service.descriptionEn,
-                descriptionAr: service.descriptionAr,
-                detailImages: service.detailImages,
+                descriptionEn: service.descriptionEn || service.description || '',
+                descriptionAr: service.descriptionAr || service.description || '',
+                detailImages: service.detailImages || [],
                 category: 'Service',
               });
               setSelectedIsService(isService);
@@ -70,10 +90,77 @@ export default function Home() {
             <Footer />
           </>
         );
+      case 'ACOUSTIC PANELS':
+        return (
+          <>
+            <AcousticPanelsPage
+              onSelect={(panel, isService) => {
+                setSelectedItem({
+                  title: panel.title,
+                  image: panel.image,
+                  description: panel.description,
+                  descriptionEn: panel.descriptionEn,
+                  descriptionAr: panel.descriptionAr,
+                  detailImages: panel.detailImages,
+                  category: 'Acoustic Panel',
+                });
+                setSelectedIsService(isService);
+              }}
+            />
+            <Footer />
+          </>
+        );
+      case 'STRETCH CEILINGS':
+        return (
+          <>
+            <ServicesPage
+              category="stretch"
+              pageTitle="Stretch Ceilings"
+              pageSubtitle="French Ceiling Solutions"
+              onSelect={(service, isService) => {
+                setSelectedItem({
+                  title: service.title || service.titleEn || 'Untitled',
+                  image: service.image,
+                  description: service.description,
+                  descriptionEn: service.descriptionEn || service.description || '',
+                  descriptionAr: service.descriptionAr || service.description || '',
+                  detailImages: service.detailImages || [],
+                  category: 'Stretch Ceiling',
+                });
+                setSelectedIsService(isService);
+              }}
+            />
+            <Footer />
+          </>
+        );
+      case 'OUR WORK':
+        return (
+          <>
+            <OurWorkPage
+              onSelect={(image) => {
+                setSelectedItem({
+                  title: image.title,
+                  image: image.src,
+                  category: image.category,
+                });
+                setSelectedIsService(false);
+              }}
+              onStartProject={() => handlePageChange('CONTACT US')}
+            />
+            <Footer />
+          </>
+        );
+      case 'FAQS':
+        return (
+          <>
+            <FAQsPage onContactClick={() => handlePageChange('CONTACT US')} />
+            <Footer />
+          </>
+        );
       case 'GALLERY':
         return (
           <>
-            <GalleryPage onSelect={(image) => {
+            <OurWorkPage onSelect={(image) => {
               setSelectedItem({
                 title: image.title,
                 image: image.src,
@@ -98,12 +185,69 @@ export default function Home() {
             <Footer />
           </>
         );
+      // Acoustic Panels dropdown items
+      case 'ACOUSTIC_PANELS_ALANDALUS':
+      case 'FLOOR_INSULATION':
+      case 'POLYESTER_ACOUSTIC':
+      case 'ACOUSTIC_FABRIC_WRAPS':
+        return (
+          <>
+            <AcousticPanelsPage
+              onSelect={(panel, isService) => {
+                setSelectedItem({
+                  title: panel.title,
+                  image: panel.image,
+                  description: panel.description,
+                  descriptionEn: panel.descriptionEn,
+                  descriptionAr: panel.descriptionAr,
+                  detailImages: panel.detailImages,
+                  category: 'Acoustic Panel',
+                });
+                setSelectedIsService(isService);
+              }}
+            />
+            <Footer />
+          </>
+        );
+      // Stretch Ceilings dropdown items
+      case 'STRETCH_GLOSSY':
+      case 'STRETCH_HIDDEN_LIGHTING':
+      case 'STRETCH_PERFORATED_ACOUSTIC':
+      case 'STRETCH_3D':
+      case 'STRETCH_REFLECTIVE':
+      case 'STRETCH_MATTE':
+      case 'STRETCH_FIBER_OPTIC_ROSE':
+      case 'STRETCH_PRINTED':
+      case 'STRETCH_LIGHT_TRANSMITTING':
+      case 'STRETCH_PAPER':
+        return (
+          <>
+            <ServicesPage
+              category="stretch"
+              pageTitle="Stretch Ceilings"
+              pageSubtitle="French Ceiling Solutions"
+              onSelect={(service, isService) => {
+                setSelectedItem({
+                  title: service.title || service.titleEn || 'Untitled',
+                  image: service.image,
+                  description: service.description,
+                  descriptionEn: service.descriptionEn || service.description || '',
+                  descriptionAr: service.descriptionAr || service.description || '',
+                  detailImages: service.detailImages || [],
+                  category: 'Stretch Ceiling',
+                });
+                setSelectedIsService(isService);
+              }}
+            />
+            <Footer />
+          </>
+        );
       default:
         return (
           <>
             <HomepageHero onGetStarted={() => handlePageChange('CONTACT US')} />
             <AboutUsSection />
-            <MainServicesSection onLearnMore={() => handlePageChange('OUR SERVICES')} />
+            <MainServicesSection onLearnMore={(serviceType) => handlePageChange(serviceType)} />
             <ImageCarousel 
               onSelect={(img) => {
                 setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
@@ -119,13 +263,11 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <Header 
-          onMenuToggle={handleMenuToggle} 
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      <Header 
+        onMenuToggle={handleMenuToggle} 
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
 
       {/* Mobile Menu */}
       <MobileMenu 
@@ -136,7 +278,7 @@ export default function Home() {
       />
 
       {/* Main Content */}
-      <main className="pt-0">
+      <main className="pt-20">
         {renderPage()}
       </main>
     </div>

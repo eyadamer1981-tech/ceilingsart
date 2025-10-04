@@ -1,21 +1,32 @@
 import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BookOpen, Droplets, Building, Wine, Globe, Briefcase } from 'lucide-react';
 
 interface Service {
   _id: string;
-  title: string;
+  title?: string; // For backward compatibility
+  titleEn: string;
+  titleAr: string;
   description: string;
   descriptionEn?: string;
   descriptionAr?: string;
+  category?: string;
   image: string;
   detailImages?: string[];
   featured: boolean;
   createdAt: string;
 }
 
-export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isService: boolean) => void }) {
-  const { t, language } = useLanguage();
+interface ServicesPageProps {
+  onSelect?: (item: Service, isService: boolean) => void;
+  category?: string;
+  pageTitle?: string;
+  pageSubtitle?: string;
+}
+
+export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: ServicesPageProps) {
+  const { t, language, isRTL } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,22 +36,25 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
 
   const fetchServices = async () => {
     try {
-      const response = await fetch('/api/services');
+      let response;
+      
+      // Use specific API endpoints based on category
+      if (category === 'acoustic') {
+        response = await fetch('/api/acoustic-panels');
+      } else if (category === 'stretch') {
+        response = await fetch('/api/stretch-ceilings');
+      } else {
+        // For other categories, return empty array since services API no longer exists
+        setServices([]);
+        setLoading(false);
+        return;
+      }
+      
       const data = await response.json();
       setServices(data);
     } catch (error) {
       console.error('Error fetching services:', error);
-      // Fallback to default services if backend is not available
-      setServices([
-        {
-          _id: '1',
-          title: "Luxury Ceiling Design",
-          description: "Transform your space with our bespoke luxury ceiling designs. From coffered ceilings to modern geometric patterns, we create stunning architectural features that elevate any interior.",
-          image: "/ourservices.webp",
-          featured: false,
-          createdAt: new Date().toISOString()
-        }
-      ]);
+      setServices([]);
     } finally {
       setLoading(false);
     }
@@ -62,55 +76,172 @@ export function ServicesPage({ onSelect }: { onSelect?: (item: Service, isServic
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
-            {t('servicesPageTitle')}
+            {pageTitle || t('servicesPageTitle')}
           </h1>
+          {pageSubtitle && (
+            <p className="text-xl md:text-2xl text-white/90 mt-4 font-light">
+              {pageSubtitle}
+            </p>
+          )}
         </div>
       </div>
 
       {/* Services List */}
-      <div className="bg-white py-20">
+      <div className="bg-gray-800 py-20">
         <div className="container mx-auto px-4">
+          {/* Introduction Section */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
+              {pageTitle || t('servicesPageTitle')}
+            </h2>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-8">
+              {pageSubtitle || 'Elegant, Modern, and Hassle-Free Ceilings perfect for homes, offices, and commercial spaces across Saudi Arabia'}
+            </p>
+            
+            {/* Benefits */}
+            <div className="flex flex-wrap justify-center gap-8 mb-12">
+              <div className="flex items-center gap-3 text-white">
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+                <span className="text-lg">10-Year Warranty on all installations</span>
+              </div>
+              <div className="flex items-center gap-3 text-white">
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+                <span className="text-lg">European Materials at competitive prices</span>
+              </div>
+              <div className="flex items-center gap-3 text-white">
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+                <span className="text-lg">Certified Installation Team with expertise</span>
+              </div>
+            </div>
+          </div>
+
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="text-xl text-gray-600">{t('loadingServices')}</div>
+              <div className="text-xl text-gray-300">{t('loadingServices')}</div>
             </div>
           ) : (
-            <div className="space-y-16">
-              {services.map((service, index) => (
-              <div key={service._id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                    {/* Image */}
-                  <div className="aspect-[4/3] lg:aspect-auto cursor-pointer" onClick={() => onSelect?.(service, true)}>
-                      <ImageWithFallback
-                        src={service.image.startsWith('http') ? service.image : service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-8 lg:p-12 flex flex-col justify-center">
-                      <h3 className="text-2xl lg:text-3xl font-light text-gray-900 mb-6 tracking-wide">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed text-lg">
-                        {(() => {
-                          // Use language-specific description from backend, fallback to generic description
-                          const description = language === 'ar' 
-                            ? (service.descriptionAr || service.description)
-                            : (service.descriptionEn || service.description);
-                          return description;
-                        })()}
-                      </p>
-                      <button onClick={() => onSelect?.(service, true)} className="mt-8 bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium tracking-wide self-start">
-                        {t('learnMore')}
-                      </button>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {services.map((service) => (
+                <div key={service._id} className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
+                  {/* Image */}
+                  <div className="aspect-square overflow-hidden">
+                    <ImageWithFallback
+                      src={service.image.startsWith('http') ? service.image : service.image}
+                      alt={service.titleEn || service.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="p-6 text-center">
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      {(() => {
+                        return language === 'ar' 
+                          ? (service.titleAr || service.titleEn || service.title)
+                          : (service.titleEn || service.title);
+                      })()}
+                    </h3>
+                    <button 
+                      onClick={() => onSelect?.(service, true)} 
+                      className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
+                    >
+                      MORE
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Stretch Ceilings Features Section */}
+      <div className="bg-gray-800 py-20">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-center'}`}>
+            <h2 className="text-4xl md:text-5xl font-light text-white mb-6 tracking-wide">
+              {t('stretchCeilingsFeatures')}
+            </h2>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+              {t('stretchCeilingsFeaturesDescription')}
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="bg-gray-100 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <BookOpen className="w-12 h-12 text-gray-700 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingsMaterialsColors')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingsMaterialsColorsDescription')}
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <Droplets className="w-12 h-12 text-blue-600 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingsProtectionLeakage')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingsProtectionLeakageDescription')}
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-pink-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <Building className="w-12 h-12 text-pink-600 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('modernStretchCeilingsInstallation')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('modernStretchCeilingsInstallationDescription')}
+              </p>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <Wine className="w-12 h-12 text-blue-600 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('easyStretchCeilingsTransportSetup')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('easyStretchCeilingsTransportSetupDescription')}
+              </p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="bg-purple-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <Globe className="w-12 h-12 text-purple-600 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('fireMoistureProtection')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('fireMoistureProtectionDescription')}
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="bg-green-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300">
+              <Briefcase className="w-12 h-12 text-green-600 mb-6" />
+              <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingSupportInfrastructureSystems')}
+              </h3>
+              <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('ceilingSupportInfrastructureSystemsDescription')}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

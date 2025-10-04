@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       try {
-        const { title, descriptionEn, descriptionAr, category, featured } = req.body;
+        const { titleEn, titleAr, descriptionEn, descriptionAr, category, featured } = req.body;
         const files = (req as any).files || {};
         const mainImageFile = files.image?.[0];
         const detailImagesFiles = files.detailImages || [];
@@ -46,7 +46,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const detailImages = detailImagesFiles.map((f: any) => bufferToDataUrl(f));
 
         const project = new Project({
-          title,
+          titleEn,
+          titleAr,
           descriptionEn,
           descriptionAr,
           category,

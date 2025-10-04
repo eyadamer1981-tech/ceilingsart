@@ -7,6 +7,14 @@ interface FeaturedContent {
   blogs: any[];
 }
 
+interface PageCovers {
+  home?: {
+    hero?: string;
+    about?: string;
+    services?: string;
+  };
+}
+
 export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
   const { t, isRTL } = useLanguage();
   const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
@@ -14,9 +22,12 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
     projects: [],
     blogs: []
   });
+  const [pageCovers, setPageCovers] = useState<PageCovers>({});
+  const [heroImage, setHeroImage] = useState<string>('/image.png'); // Fallback image
 
   useEffect(() => {
     fetchFeaturedContent();
+    fetchPageCovers();
   }, []);
 
   const fetchFeaturedContent = async () => {
@@ -26,6 +37,22 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
       setFeaturedContent(data);
     } catch (error) {
       console.error('Error fetching featured content:', error);
+    }
+  };
+
+  const fetchPageCovers = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=home');
+      const data = await response.json();
+      setPageCovers(data);
+      
+      // Set hero image from MongoDB or use fallback
+      if (data.home?.hero) {
+        setHeroImage(data.home.hero);
+      }
+    } catch (error) {
+      console.error('Error fetching page covers:', error);
+      // Keep fallback image if API fails
     }
   };
 
@@ -66,7 +93,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
             width: '600px',
             height: '600px',
             transform: 'translateY(100px)',
-            backgroundImage: "url('/image.png')",
+            backgroundImage: `url('${heroImage}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             opacity: 0.9,
