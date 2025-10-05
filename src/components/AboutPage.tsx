@@ -2,6 +2,9 @@
 
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { motion } from './ui/MotionWrapper';
+import { Map, Building2, Users, Clock } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useInView, animate, useMotionValue } from 'framer-motion';
 const MDiv = motion.div as any;
 const MH1 = motion.h1 as any;
 const MH2 = motion.h2 as any;
@@ -190,6 +193,9 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
                 </MDiv>
               ))}
             </MDiv>
+
+            {/* Stats Section */}
+            <StatsSection isRTL={isRTL} />
           </div>
         </div>
       </div>
@@ -255,5 +261,55 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
       {/* Success Partners Section */}
       <SuccessPartnersSection />
     </section>
+  );
+}
+
+function AnimatedNumber({ to, duration = 1.2 }: { to: number; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inViewRef = useRef<any>(null);
+  const isInView = useInView(inViewRef, { once: true, amount: 0.3 });
+
+  useEffect(() => {
+    if (isInView) {
+      animate(0, to, {
+        duration,
+        onUpdate: (v) => {
+          if (ref.current) ref.current.textContent = Math.round(v).toString();
+        }
+      });
+    }
+  }, [isInView, to, duration]);
+
+  return (
+    <div ref={inViewRef}>
+      <span ref={ref}>0</span>
+    </div>
+  );
+}
+
+function StatsSection({ isRTL }: { isRTL: boolean }) {
+  const items = [
+    { icon: Map, labelEn: 'Locations', labelAr: 'الفروع', value: 2 },
+    { icon: Users, labelEn: 'Our Team', labelAr: 'فريقنا', value: 10 },
+    { icon: Clock, labelEn: 'Working Hours', labelAr: 'ساعات العمل', value: 2850 },
+    { icon: Building2, labelEn: 'Business Hours', labelAr: 'ساعات الدوام', value: 1000 },
+  ];
+
+  return (
+    <div className="mt-16 bg-gray-900 text-white rounded-2xl px-6 py-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start text-center">
+        {items.map((item, idx) => (
+          <div key={idx} className="flex flex-col items-center gap-3">
+            <item.icon className="w-10 h-10 text-gray-200" />
+            <div className="text-lg text-gray-200">
+              {isRTL ? item.labelAr : item.labelEn}
+            </div>
+            <div className="text-3xl md:text-4xl font-light">
+              <AnimatedNumber to={item.value} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

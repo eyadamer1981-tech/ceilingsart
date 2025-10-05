@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -15,7 +17,8 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   const [showAdmin, setShowAdmin] = useState(false);
   const [isAcousticDropdownOpen, setIsAcousticDropdownOpen] = useState(false);
   const [isStretchDropdownOpen, setIsStretchDropdownOpen] = useState(false);
-  const { t, isRTL } = useLanguage();
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const { t, isRTL, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,13 +50,19 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
           setIsStretchDropdownOpen(false);
         }
       }
+      if (isLangDropdownOpen) {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.lang-dropdown')) {
+          setIsLangDropdownOpen(false);
+        }
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isAcousticDropdownOpen, isStretchDropdownOpen]);
+  }, [isAcousticDropdownOpen, isStretchDropdownOpen, isLangDropdownOpen]);
 
   const handleMenuToggle = () => {
     const newState = !isMobileMenuOpen;
@@ -106,10 +115,32 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
         <div className={`flex items-center justify-between`}>
           {/* Logo */}
           <div className="flex items-center">
-            <div className="text-white">
-              {/* <div className="text-2xl font-bold tracking-wider">CA</div>
-              <div className="text-sm tracking-widest opacity-80">CEILINGS ATR</div> */}
-            </div>
+            <a href="#" onClick={() => onPageChange('HOME')} className="flex items-center">
+              <img src="/logo.png" alt="Ceilings Art" className="h-8 w-auto" />
+            </a>
+          </div>
+
+          {/* Mobile: language toggle + menu */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+              className="flex items-center gap-2 px-3 py-2 rounded-md border border-gray-600 text-white/90 hover:text-white hover:border-orange-400 transition-colors"
+              aria-label="Toggle language"
+            >
+              <span className="text-sm">{language === 'en' ? 'العربية' : 'English'}</span>
+              <span className="text-xs opacity-80">{language === 'en' ? 'AR' : 'EN'}</span>
+            </button>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={handleMenuToggle}
+              className="lg:hidden text-white hover:text-orange-400 transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X size={24} />
+              ) : (
+                <Menu size={24} />
+              )}
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -200,18 +231,6 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
               </a>
             )}
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={handleMenuToggle}
-            className="lg:hidden text-white hover:text-orange-400 transition-colors"
-          >
-            {isMobileMenuOpen ? (
-              <X size={24} />
-            ) : (
-              <Menu size={24} />
-            )}
-          </button>
         </div>
       </div>
     </header>
