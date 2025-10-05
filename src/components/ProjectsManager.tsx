@@ -165,7 +165,10 @@ export function ProjectsManager() {
       </div>
 
       {showForm && (
-        <div className="bg-white p-4 lg:p-6 rounded-lg shadow-lg mx-2 lg:mx-0">
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={resetForm} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white p-4 lg:p-6 rounded-2xl shadow-2xl border border-gray-100 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
           <div className="text-center mb-6">
             <h3 className="text-lg lg:text-xl font-medium mb-2">
               {editingProject ? 'Edit Project' : 'Add New Project'}
@@ -309,7 +312,9 @@ export function ProjectsManager() {
               </button>
             </div>
           </form>
-        </div>
+            </div>
+          </div>
+        </>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
