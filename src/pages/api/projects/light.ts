@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const total = await Project.countDocuments(filter);
     const items = await Project.find(filter)
-      .select('title image category descriptionEn descriptionAr createdAt')
+      .select('title titleEn titleAr image category descriptionEn descriptionAr createdAt')
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean();

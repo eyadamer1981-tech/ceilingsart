@@ -172,11 +172,11 @@ export function Hero() {
               <div className="w-full h-full rounded-lg shadow-2xl overflow-hidden">
                 <img
                   src={project.image.startsWith('http') ? project.image : project.image}
-                  alt={project.title}
+                  alt={project.titleEn || project.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
-                  <span className="text-white text-xs font-medium truncate">{project.title}</span>
+                  <span className="text-white text-xs font-medium truncate">{project.titleEn || project.title}</span>
                 </div>
               </div>
             </div>

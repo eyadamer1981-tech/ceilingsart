@@ -44,9 +44,9 @@ export function PaperStretchCeilingPage({ onBack }: PaperStretchCeilingPageProps
       installation: 'Professional installation required'
     },
     images: {
-      main: '/art-images/stretch-ceiling/paper/20_96cc8cef-3998-4a91-b05b-4c0cdf9b57c1.webp',
+      main: '/art-images/stretch-ceiling/paper/french-paper-stretch-ceiling.webp',
       gallery: [
-        '/art-images/stretch-ceiling/paper/20_96cc8cef-3998-4a91-b05b-4c0cdf9b57c1.webp',
+        '/art-images/stretch-ceiling/paper/french-paper-stretch-ceiling.webp',
         '/art-images/stretch-ceiling/paper/H0c358de409424c30b4b61f00ab0c7464k.png',
         '/art-images/stretch-ceiling/paper/H8674afce5d3d49e5b9b8e28e5522485co.png',
         '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg',

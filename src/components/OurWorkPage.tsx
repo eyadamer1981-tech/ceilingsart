@@ -12,7 +12,7 @@ interface OurWorkPageProps {
 }
 
 export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
   const [ourWorkImages, setOurWorkImages] = React.useState<OurWorkItem[]>([]);
   const [customSliders, setCustomSliders] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -27,7 +27,12 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
         const res = await fetch(`/api/projects/light?page=1&pageSize=${pageSize}`);
         const data = await res.json();
         const items = Array.isArray(data?.items) ? data.items : [];
-        setOurWorkImages(items.map((p: any) => ({ src: p.image, title: p.title, category: p.category })));
+        setOurWorkImages(items.map((p: any) => ({ 
+          src: p.image, 
+          title: isRTL && p.titleAr ? p.titleAr : (p.titleEn || p.title), 
+          titleAr: p.titleAr,
+          category: p.category 
+        })));
 
         // Fetch custom sliders
         const slidersRes = await fetch('/api/custom-sliders');
@@ -64,7 +69,8 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
       }
       groups[category].push({
         src: image.src,
-        title: image.title,
+        title: isRTL && image.titleAr ? image.titleAr : image.title,
+        titleAr: image.titleAr,
         category: image.category
       });
     });
@@ -117,7 +123,8 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
                   title={slider.title}
                   items={slider.projectIds.map((project: any) => ({
                     src: project.image,
-                    title: project.title,
+                    title: isRTL && project.titleAr ? project.titleAr : (project.titleEn || project.title),
+                    titleAr: project.titleAr,
                     category: project.category
                   }))}
                   onSelect={(item) => onSelect?.(item)}

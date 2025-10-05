@@ -6,6 +6,7 @@ import { translateCategory } from '../lib/translations';
 export interface ProductCard {
   src: string;
   title: string;
+  titleAr?: string;
   category: string;
 }
 
@@ -16,7 +17,7 @@ interface ProductCardSliderProps {
 }
 
 export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderProps) {
-  const { isRTL, language } = useLanguage();
+  const { language, isRTL } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardWidth = 300; // Fixed card width
@@ -139,7 +140,7 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
                 {/* Content */}
                 <div className="p-4 group-hover:bg-gradient-to-br group-hover:from-orange-50 group-hover:to-yellow-50 transition-all duration-500">
                   <h3 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-800 transition-colors duration-500">
-                    {item.title}
+                    {isRTL && item.titleAr ? item.titleAr : item.title}
                   </h3>
                   <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium group-hover:from-orange-500 group-hover:to-yellow-600 transition-all duration-500">
                     {translateCategory(item.category, language)}
