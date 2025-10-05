@@ -5,6 +5,7 @@ import { AdminDashboard } from '../../components/AdminDashboard';
 import Head from 'next/head';
 import '../../app/globals.css'; // Import the global CSS with Tailwind
 import './admin.css'; // Import admin-specific CSS
+import { LanguageProvider } from '../../contexts/LanguageContext';
 
 export default function AdminPage() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -38,30 +39,31 @@ export default function AdminPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="utf-8" />
       </Head>
-      
-      {loading ? (
-        <div 
-          className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900"
-          style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(to bottom right, #111827, #1f2937, #1e3a8a)'
-          }}
-        >
+      <LanguageProvider>
+        {loading ? (
           <div 
-            className="text-white text-xl"
-            style={{ color: 'white', fontSize: '1.25rem' }}
+            className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900"
+            style={{
+              minHeight: '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'linear-gradient(to bottom right, #111827, #1f2937, #1e3a8a)'
+            }}
           >
-            Loading...
+            <div 
+              className="text-white text-xl"
+              style={{ color: 'white', fontSize: '1.25rem' }}
+            >
+              Loading...
+            </div>
           </div>
-        </div>
-      ) : isAdminLoggedIn ? (
-        <AdminDashboard onLogout={handleAdminLogout} />
-      ) : (
-        <AdminLogin onLogin={handleAdminLogin} />
-      )}
+        ) : isAdminLoggedIn ? (
+          <AdminDashboard onLogout={handleAdminLogout} />
+        ) : (
+          <AdminLogin onLogin={handleAdminLogin} />
+        )}
+      </LanguageProvider>
     </>
   );
 }
