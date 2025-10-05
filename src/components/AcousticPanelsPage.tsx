@@ -235,7 +235,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
                 src="/polyeseter.webp"
-                alt={isRTL ? 'الألواح الصوتية البوليستر' : 'Polyester Acoustic Panels'}
+                alt={isRTL ? 'الألواح العازلة البوليستر' : 'Polyester Acoustic Panels'}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
                   e.currentTarget.src = '/placeholder-acoustic.jpg';
@@ -243,7 +243,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               />
             </div>
             <h3 className="text-xl font-semibold mb-4 text-white">
-              {isRTL ? 'الألواح الصوتية البوليستر' : 'Polyester Acoustic Panels'}
+              {isRTL ? 'الألواح العازلة البوليستر' : 'Polyester Acoustic Panels'}
             </h3>
             <p className="text-gray-300 text-sm mb-4">
               {isRTL 
@@ -255,7 +255,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               onClick={() => handlePanelSelect({
                 _id: 'polyester-panels',
                 titleEn: 'Polyester Acoustic Panels',
-                titleAr: 'الألواح الصوتية البوليستر',
+                titleAr: 'الألواح العازلة البوليستر',
                 descriptionEn: 'Acoustic panels made from high-density polyester fibers for excellent sound absorption and moisture resistance. Ideal for humid environments and high-traffic areas.',
                 descriptionAr: 'ألواح صوتية مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.',
                 category: 'Polyester',

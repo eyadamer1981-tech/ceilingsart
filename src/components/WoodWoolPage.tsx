@@ -11,7 +11,7 @@ export function WoodWoolPage() {
   const titleEn = 'Wood Wool Panels';
   const titleAr = 'ألواح الصوف الخشبي';
   const descriptionEn = 'Natural acoustic panels made from treated wood fibers, providing excellent sound insulation and beautiful natural appearance. Perfect for eco-friendly and sustainable design projects.';
-  const descriptionAr = 'ألواح صوتية طبيعية مصنوعة من ألياف الخشب المعالجة، توفر عزل صوتي ممتاز ومظهر طبيعي جميل. مثالية لمشاريع التصميم الصديقة للبيئة والمستدامة.';
+  const descriptionAr = 'ألواح عازلة طبيعية مصنوعة من ألياف الخشب المعالجة، توفر عزل صوتي ممتاز ومظهر طبيعي جميل. مثالية لمشاريع التصميم الصديقة للبيئة والمستدامة.';
 
   const title = isRTL ? titleAr : titleEn;
   const description = isRTL ? descriptionAr : descriptionEn;

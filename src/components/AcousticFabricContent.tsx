@@ -27,11 +27,11 @@ export function AcousticFabricContent() {
           </div>
           <div>
             <h3 className="text-white text-lg font-semibold mb-2">
-              {isRTL ? 'ما هي الألواح الصوتية؟' : 'What Are Acoustic Panels?'}
+              {isRTL ? 'ما هي الألواح العازلة؟' : 'What Are Acoustic Panels?'}
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed">
               {isRTL 
-                ? 'الألواح الصوتية مصممة لامتصاص الصوت وتقليل الضوضاء وتحسين الراحة وإثراء التصميم الداخلي.'
+                ? 'الألواح العازلة مصممة لامتصاص الصوت وتقليل الضوضاء وتحسين الراحة وإثراء التصميم الداخلي.'
                 : 'Acoustic panels are designed to absorb sound, minimize noise, boost comfort, and enrich interior design.'
               }
             </p>
@@ -139,7 +139,7 @@ export function AcousticFabricContent() {
           </div>
           <div>
             <h3 className="text-white text-lg font-semibold mb-2">
-              {isRTL ? 'أين تستخدم الألواح الصوتية' : 'Where to Use Acoustic Panels'}
+              {isRTL ? 'أين تستخدم الألواح العازلة' : 'Where to Use Acoustic Panels'}
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed">
               {isRTL 

@@ -95,7 +95,7 @@ export function AcousticPanelDetailPage({ panel, onBack }: AcousticPanelDetailPa
           </h2>
           <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
             {isRTL 
-              ? 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح الصوتية المناسبة لمساحتك.'
+              ? 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح العازلة المناسبة لمساحتك.'
               : 'Contact us for a free consultation about acoustic panel solutions suitable for your space.'
             }
           </p>

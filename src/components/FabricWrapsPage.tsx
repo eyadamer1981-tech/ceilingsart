@@ -11,7 +11,7 @@ export function FabricWrapsPage() {
   const titleEn = 'Acoustic Fabric Wraps';
   const titleAr = 'أغلفة القماش الصوتية';
   const descriptionEn = 'Elegant acoustic panels wrapped with high-quality fabric to improve acoustics while maintaining modern design. Perfect for offices, studios, and commercial spaces.';
-  const descriptionAr = 'ألواح صوتية أنيقة مغلفة بقماش عالي الجودة لتحسين الصوتيات مع الحفاظ على التصميم العصري. مثالية للمكاتب والاستوديوهات والمساحات التجارية.';
+  const descriptionAr = 'ألواح عازلة أنيقة مغلفة بقماش عالي الجودة لتحسين الصوتيات مع الحفاظ على التصميم العصري. مثالية للمكاتب والاستوديوهات والمساحات التجارية.';
 
   const title = isRTL ? titleAr : titleEn;
   const description = isRTL ? descriptionAr : descriptionEn;

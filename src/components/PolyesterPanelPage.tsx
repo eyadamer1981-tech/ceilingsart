@@ -9,9 +9,9 @@ export function PolyesterPanelPage() {
   const isRTL = language === 'ar';
 
   const titleEn = 'Polyester Acoustic Panels';
-  const titleAr = 'الألواح الصوتية البوليستر';
+  const titleAr = 'الألواح العازلة البوليستر';
   const descriptionEn = 'Acoustic panels made from high-density polyester fibers for excellent sound absorption and moisture resistance. Ideal for humid environments and high-traffic areas.';
-  const descriptionAr = 'ألواح صوتية مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.';
+  const descriptionAr = 'ألواح عازلة مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.';
 
   const title = isRTL ? titleAr : titleEn;
   const description = isRTL ? descriptionAr : descriptionEn;

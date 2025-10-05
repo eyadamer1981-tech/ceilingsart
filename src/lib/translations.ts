@@ -637,7 +637,7 @@ export const translations: Record<Language, Translations> = {
     stretchCeiling: 'أسقف مشدودة',
     acoustic: 'عازل للصوت',
     acousticPanels: 'ألواح عازلة للصوت',
-    noAcousticPanels: 'لا توجد ألواح صوتية متاحة في الوقت الحالي',
+    noAcousticPanels: 'لا توجد ألواح عازلة متاحة في الوقت الحالي',
     checkBackLater: 'يرجى العودة لاحقاً للحصول على التحديثات',
     needCustomAcousticSolution: 'هل تحتاج إلى حل صوتي مخصص؟',
     acousticConsultationText: 'يمكن لخبرائنا مساعدتك في تصميم الحل الصوتي المثالي لمساحتك',
@@ -720,15 +720,15 @@ export const translations: Record<Language, Translations> = {
     tenYearWarranty: 'ضمان 10 سنوات على جميع التركيبات',
     europeanMaterials: 'مواد أوروبية بأسعار تنافسية',
     certifiedInstallation: 'فريق تركيب معتمد مع خبرة',
-    acousticFabricWraps: 'أغلفة القماش الصوتية',
-    polyesterAcousticPanels: 'ألواح صوتية من البوليستر',
+    acousticFabricWraps: 'أغلفة القماش العازلة',
+    polyesterAcousticPanels: 'ألواح عازلة من البوليستر',
     woodWoolPanels: 'ألواح الصوف الخشبي',
-    geometricAcousticPanels: 'ألواح صوتية هندسية',
-    geometricAcousticDescription: 'ألواح صوتية هندسية – مصممة للديكورات الداخلية الحديثة، توفر هذه الألواح جاذبية بصرية وامتصاص صوتي وظيفي. بالإضافة إلى ذلك، الأشكال الزاوية وتنويعات الألوان تعزز المساحة صوتياً وبصرياً.',
+    geometricAcousticPanels: 'ألواح عازلة هندسية',
+    geometricAcousticDescription: 'ألواح عازلة هندسية – مصممة للديكورات الداخلية الحديثة، توفر هذه الألواح جاذبية بصرية وامتصاصاً صوتياً وظيفياً. بالإضافة إلى ذلك، الأشكال الزاوية وتنويعات الألوان تعزز المساحة عازلياً وبصرياً.',
     officeAcousticBaffles: 'حواجز صوتية للمكاتب',
     officeAcousticDescription: 'حواجز صوتية للمكاتب من حرمت الأندلس – هذه الألواح السقفية الملونة مصممة لتعزيز الديكورات الداخلية للمكاتب السعودية الحديثة مع امتصاص صوتي عالي الأداء وتصميم جريء. علاوة على ذلك، فهي مثالية لتقليل الصدى وتحسين الراحة الصوتية في أماكن العمل المزدحمة.',
-    acousticWallPanelsModernOffices: 'ألواح جدارية صوتية للمكاتب الحديثة',
-    acousticWallPanelsDescription: 'هذه الألواح الصوتية الهندسية توفر المزيج المثالي من تصميم الجدار الأنيق والعزل الصوتي الفعال. مثالية لتقليل الضوضاء في بيئات المكاتب، فهي تعزز كل من الجودة الجمالية والصوتية لمساحتك.',
+    acousticWallPanelsModernOffices: 'ألواح جدارية عازلة للمكاتب الحديثة',
+    acousticWallPanelsDescription: 'هذه الألواح العازلة الهندسية توفر المزيج المثالي من تصميم الجدار الأنيق والعزل الصوتي الفعال. مثالية لتقليل الضوضاء في بيئات المكاتب، فهي تعزز كل من الجودة الجمالية والعزل الصوتي لمساحتك.',
     
     // Stretch Ceilings Features
     stretchCeilingsFeatures: 'مميزات الأسقف المعلقة',
@@ -766,7 +766,7 @@ export const translations: Record<Language, Translations> = {
     // Common page text translations
     productDescription: 'وصف المنتج',
     wantToKnowMore: 'هل تريد معرفة المزيد؟',
-    contactUsForConsultation: 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح الصوتية المناسبة لمساحتك.',
+    contactUsForConsultation: 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح العازلة المناسبة لمساحتك.',
     
     // Success Partners Section
     successPartners: 'شركاء النجاح',

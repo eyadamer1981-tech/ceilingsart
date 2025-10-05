@@ -62,8 +62,8 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
     },
     {
       type: 'ACOUSTIC PANELS',
-      title: isRTL ? 'الألواح الصوتية' : 'Acoustic Panels',
-      titleAr: 'الألواح الصوتية',
+      title: isRTL ? 'الألواح العازلة' : 'Acoustic Panels',
+      titleAr: 'الألواح العازلة',
       titleEn: 'Acoustic Panels',
       description: isRTL
         ? 'حلول صوتية متقدمة لتحسين جودة الصوت والتحكم في الضوضاء. ألواح عازلة للصوت مصممة للمساحات السكنية والتجارية.'
