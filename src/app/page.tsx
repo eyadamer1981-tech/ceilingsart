@@ -65,7 +65,13 @@ export default function Home() {
             <SuccessPartnersSection />
             <ImageCarousel
               onSelect={(img) => {
-                setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
+                setSelectedItem({ 
+                  title: img.alt, 
+                  titleEn: img.titleEn || img.alt,
+                  titleAr: img.titleAr,
+                  image: img.src, 
+                  category: img.category || 'Gallery' 
+                });
                 setSelectedIsService(img.category === 'Services');
               }}
             />
@@ -276,7 +282,13 @@ export default function Home() {
             <SuccessPartnersSection />
             <ImageCarousel 
               onSelect={(img) => {
-                setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
+                setSelectedItem({ 
+                  title: img.alt, 
+                  titleEn: img.titleEn || img.alt,
+                  titleAr: img.titleAr,
+                  image: img.src, 
+                  category: img.category || 'Gallery' 
+                });
                 setSelectedIsService(img.category === 'Services');
               }} 
             />

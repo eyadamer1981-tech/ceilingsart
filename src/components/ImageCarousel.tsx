@@ -6,6 +6,8 @@ interface ImageItem {
   alt: string;
   category: string;
   title?: string;
+  titleEn?: string;
+  titleAr?: string;
   description?: string;
 }
 
@@ -62,6 +64,8 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
       alt: item.title || (language === 'ar' ? (item.titleAr || 'صورة') : (item.titleEn || 'Image')),
       category: item.category || (language === 'ar' ? 'المعرض' : 'Gallery'),
       title: item.title || (language === 'ar' ? (item.titleAr || '') : (item.titleEn || '')),
+      titleEn: item.titleEn,
+      titleAr: item.titleAr,
       description: item.description || (language === 'ar' ? (item.descriptionAr || '') : (item.descriptionEn || ''))
     }));
   };

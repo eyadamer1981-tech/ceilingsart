@@ -6,6 +6,8 @@ import { getTranslation } from "../lib/translations";
 
 export interface DetailItem {
   title: string;
+  titleEn?: string;
+  titleAr?: string;
   image: string;
   description?: string;
   descriptionEn?: string;
@@ -26,7 +28,7 @@ export function ProjectDetailPage({
   onSelectRelated?: (item: DetailItem) => void;
 }) {
   const [related, setRelated] = useState<DetailItem[]>([]);
-  const { language } = useLanguage();
+  const { language, isRTL } = useLanguage();
   
   useEffect(() => {
     let isMounted = true;
@@ -51,6 +53,8 @@ export function ProjectDetailPage({
         const data = await res.json();
         const items: DetailItem[] = (Array.isArray(data) ? data : []).map((p: any) => ({
           title: p.title || p.titleEn,
+          titleEn: p.titleEn,
+          titleAr: p.titleAr,
           image: p.image,
           descriptionEn: p.descriptionEn,
           descriptionAr: p.descriptionAr,
@@ -92,7 +96,9 @@ export function ProjectDetailPage({
                   {isService ? getTranslation(language, 'service') : getTranslation(language, 'project')}
                 </span>
               </div>
-              <h1 className="text-3xl lg:text-4xl mb-2 tracking-wide">{item.title}</h1>
+              <h1 className="text-3xl lg:text-4xl mb-2 tracking-wide">
+                {isRTL && item.titleAr ? item.titleAr : (item.titleEn || item.title)}
+              </h1>
               <p className="text-gray-300 text-lg">{item.category ?? (isService ? getTranslation(language, 'service') : getTranslation(language, 'project'))}</p>
             </div>
           </div>
@@ -102,7 +108,7 @@ export function ProjectDetailPage({
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <ImageWithFallback
                 src={item.image}
-                alt={item.title}
+                alt={isRTL && item.titleAr ? item.titleAr : (item.titleEn || item.title)}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -119,7 +125,7 @@ export function ProjectDetailPage({
               <div key={i} className="aspect-[4/3] rounded-lg overflow-hidden">
                 <ImageWithFallback
                   src={src}
-                  alt={`${item.title} detail ${i + 1}`}
+                  alt={`${isRTL && item.titleAr ? item.titleAr : (item.titleEn || item.title)} detail ${i + 1}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -165,11 +171,13 @@ export function ProjectDetailPage({
                   <div className="aspect-[4/3] rounded-lg overflow-hidden">
                     <ImageWithFallback
                       src={rel.image}
-                      alt={rel.title}
+                      alt={isRTL && rel.titleAr ? rel.titleAr : (rel.titleEn || rel.title)}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="mt-2 text-sm text-gray-700">{rel.title}</div>
+                  <div className="mt-2 text-sm text-gray-700">
+                    {isRTL && rel.titleAr ? rel.titleAr : (rel.titleEn || rel.title)}
+                  </div>
                 </div>
               ))}
               {related.length === 0 && (
