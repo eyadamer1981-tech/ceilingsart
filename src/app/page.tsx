@@ -20,7 +20,7 @@ import { FAQsPage } from '../components/FAQsPage';
 import { BlogPage } from '../components/BlogPage';
 import { ContactPage } from '../components/ContactPage';
 import { SuccessPartnersSection } from '../components/SuccessPartnersSection';
-import { DetailItem } from '../components/ProjectDetailPage';
+import { DetailItem, ProjectDetailPage } from '../components/ProjectDetailPage';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState('HOME');

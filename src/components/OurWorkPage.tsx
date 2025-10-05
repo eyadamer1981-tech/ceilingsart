@@ -4,7 +4,7 @@ import { GallerySkeleton } from './ui/GallerySkeleton';
 import { ProductCardSlider, ProductCard } from './ProductCardSlider';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export interface OurWorkItem { src: string; title: string; category: string; }
+export interface OurWorkItem { src: string; title: string; titleAr?: string; category: string; }
 
 interface OurWorkPageProps {
   onSelect?: (item: OurWorkItem) => void;
