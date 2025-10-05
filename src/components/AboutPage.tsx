@@ -1,4 +1,12 @@
+'use client';
+
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MH2 = motion.h2 as any;
+const MP = motion.p as any;
+const MButton = motion.button as any;
 import { useLanguage } from '../contexts/LanguageContext';
 import { SuccessPartnersSection } from './SuccessPartnersSection';
 
@@ -18,34 +26,34 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const values = language === 'ar'
     ? [
         { 
-          banner: '/art_images/New folder/stretch ceiling/glossy stretch ceiling/High-Gloss-Ceiling-Installation-In-The-Bathroom-1024x690.jpg.webp', 
+          banner: '/excellence.webp', 
           title: 'التميّز', 
           desc: 'نسعى للكمال في كل مشروع، مع أعلى معايير الجودة والدقة.' 
         },
         { 
-          banner: '/art_images/New folder/stretch ceiling/fiber optic stretch ceiling/star-ceiling2.jpg', 
+          banner: '/innovation.webp', 
           title: 'الابتكار', 
           desc: 'نستكشف باستمرار تقنيات ومواد جديدة لدفع حدود التصميم.' 
         },
         { 
-          banner: '/art_images/New folder/stretch ceiling/printed stretch ceiling/NEWMAT-residential-printed-ceiling.jpg', 
+          banner: '/craftsmanship.webp', 
           title: 'الحِرَفية', 
           desc: 'خبرتنا تصنع أعمالًا متقنة تدوم طويلاً وتُلهم المساحات.' 
         }
       ]
     : [
         { 
-          banner: '/art_images/New folder/stretch ceiling/glossy stretch ceiling/High-Gloss-Ceiling-Installation-In-The-Bathroom-1024x690.jpg.webp', 
+          banner: '/excellence.webp', 
           title: 'Excellence', 
           desc: 'We pursue perfection in every project with the highest quality standards.' 
         },
         { 
-          banner: '/art_images/New folder/stretch ceiling/fiber optic stretch ceiling/star-ceiling2.jpg', 
+          banner: '/innovation.webp', 
           title: 'Innovation', 
           desc: 'We continuously explore new techniques and materials to push boundaries.' 
         },
         { 
-          banner: '/art_images/New folder/stretch ceiling/printed stretch ceiling/NEWMAT-residential-printed-ceiling.jpg', 
+          banner: '/craftsmanship.webp', 
           title: 'Craftsmanship', 
           desc: 'Our expertise delivers enduring work that elevates every space.' 
         }
@@ -94,11 +102,21 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
         <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content over the cover */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide">
+        <MDiv 
+          className="relative z-10 container mx-auto px-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <MH1 
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+          >
             {t('aboutTitle')}
-          </h1>
-        </div>
+          </MH1>
+        </MDiv>
       </div>
 
       {/* Content Section */}
@@ -106,7 +124,12 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20 ${isRTL ? 'text-right' : ''}`}>
-              <div>
+              <MDiv 
+                initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7 }}
+              >
                 <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-6 tracking-wide">
                   {sectionHeading}
                 </h2>
@@ -116,20 +139,42 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
                 <p className="text-gray-600 leading-relaxed text-lg">
                   {p2}
                 </p>
-              </div>
-              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+              </MDiv>
+              <MDiv 
+                className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg"
+                initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+              >
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1663082353116-73bdf70050be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjZWlsaW5nJTIwZGVzaWduJTIwbGlnaHRpbmd8ZW58MXx8fHwxNzU4NTg1OTUxfDA&ixlib=rb-4.1.0&q=80&w=1080"
                   alt="Our craftsmanship"
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </MDiv>
             </div>
 
             {/* Values Section */}
-            <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 ${isRTL ? 'text-right' : ''}`}>
+            <MDiv 
+              className={`grid grid-cols-1 md:grid-cols-3 gap-8 ${isRTL ? 'text-right' : ''}`}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.15 } }
+              }}
+            >
               {values.map(v => (
-                <div key={v.title} className="text-center p-6">
+                <MDiv 
+                  key={v.title} 
+                  className="text-center p-6"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <div className="relative mb-6 rounded-lg overflow-hidden shadow-lg">
                     <img
                       src={v.banner}
@@ -142,9 +187,9 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
                   <p className="text-gray-600">
                     {v.desc}
                   </p>
-                </div>
+                </MDiv>
               ))}
-            </div>
+            </MDiv>
           </div>
         </div>
       </div>
@@ -154,24 +199,45 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
-              <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-8 tracking-wide">
+              <MH2 
+                className="text-3xl lg:text-4xl font-light text-gray-900 mb-8 tracking-wide"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 }}
+              >
                 {extendedContent.title}
-              </h2>
+              </MH2>
               
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {extendedContent.paragraphs.map((paragraph, index) => (
-                  <p key={index} className={isRTL ? 'text-right' : 'text-left'}>
+                  <MP 
+                    key={index} 
+                    className={isRTL ? 'text-right' : 'text-left'}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                  >
                     {paragraph}
-                  </p>
+                  </MP>
                 ))}
               </div>
 
-              <div className="mt-12">
+              <MDiv 
+                className="mt-12"
+                initial={{ opacity: 0, scale: 0.98 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
                 <p className="text-xl font-medium text-gray-900 mb-6">
                   {extendedContent.cta}
                 </p>
-                <button 
+                <MButton 
                   className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full font-medium hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => {
                     if (onContactClick) {
                       onContactClick();
@@ -179,8 +245,8 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
                   }}
                 >
                   {extendedContent.contactButton}
-                </button>
-              </div>
+                </MButton>
+              </MDiv>
             </div>
           </div>
         </div>

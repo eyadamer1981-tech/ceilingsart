@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface PageCovers {
@@ -85,7 +86,13 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          viewport={{ once: true }}
+        >
           <h2 className={`text-4xl font-light text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-center'}`}>
             {isRTL ? 'خدماتنا الرئيسية' : 'Our Main Services'}
           </h2>
@@ -95,12 +102,20 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
               : 'We provide comprehensive ceiling and acoustic solutions tailored to your needs'
             }
           </p>
-        </div>
+        </motion.div>
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+            <motion.div
+              key={index}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: index * 0.12 }}
+              viewport={{ once: true, amount: 0.3 }}
+              whileHover={{ y: -5 }}
+            >
               {/* Service Image */}
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -149,7 +164,7 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

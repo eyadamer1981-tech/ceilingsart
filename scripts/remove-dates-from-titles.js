@@ -218,3 +218,4 @@ async function removeDatesFromProjectTitles() {
 }
 
 removeDatesFromProjectTitles();
+

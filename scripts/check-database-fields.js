@@ -79,3 +79,4 @@ async function checkDatabaseFields() {
 }
 
 checkDatabaseFields();
+

@@ -181,3 +181,4 @@ async function fixSpecificArabicTitles() {
 }
 
 fixSpecificArabicTitles();
+

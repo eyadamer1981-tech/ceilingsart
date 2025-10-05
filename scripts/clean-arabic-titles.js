@@ -277,3 +277,4 @@ async function cleanArabicTitles() {
 }
 
 cleanArabicTitles();
+

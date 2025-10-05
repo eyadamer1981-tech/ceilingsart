@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translateCategory } from '../lib/translations';
@@ -112,19 +114,26 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
       <div className="relative">
         <div
           ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-hidden scrollbar-hide"
+          className="flex gap-6 overflow-x-auto md:overflow-x-hidden scrollbar-hide snap-x snap-mandatory"
           dir="ltr"
           style={{
             scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehaviorX: 'contain',
+            touchAction: 'pan-x pinch-zoom'
           }}
         >
           {items.map((item, index) => (
-            <div
+            <MDiv
               key={index}
-              className="flex-shrink-0 group cursor-pointer"
+              className="flex-shrink-0 group cursor-pointer snap-start"
               onClick={() => onSelect?.(item)}
               style={{ width: `${cardWidth}px` }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.05 }}
             >
               <div className="bg-white rounded-lg shadow-lg group-hover:shadow-2xl transition-all duration-500 ease-out overflow-hidden">
                 {/* Image */}
@@ -147,7 +156,7 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
                   </span>
                 </div>
               </div>
-            </div>
+            </MDiv>
           ))}
         </div>
 

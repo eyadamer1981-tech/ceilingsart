@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { motion, useScroll, useTransform } from 'framer-motion';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MButton = motion.button as any;
 
 interface FeaturedContent {
   services: any[];
@@ -24,6 +28,11 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
   });
   const [pageCovers, setPageCovers] = useState<PageCovers>({});
   const [heroImage, setHeroImage] = useState<string>('/image.png'); // Fallback image
+  const sectionRef = useRef<HTMLElement>(null!);
+  const { scrollYProgress } = useScroll({ target: sectionRef as any, offset: ["start start", "end start"] });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const blobY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
   useEffect(() => {
     fetchFeaturedContent();
@@ -57,14 +66,14 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
       {/* Background block color like homepage header */}
       <div className="absolute inset-0"         style={{
           background: 'linear-gradient(to bottom, #373E44 0%, #373E44 80%, #ffffff 80%, #ffffff 100%)'
         }} />
 
       {/* Rotated background blob like homepage asset */}
-      <div 
+      <MDiv 
         className="absolute pointer-events-none z-10" 
         aria-hidden
         style={{
@@ -81,13 +90,15 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
           filter: 'saturate(105%)',
           WebkitMaskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
           maskImage: 'radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)',
-          willChange: 'transform'
+          willChange: 'transform',
+          y: blobY
         }}
+        animate={{}}
       />
 
       {/* Center ellipse 870x870 with inner vignette (raised slightly) */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10" aria-hidden>
-        <div
+        <MDiv
           className="relative rounded-full bg-center-image"
           style={{
             width: '600px',
@@ -101,7 +112,9 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
               'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
             maskImage:
               'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
-            willChange: 'transform'
+            willChange: 'transform',
+            scale: heroScale, 
+            y: heroY
           }}
         >
           <div
@@ -115,7 +128,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
                 'radial-gradient(circle at center, rgba(55,62,68,0) 70%, rgba(55,62,68,0.18) 88%, rgba(55,62,68,0.3) 100%)'
             }}
           />
-        </div>
+        </MDiv>
       </div>
 
       {/* Top logo (higher on mobile) */}
@@ -124,8 +137,17 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
       </div>
 
       {/* Headline and CTA centered like homepage (lowered) */}
-      <div className="relative z-20 text-center px-4 max-w-4xl mx-auto pt-80 sm:pt-[28rem] md:pt-[30rem] lg:pt-[40rem]">
-        <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-8 tracking-wide leading-tight ${isRTL ? 'text-right' : 'text-center'}`}>
+      <MDiv 
+        className="relative z-20 text-center px-4 max-w-4xl mx-auto pt-80 sm:pt-[28rem] md:pt-[30rem] lg:pt-[40rem]"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.5 }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15 } } }}
+      >
+        <MH1 
+          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-8 tracking-wide leading-tight ${isRTL ? 'text-right' : 'text-center'}`}
+          variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: 'easeOut' } } }}
+        >
           {isRTL ? (
             <>
               حول مساحتك<br className="hidden sm:block" />
@@ -137,11 +159,17 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
               <span className="sm:hidden"> </span>WITH BESPOKE CEILING ATR
             </>
           )}
-        </h1>
-        <button onClick={() => onGetStarted?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg">
+        </MH1>
+        <MButton 
+          onClick={() => onGetStarted?.()} 
+          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full transition-all duration-300 shadow-lg"
+          variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut', delay: 0.1 } } }}
+          whileHover={{ scale: 1.03, boxShadow: '0 0 0 0 rgba(0,0,0,0)', filter: 'drop-shadow(0 8px 24px rgba(255,180,60,0.35))' }}
+          whileTap={{ scale: 0.98 }}
+        >
           {t('getStarted')}
-        </button>
-      </div>
+        </MButton>
+      </MDiv>
 
       {/* Bottom wave from homepage vector */}
       <div className="absolute bottom-0 left-0 w-full">

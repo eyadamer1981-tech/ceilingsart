@@ -1,8 +1,14 @@
+'use client';
+
 import React from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { GallerySkeleton } from './ui/GallerySkeleton';
 import { ProductCardSlider, ProductCard } from './ProductCardSlider';
 import { useLanguage } from '../contexts/LanguageContext';
+import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MP = motion.p as any;
 
 export interface OurWorkItem { src: string; title: string; titleAr?: string; category: string; }
 
@@ -94,14 +100,29 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
         <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content over the cover */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4">
+        <MDiv 
+          className="relative z-10 container mx-auto px-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <MH1 
+            className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+          >
             {t('ourWorkPageTitle')}
-          </h1>
-          <p className="text-xl text-white tracking-wide">
+          </MH1>
+          <MP 
+            className="text-xl text-white tracking-wide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+          >
             {t('ourWorkPageSubtitle')}
-          </p>
-        </div>
+          </MP>
+        </MDiv>
       </div>
 
       {/* Our Work Sliders */}
@@ -115,45 +136,67 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
             <div className="text-center text-black">No projects found. Use the admin ingestion to import from art_images.</div>
           )}
           {!loading && ourWorkImages.length > 0 && (
-            <div className="space-y-16">
+            <MDiv 
+              className="space-y-16"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.15 }}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.2 } } }}
+            >
               {/* Custom Sliders */}
               {customSliders.map(slider => (
-                <ProductCardSlider
+                <MDiv
                   key={`custom-${slider._id}`}
-                  title={slider.title}
-                  items={slider.projectIds.map((project: any) => ({
-                    src: project.image,
-                    title: isRTL && project.titleAr ? project.titleAr : (project.titleEn || project.title),
-                    titleAr: project.titleAr,
-                    category: project.category
-                  }))}
-                  onSelect={(item) => onSelect?.(item)}
-                />
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <ProductCardSlider
+                    title={slider.title}
+                    items={slider.projectIds.map((project: any) => ({
+                      src: project.image,
+                      title: isRTL && project.titleAr ? project.titleAr : (project.titleEn || project.title),
+                      titleAr: project.titleAr,
+                      category: project.category
+                    }))}
+                    onSelect={(item) => onSelect?.(item)}
+                  />
+                </MDiv>
               ))}
               
               {/* Category Sliders */}
               {Object.entries(groupedImages).map(([category, items]) => (
-                <ProductCardSlider
+                <MDiv
                   key={`category-${category}`}
-                  title={category}
-                  items={items}
-                  onSelect={(item) => onSelect?.(item)}
-                />
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <ProductCardSlider
+                    title={category}
+                    items={items}
+                    onSelect={(item) => onSelect?.(item)}
+                  />
+                </MDiv>
               ))}
-            </div>
+            </MDiv>
           )}
 
           {/* Call to Action */}
           <div className="text-center mt-16">
-            <h2 className="text-3xl font-light text-gray-900 mb-6 tracking-wide">
-              {t('readyToTransform')}
-            </h2>
-            <p className="text-black text-lg mb-8 max-w-2xl mx-auto">
-              {t('transformDescription')}
-            </p>
-            <button onClick={() => onStartProject?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg font-medium tracking-wide">
-              {t('startYourProject')}
-            </button>
+            <MDiv initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.6 }}>
+              <h2 className="text-3xl font-light text-gray-900 mb-6 tracking-wide">
+                {t('readyToTransform')}
+              </h2>
+              <p className="text-black text-lg mb-8 max-w-2xl mx-auto">
+                {t('transformDescription')}
+              </p>
+              <button onClick={() => onStartProject?.()} className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg font-medium tracking-wide">
+                {t('startYourProject')}
+              </button>
+            </MDiv>
           </div>
         </div>
       </div>
