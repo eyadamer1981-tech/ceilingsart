@@ -317,10 +317,14 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
         {/* Database Product Categories */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {loading ? (
-            <div className="col-span-full text-center text-gray-300">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-              <p className="mt-4">Loading acoustic panels...</p>
-            </div>
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={`featured-acoustic-skel-${i}`} className="text-center group">
+                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700 animate-pulse" />
+                <div className="h-6 w-2/3 mx-auto bg-gray-700 rounded animate-pulse mb-3" />
+                <div className="h-4 w-5/6 mx-auto bg-gray-700 rounded animate-pulse mb-6" />
+                <div className="h-10 w-28 mx-auto bg-gray-700 rounded-full animate-pulse" />
+              </div>
+            ))
           ) : (
             featuredPanels.map((panel, index) => (
               <MDiv 
@@ -396,10 +400,13 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
         {/* All Panels as Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
-            <div className="col-span-full text-center text-gray-300">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-              <p className="mt-4">Loading showcase items...</p>
-            </div>
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={`acoustic-card-skel-${i}`} className="text-center group max-w-sm mx-auto">
+                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700 animate-pulse" />
+                <div className="h-5 w-3/4 mx-auto bg-gray-700 rounded animate-pulse mb-4" />
+                <div className="h-9 w-24 mx-auto bg-gray-700 rounded-md animate-pulse" />
+              </div>
+            ))
           ) : (
             acousticPanels.filter(panel => !panel.featured && !panel.rightLeftSection).map((panel, index) => (
               <MDiv 

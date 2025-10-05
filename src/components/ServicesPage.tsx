@@ -212,8 +212,18 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
           </MDiv>
 
           {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="text-xl text-gray-300">{t('loadingServices')}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-full overflow-x-hidden">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={`stretch-skel-${i}`} className="bg-gray-900 rounded-lg overflow-hidden">
+                  {/* image skeleton */}
+                  <div className="aspect-square w-full bg-gray-700 animate-pulse" />
+                  {/* content skeleton */}
+                  <div className="p-6 text-center">
+                    <div className="h-5 w-3/4 mx-auto bg-gray-700 rounded animate-pulse mb-4" />
+                    <div className="h-9 w-32 mx-auto bg-gray-700 rounded-lg animate-pulse" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-full overflow-x-hidden">
