@@ -1,6 +1,9 @@
+"use client";
+
 import { useLanguage } from '../contexts/LanguageContext';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
 
 export function SuccessPartnersSection() {
   const { t, isRTL } = useLanguage();
@@ -42,7 +45,7 @@ export function SuccessPartnersSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <motion.div
+          <MDiv
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -51,8 +54,8 @@ export function SuccessPartnersSection() {
             <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
               {t('successPartnersTitle')}
             </h2>
-          </motion.div>
-          <motion.div
+          </MDiv>
+          <MDiv
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
@@ -61,8 +64,8 @@ export function SuccessPartnersSection() {
             <p className="text-xl text-gray-600 mb-6">
               {t('successPartnersSubtitle')}
             </p>
-          </motion.div>
-          <motion.div
+          </MDiv>
+          <MDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
@@ -71,7 +74,7 @@ export function SuccessPartnersSection() {
             <p className="text-lg text-gray-500 max-w-3xl mx-auto">
               {t('successPartnersDescription')}
             </p>
-          </motion.div>
+          </MDiv>
         </div>
 
         {/* Partners Grid */}
@@ -81,7 +84,7 @@ export function SuccessPartnersSection() {
             const dir = rowIndex % 2 === 0 ? -40 : 40; // first row from left, second from right
             const delayInRow = (index % Math.max(1, columns)) * 0.06;
             return (
-              <motion.div
+              <MDiv
                 key={index}
                 className="group relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
                 initial={{ opacity: 0, x: dir }}
@@ -97,7 +100,7 @@ export function SuccessPartnersSection() {
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </motion.div>
+              </MDiv>
             );
           })}
         </div>

@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
 
 export function AcousticFabricContent() {
   const { language } = useLanguage();
@@ -9,7 +12,7 @@ export function AcousticFabricContent() {
   return (
     <div className="grid lg:grid-cols-2 gap-16">
       {/* Left Column */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, x: -30 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
@@ -97,10 +100,10 @@ export function AcousticFabricContent() {
             </p>
           </div>
         </div>
-      </motion.div>
+      </MDiv>
 
       {/* Right Column */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -192,7 +195,7 @@ export function AcousticFabricContent() {
             </p>
           </div>
         </div>
-      </motion.div>
+      </MDiv>
     </div>
   );
 }

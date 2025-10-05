@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
 
 export function WoodWoolPanelContent() {
   const { language } = useLanguage();
@@ -9,7 +12,7 @@ export function WoodWoolPanelContent() {
   return (
     <div className="space-y-16">
       {/* Wood Wool Panels Main Content */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -31,7 +34,7 @@ export function WoodWoolPanelContent() {
         
         <div className="grid md:grid-cols-3 gap-8">
           {/* Technical Specifications */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -47,10 +50,10 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'الصوف الخشبي الصوتي: 1.5 مم' : 'Acoustic Wood Wool: 1.5 mm'}</li>
               <li>• {isRTL ? 'لون الأسمنت: بيج ورمادي' : 'Cement Color: Beige and Gray'}</li>
             </ul>
-          </motion.div>
+          </MDiv>
           
           {/* Advantages */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -71,10 +74,10 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'متوافق مع مواد مختلفة' : 'Compatible with various materials'}</li>
               <li>• {isRTL ? 'مقاوم للنمل والقوارض' : 'Resistant to ants and rodents'}</li>
             </ul>
-          </motion.div>
+          </MDiv>
           
           {/* Applications */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -92,9 +95,9 @@ export function WoodWoolPanelContent() {
               <li>• {isRTL ? 'الجدران' : 'Walls'}</li>
               <li>• {isRTL ? 'الأسقف' : 'Ceilings'}</li>
             </ul>
-          </motion.div>
+          </MDiv>
         </div>
-      </motion.div>
+      </MDiv>
     </div>
   );
 }

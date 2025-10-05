@@ -1,8 +1,13 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BookOpen, Droplets, Building, Wine, Globe, Briefcase } from 'lucide-react';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MP = motion.p as any;
 import { GlossyStretchCeilingPage } from './GlossyStretchCeilingPage';
 import { BacklitStretchCeilingPage } from './BacklitStretchCeilingPage';
 import { AcousticStretchCeilingPage } from './AcousticStretchCeilingPage';
@@ -123,23 +128,23 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
 
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center max-w-full overflow-x-hidden">
-          <motion.h1 
+          <MH1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
           >
             {pageTitle || t('servicesPageTitle')}
-          </motion.h1>
+          </MH1>
           {pageSubtitle && (
-            <motion.p 
+            <MP 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl md:text-2xl text-white/90 mt-4 font-light"
             >
               {pageSubtitle}
-            </motion.p>
+            </MP>
           )}
         </div>
       </div>
@@ -148,7 +153,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       <div className="bg-gray-800 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
           {/* Introduction Section */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -163,7 +168,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
             
             {/* Benefits */}
             <div className="flex flex-wrap justify-center gap-8 mb-12">
-              <motion.div 
+              <MDiv 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -173,8 +178,8 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">{t('warranty10Years')}</span>
-              </motion.div>
-              <motion.div 
+              </MDiv>
+              <MDiv 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -184,8 +189,8 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">{t('europeanMaterials')}</span>
-              </motion.div>
-              <motion.div 
+              </MDiv>
+              <MDiv 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -195,9 +200,9 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                   <span className="text-white text-sm">✓</span>
                 </div>
                 <span className="text-lg">{t('certifiedInstallationTeam')}</span>
-              </motion.div>
+              </MDiv>
             </div>
-          </motion.div>
+          </MDiv>
 
           {loading ? (
             <div className="flex justify-center items-center py-20">
@@ -225,7 +230,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                 const ceilingType = getCeilingType(service.titleEn || service.title || '');
 
                 return (
-                  <motion.div 
+                  <MDiv 
                     key={service._id} 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -267,7 +272,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                         </button>
                       )}
                     </div>
-                  </motion.div>
+                  </MDiv>
                 );
               })}
             </div>
@@ -279,7 +284,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       <div className="bg-gray-800 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
           {/* Header */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -291,12 +296,12 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
               {t('stretchCeilingsFeaturesDescription')}
             </p>
-          </motion.div>
+          </MDiv>
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -310,10 +315,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsMaterialsColorsDescription')}
               </p>
-            </motion.div>
+            </MDiv>
 
             {/* Feature 2 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -327,10 +332,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingsProtectionLeakageDescription')}
               </p>
-            </motion.div>
+            </MDiv>
 
             {/* Feature 3 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -344,10 +349,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('modernStretchCeilingsInstallationDescription')}
               </p>
-            </motion.div>
+            </MDiv>
 
             {/* Feature 4 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -361,10 +366,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('easyStretchCeilingsTransportSetupDescription')}
               </p>
-            </motion.div>
+            </MDiv>
 
             {/* Feature 5 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -378,10 +383,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('fireMoistureProtectionDescription')}
               </p>
-            </motion.div>
+            </MDiv>
 
             {/* Feature 6 */}
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -395,7 +400,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 {t('ceilingSupportInfrastructureSystemsDescription')}
               </p>
-            </motion.div>
+            </MDiv>
           </div>
         </div>
       </div>

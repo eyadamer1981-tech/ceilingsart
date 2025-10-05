@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
 
 export function PolyesterPanelContent() {
   const { language } = useLanguage();
@@ -9,7 +12,7 @@ export function PolyesterPanelContent() {
   return (
     <div className="space-y-16">
       {/* Polyester Acoustic Panels Felt Acoustic Wall Panel */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -38,10 +41,10 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: أبيض، رمادي فاتح، رمادي داكن. خيارات الصباغة أو تغطية القماش الصوتي متاحة.' : 'Primary Color: White, Light Gray, Dark Gray. Dyeing or acoustic fabric covering options available.'}</li>
           <li>• {isRTL ? 'طرق التركيب: التركيب بالغراء ونظام التثبيت Clips-Z' : 'Installation Methods: Adhesive installation and Clips-Z mounting system.'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
 
       {/* 3D Acoustic Felt Panels */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
@@ -69,10 +72,10 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: أبيض، رمادي فاتح، رمادي داكن. خيار التلوين متاح.' : 'Base Color: White, Light Grey, Dark Grey. Coloring option available.'}</li>
           <li>• {isRTL ? 'طرق التركيب: التطبيق بالغراء ونظام التثبيت clips-Z' : 'Installation Methods: Adhesive application and clips-Z mounting system.'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
 
       {/* Acoustic Table Divider Panels */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -101,10 +104,10 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'مقاومة الحريق: 1G مكافئ لـ 0D1-S-B' : 'Fire Resistance: 1G equivalent to 0D1-S-B'}</li>
           <li>• {isRTL ? 'التطبيق: قدم التقسيم، التركيب بالمسامير.' : 'Application: Divider foot, installation with screws.'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
 
       {/* Acoustic Felt Cassette Ceiling Panel */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
@@ -131,10 +134,10 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Base Color: Limited to white, light gray, and dark gray. Acoustic fabric covering is optional.'}</li>
           <li>• {isRTL ? 'التطبيق: تعليق لوح السقف باستخدام الملحقات' : 'Application: Ceiling panel suspension using accessories'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
 
       {/* Acoustic Ceiling Panel Made of Felt */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
@@ -162,10 +165,10 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Primary Color: Limited to white, light gray, and dark gray. Acoustic fabric covering optional.'}</li>
           <li>• {isRTL ? 'التطبيق: الألواح معلقة من السقف باستخدام الملحقات.' : 'Application: Panels are suspended from the ceiling using accessories.'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
 
       {/* Acoustic Floating Ceiling Panel */}
-      <motion.div 
+      <MDiv 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5 }}
@@ -193,7 +196,7 @@ export function PolyesterPanelContent() {
           <li>• {isRTL ? 'اللون الأساسي: محدود بالأبيض والرمادي الفاتح والرمادي الداكن. تغطية القماش الصوتي اختيارية.' : 'Primary Color: Limited to white, light gray, and dark gray. Acoustic fabric covering is optional.'}</li>
           <li>• {isRTL ? 'التطبيق: ألواح السقف معلقة باستخدام الملحقات.' : 'Application: Ceiling panels suspended using accessories.'}</li>
         </ul>
-      </motion.div>
+      </MDiv>
     </div>
   );
 }

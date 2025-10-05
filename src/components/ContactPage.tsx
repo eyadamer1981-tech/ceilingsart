@@ -1,8 +1,14 @@
+'use client';
+
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { motion } from './ui/MotionWrapper';
 import { useState } from 'react';
+const MH1 = motion.h1 as any;
+const MDiv = motion.div as any;
+const MP = motion.p as any;
+const MButton = motion.button as any;
 
 export function ContactPage() {
   const { language, t, isRTL } = useLanguage();
@@ -120,14 +126,14 @@ export function ContactPage() {
         </div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <motion.h1 
+          <MH1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
           >
             {headerTitle}
-          </motion.h1>
+          </MH1>
         </div>
 
         {/* Decorative wave at bottom with orange gradient */}
@@ -156,7 +162,7 @@ export function ContactPage() {
         <div className="container mx-auto px-4">
           <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 ${isRTL ? 'text-right' : ''}`}>
             {/* Contact Form */}
-            <motion.div
+            <MDiv
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -168,7 +174,7 @@ export function ContactPage() {
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
+                  <MDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
@@ -182,8 +188,8 @@ export function ContactPage() {
                       className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
                       placeholder={language === 'ar' ? 'أدخل اسمك الأول' : 'Enter your first name'}
                     />
-                  </motion.div>
-                  <motion.div
+                  </MDiv>
+                  <MDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
@@ -197,10 +203,10 @@ export function ContactPage() {
                       className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
                       placeholder={language === 'ar' ? 'أدخل اسم العائلة' : 'Enter your last name'}
                     />
-                  </motion.div>
+                  </MDiv>
                 </div>
 
-                <motion.div
+                <MDiv
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -214,9 +220,9 @@ export function ContactPage() {
                     className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
                     placeholder={emailPlaceholder}
                   />
-                </motion.div>
+                </MDiv>
 
-                <motion.div
+                <MDiv
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
@@ -231,9 +237,9 @@ export function ContactPage() {
                     placeholder={phonePlaceholder}
                     dir="ltr"
                   />
-                </motion.div>
+                </MDiv>
 
-                <motion.div
+                <MDiv
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}
@@ -251,9 +257,9 @@ export function ContactPage() {
                     <option value="hospitality">{hospitality}</option>
                     <option value="retail">{retail}</option>
                   </select>
-                </motion.div>
+                </MDiv>
 
-                <motion.div
+                <MDiv
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
@@ -267,9 +273,9 @@ export function ContactPage() {
                     className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors resize-none text-black"
                     placeholder={messagePlaceholder}
                   ></textarea>
-                </motion.div>
+                </MDiv>
 
-                <motion.button 
+                <MButton 
                   type="submit"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -280,12 +286,12 @@ export function ContactPage() {
                 >
                   <Send size={20} />
                   {sendMessage}
-                </motion.button>
+                </MButton>
               </form>
-            </motion.div>
+            </MDiv>
 
             {/* Contact Information */}
-            <motion.div
+            <MDiv
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -303,7 +309,7 @@ export function ContactPage() {
               {/* Contact Details */}
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
-                  <motion.div
+                  <MDiv
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -326,12 +332,12 @@ export function ContactPage() {
                         <p className="text-gray-600 whitespace-pre-line">{info.value}</p>
                       )}
                     </div>
-                  </motion.div>
+                  </MDiv>
                 ))}
               </div>
 
               {/* Map Section */}
-              <motion.div 
+              <MDiv 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -350,8 +356,8 @@ export function ContactPage() {
                     title="Art Ceiling Location"
                   ></iframe>
                 </div>
-              </motion.div>
-            </motion.div>
+              </MDiv>
+            </MDiv>
           </div>
         </div>
       </div>
@@ -360,7 +366,7 @@ export function ContactPage() {
       <div className="bg-gray-50 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <motion.div 
+            <MDiv 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -372,7 +378,7 @@ export function ContactPage() {
               
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {extendedContent.paragraphs.map((paragraph, index) => (
-                  <motion.p 
+                  <MP 
                     key={index} 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -380,10 +386,10 @@ export function ContactPage() {
                     className={isRTL ? 'text-right' : 'text-left'}
                   >
                     {paragraph}
-                  </motion.p>
+                  </MP>
                 ))}
               </div>
-            </motion.div>
+            </MDiv>
           </div>
         </div>
       </div>

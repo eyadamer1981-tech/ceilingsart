@@ -1,6 +1,12 @@
+"use client";
+
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MP = motion.p as any;
+const MButton = motion.button as any;
 import { ArrowLeft, CheckCircle, Star, Shield, Zap } from 'lucide-react';
 
 interface StretchCeilingDetailPageProps {
@@ -77,7 +83,7 @@ export function StretchCeilingDetailPage({
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 text-center max-w-full overflow-x-hidden">
-          <motion.button
+          <MButton
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -86,32 +92,32 @@ export function StretchCeilingDetailPage({
           >
             <ArrowLeft size={20} />
             <span>{t('back')}</span>
-          </motion.button>
+          </MButton>
 
-          <motion.h1 
+          <MH1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-6"
           >
             {isRTL ? titleAr : titleEn}
-          </motion.h1>
+          </MH1>
 
-          <motion.p 
+          <MP 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
           >
             {isRTL ? descriptionAr : descriptionEn}
-          </motion.p>
+          </MP>
         </div>
       </div>
 
       {/* Features Section */}
       <div className="bg-gray-800 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -120,11 +126,11 @@ export function StretchCeilingDetailPage({
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {t('keyFeatures')}
             </h2>
-          </motion.div>
+          </MDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayFeatures.map((feature, index) => (
-              <motion.div
+              <MDiv
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -134,7 +140,7 @@ export function StretchCeilingDetailPage({
               >
                 <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
                 <p className="text-white text-lg">{feature}</p>
-              </motion.div>
+              </MDiv>
             ))}
           </div>
         </div>
@@ -143,7 +149,7 @@ export function StretchCeilingDetailPage({
       {/* Benefits Section */}
       <div className="bg-gray-900 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -152,11 +158,11 @@ export function StretchCeilingDetailPage({
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {t('benefits')}
             </h2>
-          </motion.div>
+          </MDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {displayBenefits.map((benefit, index) => (
-              <motion.div
+              <MDiv
                 key={index}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -166,7 +172,7 @@ export function StretchCeilingDetailPage({
               >
                 <Star className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
                 <p className="text-gray-300 text-lg leading-relaxed">{benefit}</p>
-              </motion.div>
+              </MDiv>
             ))}
           </div>
         </div>
@@ -175,7 +181,7 @@ export function StretchCeilingDetailPage({
       {/* Applications Section */}
       <div className="bg-gray-800 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -184,11 +190,11 @@ export function StretchCeilingDetailPage({
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {t('applications')}
             </h2>
-          </motion.div>
+          </MDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayApplications.map((application, index) => (
-              <motion.div
+              <MDiv
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +204,7 @@ export function StretchCeilingDetailPage({
               >
                 <Zap className="w-8 h-8 text-orange-400 mx-auto mb-3" />
                 <p className="text-white font-medium">{application}</p>
-              </motion.div>
+              </MDiv>
             ))}
           </div>
         </div>
@@ -207,7 +213,7 @@ export function StretchCeilingDetailPage({
       {/* Specifications Section */}
       <div className="bg-gray-900 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -216,11 +222,11 @@ export function StretchCeilingDetailPage({
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {t('technicalSpecifications')}
             </h2>
-          </motion.div>
+          </MDiv>
 
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <motion.div
+              <MDiv
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
@@ -232,9 +238,9 @@ export function StretchCeilingDetailPage({
                   {t('material')}
                 </h3>
                 <p className="text-gray-300">{displaySpecifications.material}</p>
-              </motion.div>
+              </MDiv>
 
-              <motion.div
+              <MDiv
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
@@ -246,9 +252,9 @@ export function StretchCeilingDetailPage({
                   {t('thickness')}
                 </h3>
                 <p className="text-gray-300">{displaySpecifications.thickness}</p>
-              </motion.div>
+              </MDiv>
 
-              <motion.div
+              <MDiv
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -260,9 +266,9 @@ export function StretchCeilingDetailPage({
                   {t('colors')}
                 </h3>
                 <p className="text-gray-300">{displaySpecifications.colors}</p>
-              </motion.div>
+              </MDiv>
 
-              <motion.div
+              <MDiv
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -274,7 +280,7 @@ export function StretchCeilingDetailPage({
                   {t('warranty')}
                 </h3>
                 <p className="text-gray-300">{displaySpecifications.warranty}</p>
-              </motion.div>
+              </MDiv>
             </div>
           </div>
         </div>
@@ -283,7 +289,7 @@ export function StretchCeilingDetailPage({
       {/* Gallery Section */}
       <div className="bg-gray-800 py-20 overflow-x-hidden">
         <div className="container mx-auto px-4 max-w-full">
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -292,11 +298,11 @@ export function StretchCeilingDetailPage({
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">
               {t('gallery')}
             </h2>
-          </motion.div>
+          </MDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {images.gallery.map((image, index) => (
-              <motion.div
+              <MDiv
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -309,7 +315,7 @@ export function StretchCeilingDetailPage({
                   alt={`${isRTL ? titleAr : titleEn} - Image ${index + 1}`}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
-              </motion.div>
+              </MDiv>
             ))}
           </div>
         </div>

@@ -1,7 +1,12 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcousticPanelDetailPage } from './AcousticPanelDetailPage';
 import { motion } from './ui/MotionWrapper';
+const MDiv = motion.div as any;
+const MH1 = motion.h1 as any;
+const MP = motion.p as any;
 
 interface AcousticPanel {
   _id: string;
@@ -150,22 +155,22 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
 
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <motion.h1 
+          <MH1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
           >
             {t('acousticPanels')}
-          </motion.h1>
-          <motion.p 
+          </MH1>
+          <MP 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl text-white/90 mt-4 font-light"
           >
             {t('acousticPanelsDescription')}
-          </motion.p>
+          </MP>
         </div>
       </div>
 
@@ -177,7 +182,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
         {/* Main Product Categories */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {/* Acoustic Fabric Wraps */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -218,10 +223,10 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             >
               {t('viewDetails')}
             </button>
-          </motion.div>
+          </MDiv>
 
           {/* Polyester Acoustic Panels */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -262,10 +267,10 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             >
               {t('viewDetails')}
             </button>
-          </motion.div>
+          </MDiv>
 
           {/* Wood Wool Panels */}
-          <motion.div 
+          <MDiv 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -306,7 +311,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             >
               {t('viewDetails')}
             </button>
-          </motion.div>
+          </MDiv>
         </div>
 
         {/* Database Product Categories */}
@@ -318,7 +323,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             </div>
           ) : (
             featuredPanels.map((panel, index) => (
-              <motion.div 
+              <MDiv 
                 key={panel._id} 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -347,7 +352,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                 >
                   {t('viewDetails')}
                 </button>
-              </motion.div>
+              </MDiv>
             ))
           )}
         </div>
@@ -356,7 +361,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
         {rightLeftPanels.length > 0 && (
           <div className="mt-16">
             {rightLeftPanels.map((panel, index) => (
-              <motion.div 
+              <MDiv 
                 key={panel._id} 
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -383,7 +388,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                     {isRTL ? panel.descriptionAr : panel.descriptionEn}
                   </p>
                 </div>
-              </motion.div>
+              </MDiv>
             ))}
           </div>
         )}
@@ -397,7 +402,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             </div>
           ) : (
             acousticPanels.filter(panel => !panel.featured && !panel.rightLeftSection).map((panel, index) => (
-              <motion.div 
+              <MDiv 
                 key={panel._id} 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -423,7 +428,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                 >
                   {t('viewDetails')}
                 </button>
-              </motion.div>
+              </MDiv>
             ))
           )}
         </div>
