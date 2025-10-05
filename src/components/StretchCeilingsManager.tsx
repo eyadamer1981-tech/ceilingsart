@@ -155,7 +155,10 @@ export function StretchCeilingsManager() {
       </div>
 
       {showForm && (
-        <div className="bg-white p-4 lg:p-8 rounded-2xl shadow-xl border border-gray-100 mx-2 lg:mx-0">
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={resetForm} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white p-4 lg:p-8 rounded-2xl shadow-2xl border border-gray-100 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
           <div className="text-center mb-6 lg:mb-8">
             <h3 className="text-lg lg:text-2xl font-light text-gray-900 mb-2">
               {editingService ? 'Edit Stretch Ceiling' : 'Add New Stretch Ceiling'}
@@ -287,7 +290,9 @@ export function StretchCeilingsManager() {
               </button>
             </div>
           </form>
-        </div>
+            </div>
+          </div>
+        </>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
