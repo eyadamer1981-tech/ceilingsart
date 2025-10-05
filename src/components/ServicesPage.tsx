@@ -109,7 +109,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
   }
 
   return (
-    <section className="min-h-screen">
+    <section className="min-h-screen overflow-x-hidden">
       {/* Header Section with Cover Image */}
       <div className="relative h-screen flex items-center justify-center">
         {/* Cover Image Background */}
@@ -122,7 +122,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
         </div>
 
         {/* Content over the cover */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-10 container mx-auto px-4 text-center max-w-full overflow-x-hidden">
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -145,8 +145,8 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       </div>
 
       {/* Services List */}
-      <div className="bg-gray-800 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-800 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           {/* Introduction Section */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -204,7 +204,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               <div className="text-xl text-gray-300">{t('loadingServices')}</div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-full overflow-x-hidden">
               {services.map((service, index) => {
                 // Map service titles to ceiling types for navigation
                 const getCeilingType = (title: string) => {
@@ -231,6 +231,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300"
+                    style={{ overflow: 'hidden' }}
                   >
                     {/* Image */}
                     <div className="aspect-square overflow-hidden">
@@ -275,8 +276,8 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
       </div>
 
       {/* Stretch Ceilings Features Section */}
-      <div className="bg-gray-800 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-800 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           {/* Header */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -300,6 +301,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="bg-gray-100 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <BookOpen className="w-12 h-12 text-gray-700 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -316,6 +318,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <Droplets className="w-12 h-12 text-blue-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -332,6 +335,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="bg-pink-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <Building className="w-12 h-12 text-pink-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -348,6 +352,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="bg-blue-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <Wine className="w-12 h-12 text-blue-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -364,6 +369,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
               className="bg-purple-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <Globe className="w-12 h-12 text-purple-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -380,6 +386,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: Se
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
               className="bg-green-50 rounded-lg p-8 hover:transform hover:scale-105 transition-all duration-300"
+              style={{ overflow: 'hidden' }}
             >
               <Briefcase className="w-12 h-12 text-green-600 mb-6" />
               <h3 className={`text-xl font-bold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>

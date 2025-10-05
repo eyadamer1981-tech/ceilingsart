@@ -1,5 +1,6 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
+import { SuccessPartnersSection } from './SuccessPartnersSection';
 
 export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const { language, t, isRTL } = useLanguage();
@@ -184,6 +185,9 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
           </div>
         </div>
       </div>
+
+      {/* Success Partners Section */}
+      <SuccessPartnersSection />
     </section>
   );
 }

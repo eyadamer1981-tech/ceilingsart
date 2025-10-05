@@ -62,7 +62,7 @@ export function StretchCeilingDetailPage({
   const displaySpecifications = isRTL && specificationsAr ? specificationsAr : specifications;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
       {/* Header Section */}
       <div className="relative h-screen flex items-center justify-center">
         {/* Background Image */}
@@ -76,7 +76,7 @@ export function StretchCeilingDetailPage({
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-10 container mx-auto px-4 text-center max-w-full overflow-x-hidden">
           <motion.button
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -109,8 +109,8 @@ export function StretchCeilingDetailPage({
       </div>
 
       {/* Features Section */}
-      <div className="bg-gray-800 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-800 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -130,6 +130,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-gray-700 rounded-lg p-6 text-center"
+                style={{ overflow: 'hidden' }}
               >
                 <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
                 <p className="text-white text-lg">{feature}</p>
@@ -140,8 +141,8 @@ export function StretchCeilingDetailPage({
       </div>
 
       {/* Benefits Section */}
-      <div className="bg-gray-900 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-900 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -161,6 +162,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="flex items-start gap-4"
+                style={{ overflow: 'hidden' }}
               >
                 <Star className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
                 <p className="text-gray-300 text-lg leading-relaxed">{benefit}</p>
@@ -171,8 +173,8 @@ export function StretchCeilingDetailPage({
       </div>
 
       {/* Applications Section */}
-      <div className="bg-gray-800 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-800 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -192,6 +194,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-gray-700 rounded-lg p-6 text-center hover:bg-gray-600 transition-colors"
+                style={{ overflow: 'hidden' }}
               >
                 <Zap className="w-8 h-8 text-orange-400 mx-auto mb-3" />
                 <p className="text-white font-medium">{application}</p>
@@ -202,8 +205,8 @@ export function StretchCeilingDetailPage({
       </div>
 
       {/* Specifications Section */}
-      <div className="bg-gray-900 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-900 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -222,6 +225,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
                 className="bg-gray-700 rounded-lg p-6"
+                style={{ overflow: 'hidden' }}
               >
                 <Shield className="w-8 h-8 text-blue-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
@@ -235,6 +239,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
                 className="bg-gray-700 rounded-lg p-6"
+                style={{ overflow: 'hidden' }}
               >
                 <Shield className="w-8 h-8 text-green-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
@@ -248,6 +253,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="bg-gray-700 rounded-lg p-6"
+                style={{ overflow: 'hidden' }}
               >
                 <Shield className="w-8 h-8 text-purple-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
@@ -261,6 +267,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="bg-gray-700 rounded-lg p-6"
+                style={{ overflow: 'hidden' }}
               >
                 <Shield className="w-8 h-8 text-yellow-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
@@ -274,8 +281,8 @@ export function StretchCeilingDetailPage({
       </div>
 
       {/* Gallery Section */}
-      <div className="bg-gray-800 py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-800 py-20 overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -295,6 +302,7 @@ export function StretchCeilingDetailPage({
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="aspect-square overflow-hidden rounded-lg"
+                style={{ overflow: 'hidden' }}
               >
                 <img
                   src={image}

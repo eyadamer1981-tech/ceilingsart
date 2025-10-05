@@ -241,6 +241,12 @@ export interface Translations {
   productDescription: string;
   wantToKnowMore: string;
   contactUsForConsultation: string;
+  
+  // Success Partners Section
+  successPartners: string;
+  successPartnersTitle: string;
+  successPartnersSubtitle: string;
+  successPartnersDescription: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -485,6 +491,12 @@ export const translations: Record<Language, Translations> = {
     productDescription: 'Product Description',
     wantToKnowMore: 'Want to Know More?',
     contactUsForConsultation: 'Contact us for a free consultation about acoustic panel solutions suitable for your space.',
+    
+    // Success Partners Section
+    successPartners: 'Success Partners',
+    successPartnersTitle: 'Our Success Partners',
+    successPartnersSubtitle: 'Trusted by Industry Leaders',
+    successPartnersDescription: 'We are proud to work with leading companies and organizations that trust our expertise in ceiling solutions.',
   },
   ar: {
     // Navigation
@@ -727,6 +739,12 @@ export const translations: Record<Language, Translations> = {
     productDescription: 'وصف المنتج',
     wantToKnowMore: 'هل تريد معرفة المزيد؟',
     contactUsForConsultation: 'تواصل معنا للحصول على استشارة مجانية حول حلول الألواح الصوتية المناسبة لمساحتك.',
+    
+    // Success Partners Section
+    successPartners: 'شركاء النجاح',
+    successPartnersTitle: 'شركاء نجاحنا',
+    successPartnersSubtitle: 'موثوقون من قادة الصناعة',
+    successPartnersDescription: 'نفتخر بالعمل مع الشركات والمؤسسات الرائدة التي تثق في خبرتنا في حلول الأسقف.',
   }
 };
 

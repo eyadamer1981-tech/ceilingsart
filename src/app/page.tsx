@@ -19,7 +19,7 @@ import { OurWorkPage } from '../components/OurWorkPage';
 import { FAQsPage } from '../components/FAQsPage';
 import { BlogPage } from '../components/BlogPage';
 import { ContactPage } from '../components/ContactPage';
-import { ProjectDetailPage, DetailItem } from '../components/ProjectDetailPage';
+import { SuccessPartnersSection } from '../components/SuccessPartnersSection';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState('HOME');
@@ -61,6 +61,7 @@ export default function Home() {
             <HomepageHero onGetStarted={() => handlePageChange('CONTACT US')} />
             <AboutUsSection />
             <MainServicesSection onLearnMore={(serviceType) => handlePageChange(serviceType)} />
+            <SuccessPartnersSection />
             <ImageCarousel
               onSelect={(img) => {
                 setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
@@ -271,6 +272,7 @@ export default function Home() {
             <HomepageHero onGetStarted={() => handlePageChange('CONTACT US')} />
             <AboutUsSection />
             <MainServicesSection onLearnMore={(serviceType) => handlePageChange(serviceType)} />
+            <SuccessPartnersSection />
             <ImageCarousel 
               onSelect={(img) => {
                 setSelectedItem({ title: img.alt, image: img.src, category: img.category || 'Gallery' });
