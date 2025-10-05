@@ -47,11 +47,11 @@ export function PrintedStretchCeilingPage({ onBack }: PrintedStretchCeilingPageP
       main: '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling.jpg',
       gallery: [
         '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling.jpg',
-        '/art-images/stretch-ceiling/printed/Imperial-Printed-Stretch-Ceiling-Sekkoya-1.jpg',
-        '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling-2.jpg',
-        '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling-3.jpg',
-        '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling-4.jpg',
-        '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling-5.jpg'
+        '/art-images/stretch-ceiling/printed/imperial-printed-stretch-ceiling-sekkoya-1.jpg',
+        '/art-images/stretch-ceiling/printed/img_1196.jpg',
+        '/art-images/stretch-ceiling/printed/img_1198.jpg',
+        '/art-images/stretch-ceiling/printed/hengar-manor-2.jpg',
+        '/art-images/stretch-ceiling/printed/Screen-Shot-2023-07-03-at-4.56.38-pm.png'
       ]
     }
   };

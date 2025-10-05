@@ -39,17 +39,24 @@ interface ServicesPageProps {
   category?: string;
   pageTitle?: string;
   pageSubtitle?: string;
+  initialSelectedCeilingType?: string;
 }
 
-export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle }: ServicesPageProps) {
+export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, initialSelectedCeilingType }: ServicesPageProps) {
   const { t, language, isRTL } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCeilingType, setSelectedCeilingType] = useState<string | null>(null);
+  const [selectedCeilingType, setSelectedCeilingType] = useState<string | null>(initialSelectedCeilingType || null);
 
   useEffect(() => {
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    if (initialSelectedCeilingType) {
+      setSelectedCeilingType(initialSelectedCeilingType);
+    }
+  }, [initialSelectedCeilingType]);
 
   const fetchServices = async () => {
     try {

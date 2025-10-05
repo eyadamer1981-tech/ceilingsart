@@ -250,13 +250,30 @@ export default function Home() {
       case 'STRETCH_FIBER_OPTIC_ROSE':
       case 'STRETCH_PRINTED':
       case 'STRETCH_LIGHT_TRANSMITTING':
-      case 'STRETCH_PAPER':
+      case 'STRETCH_PAPER': {
+        const mapToType = (key: string) => {
+          switch (key) {
+            case 'STRETCH_GLOSSY': return 'glossy';
+            case 'STRETCH_HIDDEN_LIGHTING': return 'backlit';
+            case 'STRETCH_PERFORATED_ACOUSTIC': return 'acoustic';
+            case 'STRETCH_3D': return '3d';
+            case 'STRETCH_REFLECTIVE': return 'reflective';
+            case 'STRETCH_MATTE': return 'matte';
+            case 'STRETCH_FIBER_OPTIC_ROSE': return 'fiber-optic';
+            case 'STRETCH_PRINTED': return 'printed';
+            case 'STRETCH_LIGHT_TRANSMITTING': return 'translucent';
+            case 'STRETCH_PAPER': return 'paper';
+            default: return null;
+          }
+        };
+        const initialType = mapToType(currentPage);
         return (
           <>
             <ServicesPage
               category="stretch"
               pageTitle={t('stretchCeilingPageTitle')}
               pageSubtitle={t('stretchCeilingPageSubtitle')}
+              initialSelectedCeilingType={initialType || undefined}
               onSelect={(service, isService) => {
                 setSelectedItem({
                   title: service.title || service.titleEn || 'Untitled',
@@ -273,6 +290,7 @@ export default function Home() {
             <Footer />
           </>
         );
+      }
       default:
         return (
           <>
