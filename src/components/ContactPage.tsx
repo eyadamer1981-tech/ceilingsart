@@ -111,8 +111,8 @@ export function ContactPage() {
     <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
       {/* Header Section */}
       <div className="relative py-20 text-center">
-        {/* Decorative wave at top */}
-        <div className="absolute top-0 left-0 w-full">
+        {/* Decorative wave at top (hidden on mobile) */}
+        <div className="hidden md:block absolute top-0 left-0 w-full">
           <svg
             viewBox="0 0 1200 120"
             fill="none"

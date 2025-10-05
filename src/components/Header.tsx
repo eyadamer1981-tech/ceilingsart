@@ -15,10 +15,54 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
-  const [isAcousticDropdownOpen, setIsAcousticDropdownOpen] = useState(false);
-  const [isStretchDropdownOpen, setIsStretchDropdownOpen] = useState(false);
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [acousticDropdownPos, setAcousticDropdownPos] = useState({ top: 0, left: 0 });
+  const [stretchDropdownPos, setStretchDropdownPos] = useState({ top: 0, left: 0 });
   const { t, isRTL, language, setLanguage } = useLanguage();
+  const acousticRef = React.useRef<HTMLDivElement>(null);
+  const stretchRef = React.useRef<HTMLDivElement>(null);
+  const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
+  const closeTimeoutRef = React.useRef<number | null>(null);
+
+  const cancelClose = () => {
+    if (closeTimeoutRef.current !== null) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setOpenMenuKey(null);
+      closeTimeoutRef.current = null;
+    }, 200);
+  };
+
+  const openMenu = (key: string) => {
+    cancelClose();
+    setOpenMenuKey(key);
+  };
+
+  const updateDropdownPositions = () => {
+    if (acousticRef.current) {
+      const rect = acousticRef.current.getBoundingClientRect();
+      setAcousticDropdownPos({ top: rect.bottom + 8, left: rect.left });
+    }
+    if (stretchRef.current) {
+      const rect = stretchRef.current.getBoundingClientRect();
+      setStretchDropdownPos({ top: rect.bottom + 8, left: rect.left });
+    }
+  };
+
+  useEffect(() => {
+    updateDropdownPositions();
+    window.addEventListener('resize', updateDropdownPositions);
+    window.addEventListener('scroll', updateDropdownPositions);
+    return () => {
+      window.removeEventListener('resize', updateDropdownPositions);
+      window.removeEventListener('scroll', updateDropdownPositions);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,33 +80,6 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
     } catch {}
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isAcousticDropdownOpen) {
-        const target = event.target as HTMLElement;
-        if (!target.closest('.acoustic-dropdown')) {
-          setIsAcousticDropdownOpen(false);
-        }
-      }
-      if (isStretchDropdownOpen) {
-        const target = event.target as HTMLElement;
-        if (!target.closest('.stretch-dropdown')) {
-          setIsStretchDropdownOpen(false);
-        }
-      }
-      if (isLangDropdownOpen) {
-        const target = event.target as HTMLElement;
-        if (!target.closest('.lang-dropdown')) {
-          setIsLangDropdownOpen(false);
-        }
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isAcousticDropdownOpen, isStretchDropdownOpen, isLangDropdownOpen]);
 
   const handleMenuToggle = () => {
     const newState = !isMobileMenuOpen;
@@ -110,9 +127,9 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
       isScrolled ? 'backdrop-blur-md bg-black/80 shadow-lg' : 'bg-transparent'
-    }`}>
-      <div className="container mx-auto px-4 py-6">
-        <div className={`flex items-center justify-between`}>
+    }`} style={{ overflow: 'visible' }}>
+      <div className="container mx-auto px-4 py-6" style={{ overflow: 'visible' }}>
+        <div className={`flex items-center justify-between`} style={{ overflow: 'visible' }}>
           {/* Logo */}
           <div className="flex items-center">
             <a href="#" onClick={() => onPageChange('HOME')} className="flex items-center">
@@ -144,18 +161,25 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
           </div>
 
           {/* Desktop Navigation */}
-          <nav className={`hidden lg:flex items-center space-x-8 ${isRTL ? 'space-x-reverse' : ''}`}>
+          <nav className={`hidden lg:flex items-center space-x-8 ${isRTL ? 'space-x-reverse' : ''}`} style={{ overflow: 'visible' }}>
             {navItems.map((item) => {
               if (item.hasDropdown) {
                 const isAcoustic = item.key === 'ACOUSTIC PANELS';
-                const isStretch = item.key === 'STRETCH CEILINGS';
-                const dropdownClass = isAcoustic ? 'acoustic-dropdown' : 'stretch-dropdown';
-                const isDropdownOpen = isAcoustic ? isAcousticDropdownOpen : isStretchDropdownOpen;
-                const setDropdownOpen = isAcoustic ? setIsAcousticDropdownOpen : setIsStretchDropdownOpen;
-                
+                const ref = isAcoustic ? acousticRef : stretchRef;
+                const dropdownPos = isAcoustic ? acousticDropdownPos : stretchDropdownPos;
+
                 return (
-                  <div key={item.key} className={`relative group ${dropdownClass}`}>
-                    <div className="flex items-center">
+                  <div
+                    key={item.key}
+                    ref={ref}
+                    className="relative group"
+                    onMouseEnter={() => {
+                      updateDropdownPositions();
+                      openMenu(item.key);
+                    }}
+                    onMouseLeave={scheduleClose}
+                  >
+                    <div className="flex items-center cursor-pointer">
                       <button
                         onClick={() => {
                           onPageChange(item.key);
@@ -166,35 +190,43 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                       >
                         {item.translation}
                       </button>
-                      <button
-                        onClick={() => {
-                          setDropdownOpen(!isDropdownOpen);
-                        }}
-                        className="ml-1 text-white hover:text-orange-400 transition-colors"
-                      >
-                        <ChevronDown size={14} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                      </button>
+                      <span className="ml-1 text-white group-hover:text-orange-400 transition-all duration-300 group-hover:rotate-180">
+                        <ChevronDown size={14} />
+                      </span>
                     </div>
-                    
+
                     {/* Dropdown Menu */}
-                    {isDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-50">
-                        <div className="py-2">
-                          {item.dropdownItems?.map((dropdownItem) => (
-                            <button
-                              key={dropdownItem.key}
-                              onClick={() => {
-                                onPageChange(dropdownItem.key);
-                                setDropdownOpen(false);
-                              }}
-                              className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:text-orange-400 hover:bg-gray-700 transition-colors"
-                            >
-                              {dropdownItem.translation}
-                            </button>
-                          ))}
+                    {(() => {
+                      const isOpen = openMenuKey === item.key;
+                      return (
+                        <div
+                          onMouseEnter={cancelClose}
+                          onMouseLeave={scheduleClose}
+                          className={`${isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'} transition-all duration-200`}
+                          style={{
+                            position: 'fixed',
+                            top: `${dropdownPos.top}px`,
+                            left: `${dropdownPos.left}px`,
+                            width: '280px',
+                            zIndex: 999999
+                          }}
+                        >
+                          <div className="bg-gray-800 rounded-lg shadow-xl border border-gray-700 py-2">
+                            {item.dropdownItems?.map((dropdownItem) => (
+                              <button
+                                key={dropdownItem.key}
+                                onClick={() => {
+                                  onPageChange(dropdownItem.key);
+                                }}
+                                className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:text-orange-400 hover:bg-gray-700 transition-colors block"
+                              >
+                                {dropdownItem.translation}
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </div>
                 );
               }
