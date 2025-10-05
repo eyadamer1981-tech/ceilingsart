@@ -247,6 +247,20 @@ export interface Translations {
   successPartnersTitle: string;
   successPartnersSubtitle: string;
   successPartnersDescription: string;
+
+  // Header dropdown items
+  acousticPanelsAlandalus: string;
+  floorInsulation: string;
+  stretchGlossy: string;
+  stretchHiddenLighting: string;
+  stretchPerforatedAcoustic: string;
+  stretch3D: string;
+  stretchReflective: string;
+  stretchMatte: string;
+  stretchFiberOpticRose: string;
+  stretchPrinted: string;
+  stretchLightTransmitting: string;
+  stretchPaper: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -497,6 +511,20 @@ export const translations: Record<Language, Translations> = {
     successPartnersTitle: 'Our Success Partners',
     successPartnersSubtitle: 'Trusted by Industry Leaders',
     successPartnersDescription: 'We are proud to work with leading companies and organizations that trust our expertise in ceiling solutions.',
+
+    // Header dropdown items
+    acousticPanelsAlandalus: 'Acoustic Panels-B.Alandalus',
+    floorInsulation: 'Floor insulation',
+    stretchGlossy: 'Stretch ceilings - Glossy',
+    stretchHiddenLighting: 'Stretch ceilings with hidden lighting',
+    stretchPerforatedAcoustic: 'Stretch ceilings - Perforated and acoustic',
+    stretch3D: 'Stretch ceilings - 3D',
+    stretchReflective: 'Stretch ceilings - Reflective',
+    stretchMatte: 'Stretch ceilings - Matte',
+    stretchFiberOpticRose: 'Stretch ceilings - Fiber optic ceilings (Rose)',
+    stretchPrinted: 'Stretch Ceilings printed',
+    stretchLightTransmitting: 'Stretch ceilings - Light transmitting',
+    stretchPaper: 'Stretch ceilings - Paper',
   },
   ar: {
     // Navigation
@@ -745,6 +773,20 @@ export const translations: Record<Language, Translations> = {
     successPartnersTitle: 'شركاء نجاحنا',
     successPartnersSubtitle: 'موثوقون من قادة الصناعة',
     successPartnersDescription: 'نفتخر بالعمل مع الشركات والمؤسسات الرائدة التي تثق في خبرتنا في حلول الأسقف.',
+
+    // Header dropdown items
+    acousticPanelsAlandalus: 'ألواح عازلة للصوت - حرمت الأندلس',
+    floorInsulation: 'عزل الأرضيات',
+    stretchGlossy: 'الأسقف المشدودة - لامعة',
+    stretchHiddenLighting: 'الأسقف المشدودة بإضاءة مخفية',
+    stretchPerforatedAcoustic: 'الأسقف المشدودة - مثقبة وصوتية',
+    stretch3D: 'الأسقف المشدودة - ثلاثية الأبعاد',
+    stretchReflective: 'الأسقف المشدودة - عاكسة',
+    stretchMatte: 'الأسقف المشدودة - مطفية',
+    stretchFiberOpticRose: 'الأسقف المشدودة - ألياف بصرية (روز)',
+    stretchPrinted: 'الأسقف المشدودة المطبوعة',
+    stretchLightTransmitting: 'الأسقف المشدودة - ناقلة للضوء',
+    stretchPaper: 'الأسقف المشدودة - ورقية',
   }
 };
 

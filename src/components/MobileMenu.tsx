@@ -45,10 +45,10 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
       translation: t('acousticPanels'),
       hasDropdown: true,
       dropdownItems: [
-        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: 'Acoustic Panels-B.Alandalus' },
-        { key: 'FLOOR_INSULATION', translation: 'Floor insulation' },
-        { key: 'POLYESTER_ACOUSTIC', translation: 'Polyester Acoustic Panels' },
-        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: 'Acoustic Fabric Wraps' }
+        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: t('acousticPanelsAlandalus') },
+        { key: 'FLOOR_INSULATION', translation: t('floorInsulation') },
+        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels') },
+        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps') }
       ]
     },
     { 
@@ -56,16 +56,16 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
       translation: t('stretchCeilings'),
       hasDropdown: true,
       dropdownItems: [
-        { key: 'STRETCH_GLOSSY', translation: 'Stretch ceilings - Glossy' },
-        { key: 'STRETCH_HIDDEN_LIGHTING', translation: 'Stretch ceilings with hidden lighting' },
-        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: 'Stretch ceilings - Perforated and acoustic' },
-        { key: 'STRETCH_3D', translation: 'Stretch ceilings - 3D' },
-        { key: 'STRETCH_REFLECTIVE', translation: 'Stretch ceilings - Reflective' },
-        { key: 'STRETCH_MATTE', translation: 'Stretch ceilings - Matte' },
-        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: 'Stretch ceilings - Fiber optic ceilings (Rose)' },
-        { key: 'STRETCH_PRINTED', translation: 'Stretch Ceilings printed' },
-        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: 'Stretch ceilings - Light transmitting' },
-        { key: 'STRETCH_PAPER', translation: 'Stretch ceilings - Paper' }
+        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy') },
+        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting') },
+        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic') },
+        { key: 'STRETCH_3D', translation: t('stretch3D') },
+        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective') },
+        { key: 'STRETCH_MATTE', translation: t('stretchMatte') },
+        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose') },
+        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted') },
+        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting') },
+        { key: 'STRETCH_PAPER', translation: t('stretchPaper') }
       ]
     },
     { key: 'OUR WORK', translation: t('ourWork') },

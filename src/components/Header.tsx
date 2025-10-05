@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -22,6 +23,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   const stretchRef = React.useRef<HTMLDivElement>(null);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
   const closeTimeoutRef = React.useRef<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   const cancelClose = () => {
     if (closeTimeoutRef.current !== null) {
@@ -55,6 +57,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   };
 
   useEffect(() => {
+    setIsClient(true);
     updateDropdownPositions();
     window.addEventListener('resize', updateDropdownPositions);
     window.addEventListener('scroll', updateDropdownPositions);
@@ -95,10 +98,10 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
       translation: t('acousticPanels'),
       hasDropdown: true,
       dropdownItems: [
-        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: 'Acoustic Panels-B.Alandalus' },
-        { key: 'FLOOR_INSULATION', translation: 'Floor insulation' },
-        { key: 'POLYESTER_ACOUSTIC', translation: 'Polyester Acoustic Panels' },
-        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: 'Acoustic Fabric Wraps' }
+        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: t('acousticPanelsAlandalus') },
+        { key: 'FLOOR_INSULATION', translation: t('floorInsulation') },
+        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels') },
+        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps') }
       ]
     },
     { 
@@ -106,16 +109,16 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
       translation: t('stretchCeilings'),
       hasDropdown: true,
       dropdownItems: [
-        { key: 'STRETCH_GLOSSY', translation: 'Stretch ceilings - Glossy' },
-        { key: 'STRETCH_HIDDEN_LIGHTING', translation: 'Stretch ceilings with hidden lighting' },
-        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: 'Stretch ceilings - Perforated and acoustic' },
-        { key: 'STRETCH_3D', translation: 'Stretch ceilings - 3D' },
-        { key: 'STRETCH_REFLECTIVE', translation: 'Stretch ceilings - Reflective' },
-        { key: 'STRETCH_MATTE', translation: 'Stretch ceilings - Matte' },
-        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: 'Stretch ceilings - Fiber optic ceilings (Rose)' },
-        { key: 'STRETCH_PRINTED', translation: 'Stretch Ceilings printed' },
-        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: 'Stretch ceilings - Light transmitting' },
-        { key: 'STRETCH_PAPER', translation: 'Stretch ceilings - Paper' }
+        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy') },
+        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting') },
+        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic') },
+        { key: 'STRETCH_3D', translation: t('stretch3D') },
+        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective') },
+        { key: 'STRETCH_MATTE', translation: t('stretchMatte') },
+        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose') },
+        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted') },
+        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting') },
+        { key: 'STRETCH_PAPER', translation: t('stretchPaper') }
       ]
     },
     { key: 'OUR WORK', translation: t('ourWork') },
@@ -127,7 +130,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
       isScrolled ? 'backdrop-blur-md bg-black/80 shadow-lg' : 'bg-transparent'
-    }`} style={{ overflow: 'visible' }}>
+    }`} style={{ overflow: 'visible', zIndex: 2147483647 }}>
       <div className="container mx-auto px-4 py-6" style={{ overflow: 'visible' }}>
         <div className={`flex items-center justify-between`} style={{ overflow: 'visible' }}>
           {/* Logo */}
@@ -198,17 +201,22 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                     {/* Dropdown Menu */}
                     {(() => {
                       const isOpen = openMenuKey === item.key;
-                      return (
+                      const dropdownNode = (
                         <div
                           onMouseEnter={cancelClose}
                           onMouseLeave={scheduleClose}
+                          onWheel={(e) => { if (isOpen) { e.preventDefault(); e.stopPropagation(); } }}
+                          onTouchMove={(e) => { if (isOpen) { e.preventDefault(); e.stopPropagation(); } }}
                           className={`${isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'} transition-all duration-200`}
                           style={{
                             position: 'fixed',
                             top: `${dropdownPos.top}px`,
                             left: `${dropdownPos.left}px`,
                             width: '280px',
-                            zIndex: 999999
+                            zIndex: 2147483647,
+                            overflow: 'hidden',
+                            maxHeight: 'none',
+                            WebkitOverflowScrolling: 'auto'
                           }}
                         >
                           <div className="bg-gray-800 rounded-lg shadow-xl border border-gray-700 py-2">
@@ -226,6 +234,8 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                           </div>
                         </div>
                       );
+
+                      return isClient ? createPortal(dropdownNode, document.body) : dropdownNode;
                     })()}
                   </div>
                 );
