@@ -201,7 +201,7 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
         <div className="p-6 text-center">
           <div className="text-white mb-2">
             <div className="text-lg font-bold tracking-wider">CA</div>
-            <div className="text-xs tracking-widest opacity-80">CEILINGS ATR</div>
+            <div className="text-xs tracking-widest opacity-80">CEILINGS ART</div>
           </div>
           <div className="text-xs text-gray-400">
             {isRTL ? 'تحويل المساحات بتصاميم أسقف مخصصة' : 'TRANSFORMING SPACES WITH BESPOKE CEILING DESIGNS'}

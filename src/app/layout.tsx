@@ -6,8 +6,8 @@ import { LanguageProvider } from '../contexts/LanguageContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'CA CEILINGS ATR',
-  description: 'Transform your space with bespoke ceiling ATR designs and innovative architectural solutions.',
+  title: 'CA CEILINGS ART',
+  description: 'Transform your space with bespoke ceiling ART designs and innovative architectural solutions.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
