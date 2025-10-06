@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Menu, X, Phone, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -128,15 +128,15 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+    <header className={`fixed ${isScrolled ? 'top-0' : 'top-0 md:top-[32px]'} left-0 right-0 z-40 w-full transition-all duration-300 ${
       isScrolled ? 'backdrop-blur-md bg-black/80 shadow-lg' : 'bg-transparent'
-    }`} style={{ overflow: 'visible', zIndex: 2147483647 }}>
-      <div className="container mx-auto px-4 py-6" style={{ overflow: 'visible' }}>
-        <div className={`flex items-center justify-between`} style={{ overflow: 'visible' }}>
+    }`} style={{ overflow: 'visible' }}>
+      <div className="container mx-auto px-4 h-[68px] lg:h-[80px] flex items-center" style={{ overflow: 'visible' }}>
+        <div className={`flex items-center justify-between relative w-full`} style={{ overflow: 'visible' }}>
           {/* Logo */}
           <div className="flex items-center">
             <a href="#" onClick={() => onPageChange('HOME')} className="flex items-center">
-              <img src="/logo.png" alt="Ceilings Art" className="h-8 w-auto" />
+              <img src="/logo.png" alt="Ceilings Art" className="h-[30px] w-auto" />
             </a>
           </div>
 
@@ -163,9 +163,10 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
             </button>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className={`hidden lg:flex items-center space-x-8 ${isRTL ? 'space-x-reverse' : ''}`} style={{ overflow: 'visible' }}>
-            {navItems.map((item) => {
+          {/* Desktop Navigation - centered */}
+          <div className="hidden lg:flex absolute inset-y-0 left-1/2 -translate-x-1/2 items-center" style={{ overflow: 'visible' }}>
+            <nav className={`flex items-center space-x-5 ${isRTL ? 'space-x-reverse' : ''}`} style={{ overflow: 'visible' }}>
+              {navItems.map((item) => {
               if (item.hasDropdown) {
                 const isAcoustic = item.key === 'ACOUSTIC PANELS';
                 const ref = isAcoustic ? acousticRef : stretchRef;
@@ -187,7 +188,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                         onClick={() => {
                           onPageChange(item.key);
                         }}
-                        className={`text-sm font-semibold tracking-wider transition-colors hover:text-orange-400 ${
+                        className={`text-sm leading-none font-semibold tracking-wider transition-colors hover:text-orange-400 text-center ${
                           currentPage === item.key ? 'text-orange-400' : 'text-white'
                         }`}
                       >
@@ -226,7 +227,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                                 onClick={() => {
                                   onPageChange(dropdownItem.key);
                                 }}
-                                className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:text-orange-400 hover:bg-gray-700 transition-colors block"
+                                className="w-full text-center px-4 py-3 text-sm text-gray-300 hover:text-orange-400 hover:bg-gray-700 transition-colors block"
                               >
                                 {dropdownItem.translation}
                               </button>
@@ -247,7 +248,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                   onClick={() => {
                     onPageChange(item.key);
                   }}
-                  className={`text-sm font-semibold tracking-wider transition-colors hover:text-orange-400 ${
+                  className={`text-sm leading-none font-semibold tracking-wider transition-colors hover:text-orange-400 text-center ${
                     currentPage === item.key ? 'text-orange-400' : 'text-white'
                   }`}
                 >
@@ -255,24 +256,11 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
                 </button>
               );
             })}
-          </nav>
-
-          {/* Contact Info, Language Switcher & Admin */}
-          <div className={`hidden lg:flex items-center space-x-4`}>
-            <div className="flex items-center space-x-2 text-orange-400">
-              <Phone size={16} />
-              <span className="text-sm" dir="ltr">+966 575474699</span>
-            </div>
-            <LanguageSwitcher />
-            {showAdmin && (
-              <a 
-                href="/admin" 
-                className="text-xs text-gray-400 hover:text-orange-400 transition-colors px-2 py-1 border border-gray-600 rounded hover:border-orange-400"
-              >
-                {t('admin')}
-              </a>
-            )}
+            </nav>
           </div>
+
+          {/* Right side (desktop) intentionally empty; moved items to TopTextBar */}
+          <div className={`hidden lg:flex items-center space-x-4`}></div>
         </div>
       </div>
     </header>

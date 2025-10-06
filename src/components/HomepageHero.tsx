@@ -156,19 +156,65 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
           ) : (
             <>
               TRANSFORM YOUR SPACE<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ATR
+              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ART
             </>
           )}
         </MH1>
-        <MButton 
-          onClick={() => onGetStarted?.()} 
-          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-4 rounded-full transition-all duration-300 shadow-lg"
+        <MDiv 
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut', delay: 0.1 } } }}
-          whileHover={{ scale: 1.03, boxShadow: '0 0 0 0 rgba(0,0,0,0)', filter: 'drop-shadow(0 8px 24px rgba(255,180,60,0.35))' }}
-          whileTap={{ scale: 0.98 }}
         >
-          {t('getStarted')}
-        </MButton>
+          <MButton 
+            onClick={() => onGetStarted?.()}
+            className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
+            whileHover={{
+              scaleX: 1.08,
+              scaleY: 1.0,
+              filter: 'drop-shadow(0 16px 44px rgba(255,200,80,0.5))'
+            }}
+            animate={{
+              // Pulsing glow using drop-shadows to emulate soft aura
+              filter: [
+                'drop-shadow(0 10px 28px rgba(255,180,60,0.18))',
+                'drop-shadow(0 14px 36px rgba(255,200,80,0.42))',
+                'drop-shadow(0 10px 28px rgba(255,180,60,0.18))'
+              ]
+            }}
+            transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {isRTL ? 'اطلب عرض سعر' : 'Get Instant Quote'}
+          </MButton>
+          <MButton 
+            onClick={() => window.open('https://wa.me/966575474699', '_blank')}
+            className="bg-green-500 hover:bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
+            whileHover={{
+              scaleX: 1.08,
+              scaleY: 1.0,
+              filter: 'drop-shadow(0 16px 44px rgba(16,185,129,0.5))'
+            }}
+            animate={{
+              // Similar glow to quote button but in WhatsApp green
+              filter: [
+                'drop-shadow(0 10px 28px rgba(16,185,129,0.18))',
+                'drop-shadow(0 14px 36px rgba(16,185,129,0.44))',
+                'drop-shadow(0 10px 28px rgba(16,185,129,0.18))'
+              ]
+            }}
+            transition={{ duration: 3.1, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {isRTL ? 'واتساب' : 'WhatsApp'}
+          </MButton>
+        </MDiv>
+
+        <div className={`mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-white/90 ${isRTL ? 'text-right' : 'text-center'}`}>
+          <span className="text-sm sm:text-base">{isRTL ? 'ضمان 10 سنوات' : '10-year warranty'}</span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="text-sm sm:text-base">{isRTL ? 'خامات أوروبية' : 'European materials'}</span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="text-sm sm:text-base">{isRTL ? 'فنيون معتمدون' : 'Certified installers'}</span>
+        </div>
       </MDiv>
 
       {/* Bottom wave from homepage vector */}

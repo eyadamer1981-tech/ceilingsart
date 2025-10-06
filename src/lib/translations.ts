@@ -513,7 +513,7 @@ export const translations: Record<Language, Translations> = {
     successPartnersDescription: 'We are proud to work with leading companies and organizations that trust our expertise in ceiling solutions.',
 
     // Header dropdown items
-    acousticPanelsAlandalus: 'Acoustic Panels-B.Alandalus',
+    acousticPanelsAlandalus: 'Acoustic Panel - C.Arts',
     floorInsulation: 'Floor insulation',
     stretchGlossy: 'Stretch ceilings - Glossy',
     stretchHiddenLighting: 'Stretch ceilings with hidden lighting',
@@ -775,7 +775,7 @@ export const translations: Record<Language, Translations> = {
     successPartnersDescription: 'نفتخر بالعمل مع الشركات والمؤسسات الرائدة التي تثق في خبرتنا في حلول الأسقف.',
 
     // Header dropdown items
-    acousticPanelsAlandalus: 'ألواح عازلة للصوت - حرمت الأندلس',
+    acousticPanelsAlandalus: 'لوح عازل للصوت - C.Arts',
     floorInsulation: 'عزل الأرضيات',
     stretchGlossy: 'الأسقف الفرنسية - لامعة',
     stretchHiddenLighting: 'الأسقف الفرنسية بإضاءة مخفية',

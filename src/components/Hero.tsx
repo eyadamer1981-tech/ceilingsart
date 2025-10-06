@@ -197,14 +197,32 @@ export function Hero() {
           ) : (
             <>
               TRANSFORM YOUR SPACE<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ATR
+              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ART
             </>
           )}
         </h1>
         
-        <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg text-base sm:text-lg font-medium tracking-wide">
-          {t('getStarted')}
-        </button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <button
+            className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg text-base sm:text-lg font-medium tracking-wide"
+          >
+            {t('getStarted')}
+          </button>
+          <button
+            onClick={() => window.open('https://wa.me/966575474699', '_blank')}
+            className="bg-green-500 hover:bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg text-base sm:text-lg font-medium tracking-wide"
+          >
+            WhatsApp
+          </button>
+        </div>
+
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-white/90">
+          <span className="text-sm sm:text-base">10-year warranty</span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="text-sm sm:text-base">European materials</span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="text-sm sm:text-base">Certified installers</span>
+        </div>
       </div>
     </section>
   );
