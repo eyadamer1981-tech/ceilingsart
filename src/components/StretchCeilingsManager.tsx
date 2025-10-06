@@ -11,6 +11,16 @@ interface Service {
   category?: string;
   image: string;
   detailImages?: string[];
+  features?: string[];
+  benefits?: string[];
+  applications?: string[];
+  specifications?: {
+    material?: string;
+    thickness?: string;
+    colors?: string;
+    warranty?: string;
+    installation?: string;
+  };
   featured: boolean;
   createdAt: string;
 }
@@ -29,6 +39,16 @@ export function StretchCeilingsManager() {
     descriptionAr: '',
     category: '',
     featured: false,
+    features: '' as unknown as string,
+    benefits: '' as unknown as string,
+    applications: '' as unknown as string,
+    specifications: {
+      material: '',
+      thickness: '',
+      colors: '',
+      warranty: '',
+      installation: '',
+    },
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [detailImageFiles, setDetailImageFiles] = useState<File[]>([]);
@@ -36,7 +56,15 @@ export function StretchCeilingsManager() {
   const fetchServices = useCallback(async () => {
     try {
       console.log('StretchCeilingsManager: Fetching stretch ceilings...');
-      const response = await fetch('/api/stretch-ceilings');
+      // Bypass CDN/browser caching for admin by adding a cache-busting query and no-store
+      const cacheBuster = Date.now();
+      const response = await fetch(`/api/stretch-ceilings?admin=1&ts=${cacheBuster}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       const data = await response.json();
       console.log('StretchCeilingsManager: Received', data.length, 'stretch ceilings');
       
@@ -62,6 +90,19 @@ export function StretchCeilingsManager() {
     formDataToSend.append('descriptionAr', formData.descriptionAr);
     formDataToSend.append('category', 'Stretch Ceilings'); // Force category
     formDataToSend.append('featured', formData.featured.toString());
+    // Optional arrays/objects serialized as JSON strings
+    if (formData.features && (formData.features as any as string).trim()) {
+      try { formDataToSend.append('features', JSON.stringify((formData.features as any as string).split('\n').map(s => s.trim()).filter(Boolean))); } catch {}
+    }
+    if (formData.benefits && (formData.benefits as any as string).trim()) {
+      try { formDataToSend.append('benefits', JSON.stringify((formData.benefits as any as string).split('\n').map(s => s.trim()).filter(Boolean))); } catch {}
+    }
+    if (formData.applications && (formData.applications as any as string).trim()) {
+      try { formDataToSend.append('applications', JSON.stringify((formData.applications as any as string).split('\n').map(s => s.trim()).filter(Boolean))); } catch {}
+    }
+    if (formData.specifications) {
+      try { formDataToSend.append('specifications', JSON.stringify(formData.specifications)); } catch {}
+    }
 
     if (imageFile) {
       formDataToSend.append('image', imageFile);
@@ -124,12 +165,33 @@ export function StretchCeilingsManager() {
       descriptionAr: service.descriptionAr,
       category: service.category || '',
       featured: service.featured,
+      features: Array.isArray(service.features) ? service.features.join('\n') : '',
+      benefits: Array.isArray(service.benefits) ? service.benefits.join('\n') : '',
+      applications: Array.isArray(service.applications) ? service.applications.join('\n') : '',
+      specifications: {
+        material: service.specifications?.material || '',
+        thickness: service.specifications?.thickness || '',
+        colors: service.specifications?.colors || '',
+        warranty: service.specifications?.warranty || '',
+        installation: service.specifications?.installation || '',
+      },
     });
     setShowForm(true);
   };
 
   const resetForm = () => {
-    setFormData({ titleEn: '', titleAr: '', descriptionEn: '', descriptionAr: '', category: '', featured: false });
+    setFormData({ 
+      titleEn: '', 
+      titleAr: '', 
+      descriptionEn: '', 
+      descriptionAr: '', 
+      category: '', 
+      featured: false,
+      features: '' as any,
+      benefits: '' as any,
+      applications: '' as any,
+      specifications: { material: '', thickness: '', colors: '', warranty: '', installation: '' },
+    });
     setImageFile(null);
     setDetailImageFiles([]);
     setEditingService(null);
@@ -258,6 +320,102 @@ export function StretchCeilingsManager() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
                 placeholder="اكتب وصف السقف المشدود بالعربية"
               />
+            </div>
+
+            {/* Key Features */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Key Features (one per line)
+              </label>
+              <textarea
+                value={formData.features as any as string}
+                onChange={(e) => setFormData({ ...formData, features: e.target.value as any })}
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                placeholder="e.g. Seamless finish\nWaterproof\nQuick installation"
+              />
+            </div>
+
+            {/* Benefits */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Benefits (one per line)
+              </label>
+              <textarea
+                value={formData.benefits as any as string}
+                onChange={(e) => setFormData({ ...formData, benefits: e.target.value as any })}
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                placeholder="e.g. Enhances lighting\nEasy maintenance\nDurable"
+              />
+            </div>
+
+            {/* Applications */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Applications (one per line)
+              </label>
+              <textarea
+                value={formData.applications as any as string}
+                onChange={(e) => setFormData({ ...formData, applications: e.target.value as any })}
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                placeholder="e.g. Living rooms\nRestaurants\nRetail stores"
+              />
+            </div>
+
+            {/* Technical Specifications */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Material</label>
+                <input
+                  type="text"
+                  value={formData.specifications.material}
+                  onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, material: e.target.value } })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                  placeholder="PVC / Polyester"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Thickness</label>
+                <input
+                  type="text"
+                  value={formData.specifications.thickness}
+                  onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, thickness: e.target.value } })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                  placeholder="e.g. 0.18mm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Colors</label>
+                <input
+                  type="text"
+                  value={formData.specifications.colors}
+                  onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, colors: e.target.value } })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                  placeholder="e.g. 100+ colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Warranty</label>
+                <input
+                  type="text"
+                  value={formData.specifications.warranty}
+                  onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, warranty: e.target.value } })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                  placeholder="e.g. 10-Year Warranty"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-3">Installation</label>
+                <input
+                  type="text"
+                  value={formData.specifications.installation}
+                  onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, installation: e.target.value } })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black"
+                  placeholder="e.g. Certified installation team"
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-center p-4 bg-gray-50 rounded-xl">

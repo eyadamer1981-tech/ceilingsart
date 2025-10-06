@@ -38,9 +38,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
           const { titleEn, titleAr, descriptionEn, descriptionAr, featured } = req.body;
+          // Optional JSON fields for detailed sections
+          const featuresRaw = (req.body as any).features;
+          const benefitsRaw = (req.body as any).benefits;
+          const applicationsRaw = (req.body as any).applications;
+          const specificationsRaw = (req.body as any).specifications;
           const files = (req as any).files || {};
           const mainImageFile = files.image?.[0];
           const detailImagesFiles = files.detailImages || [];
+
+          const parseJson = (val: any) => {
+            if (!val) return undefined;
+            try { return typeof val === 'string' ? JSON.parse(val) : val; } catch { return undefined; }
+          };
+
+          const features = parseJson(featuresRaw);
+          const benefits = parseJson(benefitsRaw);
+          const applications = parseJson(applicationsRaw);
+          const specifications = parseJson(specificationsRaw);
 
           const updateData: any = {
             titleEn,
@@ -57,6 +72,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           if (detailImagesFiles.length > 0) {
             updateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
           }
+
+          if (Array.isArray(features)) updateData.features = features;
+          if (Array.isArray(benefits)) updateData.benefits = benefits;
+          if (Array.isArray(applications)) updateData.applications = applications;
+          if (specifications && typeof specifications === 'object') updateData.specifications = specifications;
 
           const stretchCeiling = await StretchCeiling.findByIdAndUpdate(id, updateData, { new: true });
           

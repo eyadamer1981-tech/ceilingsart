@@ -78,6 +78,17 @@ const acousticPanelSchema = new mongoose.Schema({
   detailImageIds: { type: [mongoose.Schema.Types.ObjectId], default: [] },
   featured: { type: Boolean, default: false },
   rightLeftSection: { type: Boolean, default: false },
+  // Dynamic content sections rendered on the panel detail page
+  sections: {
+    type: [
+      new mongoose.Schema({
+        heading: { type: String, required: true },
+        content: { type: String, default: '' },
+        bullets: { type: [String], default: [] },
+      }, { _id: false })
+    ],
+    default: []
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
@@ -91,6 +102,20 @@ const stretchCeilingSchema = new mongoose.Schema({
   imageId: { type: mongoose.Schema.Types.ObjectId, ref: 'images.files' },
   detailImages: { type: [String], default: [] },
   detailImageIds: { type: [mongoose.Schema.Types.ObjectId], default: [] },
+  // New content sections for detailed pages
+  features: { type: [String], default: [] },
+  benefits: { type: [String], default: [] },
+  applications: { type: [String], default: [] },
+  specifications: {
+    type: {
+      material: { type: String, default: '' },
+      thickness: { type: String, default: '' },
+      colors: { type: String, default: '' },
+      warranty: { type: String, default: '' },
+      installation: { type: String, default: '' },
+    },
+    default: {}
+  },
   featured: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });

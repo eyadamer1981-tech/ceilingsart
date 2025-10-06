@@ -3,7 +3,6 @@ import connectDB from '../../../lib/mongodb';
 import { AcousticPanel, Project } from '../../../lib/models';
 import multer from 'multer';
 
-// Use memory storage to keep files in RAM and store in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
 
 function bufferToDataUrl(file: Express.Multer.File) {
@@ -13,107 +12,84 @@ function bufferToDataUrl(file: Express.Multer.File) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { id } = req.query as { id: string };
 
-  if (!id || typeof id !== 'string') {
-    return res.status(400).json({ message: 'Invalid acoustic panel ID' });
-  }
-
-  try {
-    const dbConnection = await connectDB();
-    
-    if (!dbConnection) {
-      return res.status(500).json({ message: 'Database connection failed' });
-    }
-
-    if (req.method === 'PUT') {
-      // Handle file upload (main image + up to 3 detail images)
-      upload.fields([
-        { name: 'image', maxCount: 1 },
-        { name: 'detailImages', maxCount: 3 },
-      ])(req as any, res as any, async (err: any) => {
-        if (err) {
-          return res.status(400).json({ message: 'File upload error' });
-        }
-
-        try {
-          const { titleEn, titleAr, descriptionEn, descriptionAr, featured, rightLeftSection } = req.body;
-          const files = (req as any).files || {};
-          const mainImageFile = files.image?.[0];
-          const detailImagesFiles = files.detailImages || [];
-
-          const updateData: any = {
-            titleEn,
-            titleAr,
-            descriptionEn,
-            descriptionAr,
-            featured: featured === 'true',
-            rightLeftSection: rightLeftSection === 'true',
-          };
-
-          if (mainImageFile) {
-            updateData.image = bufferToDataUrl(mainImageFile);
-          }
-
-          if (detailImagesFiles.length > 0) {
-            updateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
-          }
-
-          const acousticPanel = await AcousticPanel.findByIdAndUpdate(id, updateData, { new: true });
-          
-          if (!acousticPanel) {
-            return res.status(404).json({ message: 'Acoustic panel not found' });
-          }
-
-          // Also update the corresponding project
-          const projectUpdateData: any = {
-            titleEn,
-            titleAr,
-            descriptionEn,
-            descriptionAr,
-            featured: featured === 'true',
-          };
-
-          if (mainImageFile) {
-            projectUpdateData.image = bufferToDataUrl(mainImageFile);
-          }
-
-          if (detailImagesFiles.length > 0) {
-            projectUpdateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
-          }
-
-          await Project.findOneAndUpdate(
-            { 
-              titleEn: acousticPanel.titleEn,
-              category: 'Acoustic Panels'
-            },
-            projectUpdateData
-          );
-
-          res.json(acousticPanel);
-        } catch (error: any) {
-          res.status(500).json({ message: error?.message || 'Server error' });
-        }
-      });
-    } else if (req.method === 'DELETE') {
-      const acousticPanel = await AcousticPanel.findByIdAndDelete(id);
-      
-      if (!acousticPanel) {
-        return res.status(404).json({ message: 'Acoustic panel not found' });
+  if (req.method === 'PUT') {
+    upload.fields([
+      { name: 'image', maxCount: 1 },
+      { name: 'detailImages', maxCount: 3 },
+    ])(req as any, res as any, async (err: any) => {
+      if (err) {
+        return res.status(400).json({ message: 'File upload error' });
       }
 
-      // Also delete the corresponding project
-      await Project.findOneAndDelete({
-        titleEn: acousticPanel.titleEn,
-        category: 'Acoustic Panels'
-      });
+      try {
+        await connectDB();
 
-      res.json({ message: 'Acoustic panel deleted successfully' });
-    } else {
-      res.status(405).json({ message: 'Method not allowed' });
+        const { titleEn, titleAr, descriptionEn, descriptionAr, featured, rightLeftSection } = req.body as any;
+        const files = (req as any).files || {};
+        const mainImageFile = files.image?.[0];
+        const detailImagesFiles = files.detailImages || [];
+
+        const updates: any = {
+          ...(titleEn ? { titleEn } : {}),
+          ...(titleAr ? { titleAr } : {}),
+          ...(descriptionEn ? { descriptionEn } : {}),
+          ...(descriptionAr ? { descriptionAr } : {}),
+        };
+
+        if (typeof featured !== 'undefined') updates.featured = featured === 'true' || featured === true;
+        if (typeof rightLeftSection !== 'undefined') updates.rightLeftSection = rightLeftSection === 'true' || rightLeftSection === true;
+
+        if (mainImageFile) {
+          updates.image = bufferToDataUrl(mainImageFile);
+        }
+        if (detailImagesFiles && detailImagesFiles.length > 0) {
+          updates.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+        }
+
+        const panel = await AcousticPanel.findByIdAndUpdate(id, updates, { new: true });
+        if (!panel) return res.status(404).json({ message: 'Panel not found' });
+
+        // Best-effort sync to matching project (by title and category)
+        await Project.updateMany(
+          { category: 'Acoustic Panels', titleEn: panel.titleEn, titleAr: panel.titleAr },
+          {
+            $set: {
+              titleEn: panel.titleEn,
+              titleAr: panel.titleAr,
+              descriptionEn: panel.descriptionEn,
+              descriptionAr: panel.descriptionAr,
+              image: panel.image,
+              detailImages: panel.detailImages,
+              featured: panel.featured,
+            },
+          }
+        );
+
+        res.json(panel);
+      } catch (error: any) {
+        console.error('Acoustic Panels API (PUT) error:', error);
+        res.status(500).json({ message: error?.message || 'Server error' });
+      }
+    });
+  } else if (req.method === 'DELETE') {
+    try {
+      await connectDB();
+
+      const panel = await AcousticPanel.findByIdAndDelete(id);
+      if (!panel) return res.status(404).json({ message: 'Panel not found' });
+
+      // Best-effort: remove associated projects with the same title/category
+      await Project.deleteMany({ category: 'Acoustic Panels', titleEn: panel.titleEn, titleAr: panel.titleAr });
+
+      res.status(204).end();
+    } catch (error: any) {
+      console.error('Acoustic Panels API (DELETE) error:', error);
+      res.status(500).json({ message: error?.message || 'Server error' });
     }
-  } catch (error: any) {
-    res.status(500).json({ message: error?.message || 'Server error' });
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 }
 
@@ -122,3 +98,4 @@ export const config = {
     bodyParser: false,
   },
 };
+

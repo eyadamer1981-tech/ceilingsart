@@ -38,7 +38,14 @@ export function AcousticPanelsManager() {
   const fetchServices = useCallback(async () => {
     try {
       console.log('AcousticPanelsManager: Fetching acoustic panels...');
-      const response = await fetch('/api/acoustic-panels');
+      const cacheBuster = Date.now();
+      const response = await fetch(`/api/acoustic-panels?admin=1&ts=${cacheBuster}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       const data = await response.json();
       console.log('AcousticPanelsManager: Received', data.length, 'acoustic panels');
       
@@ -379,5 +386,6 @@ export function AcousticPanelsManager() {
     </div>
   );
 }
+
 
 

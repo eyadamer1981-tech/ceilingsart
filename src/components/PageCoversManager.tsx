@@ -40,7 +40,14 @@ export function PageCoversManager() {
 
   const fetchPageCovers = async () => {
     try {
-      const response = await fetch('/api/page-covers');
+      const cacheBuster = Date.now();
+      const response = await fetch(`/api/page-covers?admin=1&ts=${cacheBuster}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setPageCovers(data);

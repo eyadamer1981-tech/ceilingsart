@@ -18,6 +18,7 @@ import { FiberOpticStretchCeilingPage } from './FiberOpticStretchCeilingPage';
 import { PrintedStretchCeilingPage } from './PrintedStretchCeilingPage';
 import { TranslucentStretchCeilingPage } from './TranslucentStretchCeilingPage';
 import { PaperStretchCeilingPage } from './PaperStretchCeilingPage';
+import { StretchCeilingDetailPage } from './StretchCeilingDetailPage';
 
 interface Service {
   _id: string;
@@ -30,6 +31,16 @@ interface Service {
   category?: string;
   image: string;
   detailImages?: string[];
+  features?: string[];
+  benefits?: string[];
+  applications?: string[];
+  specifications?: {
+    material?: string;
+    thickness?: string;
+    colors?: string;
+    warranty?: string;
+    installation?: string;
+  };
   featured: boolean;
   createdAt: string;
 }
@@ -47,6 +58,7 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCeilingType, setSelectedCeilingType] = useState<string | null>(initialSelectedCeilingType || null);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   useEffect(() => {
     fetchServices();
@@ -90,9 +102,10 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
 
   const handleBackToServices = () => {
     setSelectedCeilingType(null);
+    setSelectedService(null);
   };
 
-  // Render individual ceiling type pages
+  // Render individual ceiling type pages or selected admin-added service detail
   if (selectedCeilingType) {
     switch (selectedCeilingType) {
       case 'glossy':
@@ -118,6 +131,50 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
       default:
         return <div>Ceiling type not found</div>;
     }
+  }
+
+  if (selectedService) {
+    const svc = selectedService;
+    const titleEn = svc.titleEn || svc.title || '';
+    const titleAr = svc.titleAr || svc.title || '';
+    const descriptionEn = svc.descriptionEn || svc.description || '';
+    const descriptionAr = svc.descriptionAr || svc.description || '';
+    const images = {
+      main: svc.image,
+      gallery: Array.isArray(svc.detailImages) && svc.detailImages.length > 0 ? svc.detailImages : [svc.image],
+    };
+    const features = Array.isArray(svc.features) && svc.features.length > 0 ? svc.features : [
+      'Seamless modern finish', 'Durable and long-lasting', 'Moisture and fire resistant'
+    ];
+    const benefits = Array.isArray(svc.benefits) && svc.benefits.length > 0 ? svc.benefits : [
+      'Enhances lighting and ambiance', 'Fast installation with minimal disruption', 'Easy maintenance'
+    ];
+    const applications = Array.isArray(svc.applications) && svc.applications.length > 0 ? svc.applications : [
+      'Residential interiors', 'Retail stores', 'Restaurants and cafes'
+    ];
+    const specifications = {
+      material: svc.specifications?.material || 'PVC / Polyester membrane',
+      thickness: svc.specifications?.thickness || '0.18mm (typical)',
+      colors: svc.specifications?.colors || '100+ colors and finishes',
+      warranty: svc.specifications?.warranty || '10-Year Warranty',
+      installation: svc.specifications?.installation || 'Certified installation team',
+    };
+
+    return (
+      <StretchCeilingDetailPage
+        ceilingType={"custom"}
+        titleEn={titleEn}
+        titleAr={titleAr}
+        descriptionEn={descriptionEn}
+        descriptionAr={descriptionAr}
+        features={features}
+        benefits={benefits}
+        applications={applications}
+        specifications={specifications}
+        images={images}
+        onBack={handleBackToServices}
+      />
+    );
   }
 
   return (
@@ -282,10 +339,16 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
                         </button>
                       ) : (
                         <button 
-                          onClick={() => onSelect?.(service, true)} 
+                          onClick={() => {
+                            // For stretch ceilings, render dedicated detail page instead of generic project/service detail
+                            setSelectedService(service);
+                            if (category !== 'stretch') {
+                              onSelect?.(service, true);
+                            }
+                          }} 
                           className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 hover:from-orange-500 hover:to-yellow-600"
                         >
-                          {t('more')}
+                          {t(category === 'stretch' ? 'viewDetails' : 'more')}
                         </button>
                       )}
                     </div>

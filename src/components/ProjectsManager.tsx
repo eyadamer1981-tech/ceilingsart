@@ -36,7 +36,14 @@ export function ProjectsManager() {
 
   const fetchProjects = useCallback(async () => {
     try {
-      const response = await fetch('/api/projects');
+      const cacheBuster = Date.now();
+      const response = await fetch(`/api/projects?admin=1&ts=${cacheBuster}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       const data = await response.json();
       setProjects(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -47,7 +54,14 @@ export function ProjectsManager() {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch('/api/projects/categories');
+      const cacheBuster = Date.now();
+      const response = await fetch(`/api/projects/categories?admin=1&ts=${cacheBuster}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
       const categories = await response.json();
       setCategories(Array.isArray(categories) ? categories : []);
     } catch (error) {
