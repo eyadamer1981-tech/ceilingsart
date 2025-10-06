@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import { MobileMenu } from '../components/MobileMenu';
 import HomepageHero from '../components/HomepageHero';
@@ -40,6 +40,16 @@ export default function Home() {
     setCurrentPage(page);
     setIsMobileMenuOpen(false);
   };
+
+  useEffect(() => {
+    const onNavigate = (e: any) => {
+      if (e && e.detail && e.detail.page) {
+        handlePageChange(e.detail.page);
+      }
+    };
+    window.addEventListener('navigate', onNavigate as EventListener);
+    return () => window.removeEventListener('navigate', onNavigate as EventListener);
+  }, []);
 
   const renderPage = () => {
     if (selectedItem) {

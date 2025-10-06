@@ -90,6 +90,7 @@ export interface Translations {
   allRightsReserved: string;
   companyName: string;
   designedBy: string;
+  ruaadTeam: string;
   
   // Footer Services
   luxuryCeilingDesign: string;
@@ -354,6 +355,7 @@ export const translations: Record<Language, Translations> = {
     allRightsReserved: 'All rights reserved.',
     companyName: 'CeilingsArt',
     designedBy: 'Designed by',
+    ruaadTeam: 'RUAAD ALRQMEA Team',
     
     // Footer Services
     luxuryCeilingDesign: 'Luxury Ceiling Design',
@@ -616,6 +618,7 @@ export const translations: Record<Language, Translations> = {
     allRightsReserved: 'جميع الحقوق محفوظة.',
     companyName: 'سيلينجز آرت',
     designedBy: 'صمم بواسطة',
+    ruaadTeam: 'فريق الرواد الرقمية',
     
     // Footer Services
     luxuryCeilingDesign: 'تصميم أسقف فاخرة',

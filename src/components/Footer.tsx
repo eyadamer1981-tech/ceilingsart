@@ -5,6 +5,12 @@ const MA = motion.a as any;
 
 export function Footer() {
   const { t, language, isRTL } = useLanguage();
+  const navigate = (page: string) => {
+    try {
+      const event = new CustomEvent('navigate', { detail: { page } });
+      window.dispatchEvent(event);
+    } catch {}
+  };
   return (
     <footer className="bg-gray-900 text-white py-12" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="container mx-auto px-4">
@@ -44,11 +50,11 @@ export function Footer() {
           >
             <h3 className="text-lg font-medium mb-4">{t('quickLinks')}</h3>
             <div className="space-y-2 text-sm text-gray-400">
-              <p className="hover:text-orange-400 cursor-pointer transition-colors">{t('home')}</p>
-              <p className="hover:text-orange-400 cursor-pointer transition-colors">{t('about')}</p>
-              <p className="hover:text-orange-400 cursor-pointer transition-colors">{t('services')}</p>
-              <p className="hover:text-orange-400 cursor-pointer transition-colors">{t('gallery')}</p>
-              <p className="hover:text-orange-400 cursor-pointer transition-colors">{t('contact')}</p>
+              <button onClick={() => navigate('HOME')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('home')}</button>
+              <button onClick={() => navigate('ABOUT US')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('about')}</button>
+              <button onClick={() => navigate('OUR SERVICES')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('services')}</button>
+              <button onClick={() => navigate('OUR WORK')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('ourWork')}</button>
+              <button onClick={() => navigate('CONTACT US')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('contact')}</button>
             </div>
           </MDiv>
 
@@ -95,7 +101,17 @@ export function Footer() {
         >
           <div className="text-sm text-gray-400 mb-4 md:mb-0">
             <p className="font-medium text-white mb-1">{t('companyName')} . {t('allRightsReserved')}</p>
-            <p>{t('designedBy')} © 2025 RUAAD ALRQMEA Team</p>
+            <p>
+              {t('designedBy')} © 2025{' '}
+              <a
+                href="https://api.whatsapp.com/send/?phone=966541430116&text&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-green-400"
+              >
+                {t('ruaadTeam')}
+              </a>
+            </p>
           </div>
           <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-6' : 'space-x-6'}`}>
             <p className="text-sm text-gray-400">{t('followUs')}:</p>
