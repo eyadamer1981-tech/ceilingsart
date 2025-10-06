@@ -20,6 +20,14 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Remote control operation',
       'Dimmable lighting'
     ],
+    featuresAr: [
+      'تأثيرات نجوم بالألياف البصرية',
+      'أنماط نجوم قابلة للتخصيص',
+      'تقنية LED موفرة للطاقة',
+      'تأثيرات إضاءة متلألئة',
+      'تشغيل بواسطة جهاز تحكم عن بُعد',
+      'إضاءة قابلة للتعتيم'
+    ],
     benefits: [
       'Creates magical starry atmosphere',
       'Perfect for relaxation spaces',
@@ -27,6 +35,14 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Energy-efficient technology',
       'Remote control convenience',
       'Creates unique ambiance'
+    ],
+    benefitsAr: [
+      'يخلق أجواء ليلية ساحرة بنجوم',
+      'مثالي لمساحات الاسترخاء',
+      'أنماط إضاءة قابلة للتخصيص',
+      'تقنية موفرة للطاقة',
+      'سهولة التحكم عن بُعد',
+      'يخلق أجواء فريدة'
     ],
     applications: [
       'Bedrooms and nurseries',
@@ -36,12 +52,27 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Hotels and resorts',
       'Meditation and yoga spaces'
     ],
+    applicationsAr: [
+      'غرف النوم والحضانة',
+      'مراكز السبا والعافية',
+      'غرف السينما',
+      'المطاعم والمقاهي',
+      'الفنادق والمنتجعات',
+      'أماكن التأمل واليوغا'
+    ],
     specifications: {
       material: 'PVC membrane with integrated fiber optics',
       thickness: '0.20mm - 0.30mm',
       colors: 'White, cream, and translucent options',
       warranty: '10-year warranty on ceiling, 5-year on fiber optics',
       installation: 'Professional installation with fiber optic integration'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC مع ألياف بصرية مدمجة',
+      thickness: '0.20 مم - 0.30 مم',
+      colors: 'أبيض، كريمي، وخيارات شفافة',
+      warranty: 'ضمان 10 سنوات للسقف، و5 سنوات للألياف البصرية',
+      installation: 'تركيب مهني مع دمج الألياف البصرية'
     },
     images: {
       main: '/art-images/stretch-ceiling/fiber-optic/star-ceiling2.jpg',
