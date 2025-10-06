@@ -20,6 +20,14 @@ export function TranslucentStretchCeilingPage({ onBack }: TranslucentStretchCeil
       'UV protection',
       'Easy maintenance'
     ],
+    featuresAr: [
+      'مادة ناقلة للضوء',
+      'انتشار طبيعي للضوء',
+      'الحفاظ على الخصوصية',
+      'إضاءة موفرة للطاقة',
+      'حماية من الأشعة فوق البنفسجية',
+      'صيانة سهلة'
+    ],
     benefits: [
       'Maximizes natural light',
       'Reduces energy consumption',
@@ -27,6 +35,14 @@ export function TranslucentStretchCeilingPage({ onBack }: TranslucentStretchCeil
       'Maintains privacy',
       'Perfect for daylighting',
       'Enhances well-being'
+    ],
+    benefitsAr: [
+      'تعظيم الاستفادة من الضوء الطبيعي',
+      'تقليل استهلاك الطاقة',
+      'يخلق إضاءة ناعمة ومنتشرة',
+      'يحافظ على الخصوصية',
+      'مثالي للإضاءة الطبيعية',
+      'يعزز الشعور بالراحة'
     ],
     applications: [
       'Office buildings',
@@ -36,12 +52,27 @@ export function TranslucentStretchCeilingPage({ onBack }: TranslucentStretchCeil
       'Residential spaces',
       'Green buildings'
     ],
+    applicationsAr: [
+      'المباني المكتبية',
+      'المؤسسات التعليمية',
+      'المرافق الصحية',
+      'مراكز التسوق',
+      'المساحات السكنية',
+      'المباني الخضراء'
+    ],
     specifications: {
       material: 'Translucent PVC membrane',
       thickness: '0.20mm - 0.30mm',
       colors: 'White, cream, and translucent options',
       warranty: '10-year manufacturer warranty',
       installation: 'Professional installation required'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC شفاف ناقل للضوء',
+      thickness: '0.20 مم - 0.30 مم',
+      colors: 'أبيض، كريمي، وخيارات شفافة',
+      warranty: 'ضمان الشركة المصنعة لمدة 10 سنوات',
+      installation: 'يتطلب تركيباً مهنياً'
     },
     images: {
       main: '/art-images/stretch-ceiling/translucent/NEWMAT-ceiling-mounted-lightbox-scaled.jpg',

@@ -20,6 +20,14 @@ export function PaperStretchCeilingPage({ onBack }: PaperStretchCeilingPageProps
       'Lightweight design',
       'Professional installation'
     ],
+    featuresAr: [
+      'مادة ورقية صديقة للبيئة',
+      'جاذبية جمالية طبيعية',
+      'بناء مستدام',
+      'صيانة سهلة',
+      'تصميم خفيف الوزن',
+      'تركيب احترافي'
+    ],
     benefits: [
       'Environmentally friendly',
       'Natural and organic appearance',
@@ -27,6 +35,14 @@ export function PaperStretchCeilingPage({ onBack }: PaperStretchCeilingPageProps
       'Easy to maintain',
       'Perfect for eco-designs',
       'Biodegradable material'
+    ],
+    benefitsAr: [
+      'صديق للبيئة',
+      'مظهر طبيعي وعضوي',
+      'اختيار مادة مستدامة',
+      'سهل الصيانة',
+      'مثالي للتصاميم البيئية',
+      'مادة قابلة للتحلل'
     ],
     applications: [
       'Eco-friendly offices',
@@ -36,12 +52,27 @@ export function PaperStretchCeilingPage({ onBack }: PaperStretchCeilingPageProps
       'Wellness centers',
       'Educational institutions'
     ],
+    applicationsAr: [
+      'مكاتب صديقة للبيئة',
+      'منازل مستدامة',
+      'مبانٍ خضراء',
+      'مساحات بتصميم طبيعي',
+      'مراكز العافية',
+      'المؤسسات التعليمية'
+    ],
     specifications: {
       material: 'High-quality paper membrane',
       thickness: '0.15mm - 0.20mm',
       colors: 'Natural paper colors and textures',
       warranty: '5-year manufacturer warranty',
       installation: 'Professional installation required'
+    },
+    specificationsAr: {
+      material: 'غشاء ورقي عالي الجودة',
+      thickness: '0.15 مم - 0.20 مم',
+      colors: 'ألوان وقوام الورق الطبيعية',
+      warranty: 'ضمان الشركة المصنعة لمدة 5 سنوات',
+      installation: 'يتطلب تركيباً مهنياً'
     },
     images: {
       main: '/art-images/stretch-ceiling/paper/20_96cc8cef-3998-4a91-b05b-4c0cdf9b57c1.webp',

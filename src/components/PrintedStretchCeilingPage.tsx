@@ -20,6 +20,14 @@ export function PrintedStretchCeilingPage({ onBack }: PrintedStretchCeilingPageP
       'Fade-resistant colors',
       'Professional installation'
     ],
+    featuresAr: [
+      'طباعة رقمية مخصصة',
+      'جودة صور عالية الدقة',
+      'إمكانيات تصميم غير محدودة',
+      'تقنية طباعة متينة',
+      'ألوان مقاومة للبهتان',
+      'تركيب احترافي'
+    ],
     benefits: [
       'Unlimited design creativity',
       'Perfect for branding',
@@ -27,6 +35,14 @@ export function PrintedStretchCeilingPage({ onBack }: PrintedStretchCeilingPageP
       'High-quality print resolution',
       'Durable and long-lasting',
       'Easy to customize'
+    ],
+    benefitsAr: [
+      'إبداع غير محدود في التصميم',
+      'مثالي للعلامات التجارية',
+      'يخلق مساحات فريدة',
+      'دقة طباعة عالية الجودة',
+      'متين وطويل الأمد',
+      'سهل التخصيص'
     ],
     applications: [
       'Corporate offices',
@@ -36,12 +52,27 @@ export function PrintedStretchCeilingPage({ onBack }: PrintedStretchCeilingPageP
       'Healthcare facilities',
       'Residential custom spaces'
     ],
+    applicationsAr: [
+      'المكاتب والشركات',
+      'المطاعم والمقاهي',
+      'المساحات التجارية',
+      'المؤسسات التعليمية',
+      'المرافق الصحية',
+      'المساحات السكنية المخصصة'
+    ],
     specifications: {
       material: 'Print-ready PVC membrane',
       thickness: '0.18mm - 0.25mm',
       colors: 'Full color spectrum printing',
       warranty: '10-year manufacturer warranty',
       installation: 'Professional installation required'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC جاهز للطباعة',
+      thickness: '0.18 مم - 0.25 مم',
+      colors: 'طباعة بجميع ألوان الطيف',
+      warranty: 'ضمان الشركة المصنعة لمدة 10 سنوات',
+      installation: 'يتطلب تركيباً مهنياً'
     },
     images: {
       main: '/art-images/stretch-ceiling/printed/NEWMAT-residential-printed-ceiling.jpg',

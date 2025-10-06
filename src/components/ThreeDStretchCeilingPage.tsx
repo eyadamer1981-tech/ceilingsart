@@ -20,6 +20,14 @@ export function ThreeDStretchCeilingPage({ onBack }: ThreeDStretchCeilingPagePro
       'Seamless installation',
       'Modern aesthetic appeal'
     ],
+    featuresAr: [
+      'تأثيرات تصميم ثلاثية الأبعاد',
+      'خلق عمق معماري',
+      'أنماط هندسية مخصصة',
+      'هيكل خفيف الوزن',
+      'تركيب سلس',
+      'جاذبية جمالية حديثة'
+    ],
     benefits: [
       'Creates stunning visual impact',
       'Adds architectural interest',
@@ -27,6 +35,14 @@ export function ThreeDStretchCeilingPage({ onBack }: ThreeDStretchCeilingPagePro
       'Perfect for modern interiors',
       'Customizable design patterns',
       'Increases property value'
+    ],
+    benefitsAr: [
+      'يخلق تأثيراً بصرياً مذهلاً',
+      'يضيف اهتماماً معمارياً',
+      'يعزّز الإحساس بالمساحة',
+      'مثالي للمساحات الداخلية الحديثة',
+      'أنماط تصميم قابلة للتخصيص',
+      'يزيد من قيمة العقار'
     ],
     applications: [
       'Luxury hotels',
@@ -36,12 +52,27 @@ export function ThreeDStretchCeilingPage({ onBack }: ThreeDStretchCeilingPagePro
       'Residential living spaces',
       'Art galleries and museums'
     ],
+    applicationsAr: [
+      'الفنادق الفاخرة',
+      'المطاعم الراقية',
+      'المكاتب الحديثة',
+      'مراكز التسوق',
+      'مساحات المعيشة السكنية',
+      'المعارض الفنية والمتاحف'
+    ],
     specifications: {
       material: 'High-quality PVC membrane with 3D forming',
       thickness: '0.20mm - 0.30mm',
       colors: 'Full color spectrum available',
       warranty: '10-year manufacturer warranty',
       installation: 'Specialized 3D installation techniques'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC عالي الجودة بتشكيل ثلاثي الأبعاد',
+      thickness: '0.20 مم - 0.30 مم',
+      colors: 'مجموعة كاملة من الألوان متاحة',
+      warranty: 'ضمان الشركة المصنعة لمدة 10 سنوات',
+      installation: 'تقنيات تركيب متخصصة ثلاثية الأبعاد'
     },
     images: {
       main: '/art-images/stretch-ceiling/3d/1c8af3ff-4658-4377-920c-1d283e4ba06c.jpg',

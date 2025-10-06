@@ -20,6 +20,14 @@ export function AcousticStretchCeilingPage({ onBack }: AcousticStretchCeilingPag
       'Easy maintenance',
       'Professional installation'
     ],
+    featuresAr: [
+      'تصميم صوتي مثقّب',
+      'امتصاص ممتاز للصوت',
+      'قدرات تقليل الضوضاء',
+      'مادة مقاومة للحريق',
+      'صيانة سهلة',
+      'تركيب احترافي'
+    ],
     benefits: [
       'Significantly reduces noise levels',
       'Improves acoustic comfort',
@@ -27,6 +35,14 @@ export function AcousticStretchCeilingPage({ onBack }: AcousticStretchCeilingPag
       'Enhances speech clarity',
       'Reduces echo and reverberation',
       'Creates comfortable acoustic environment'
+    ],
+    benefitsAr: [
+      'يقلل مستويات الضوضاء بشكل ملحوظ',
+      'يحسّن الراحة الصوتية',
+      'مثالي للبيئات المزدحمة',
+      'يعزّز وضوح الكلام',
+      'يقلّل الصدى والارتداد',
+      'يوفر بيئة صوتية مريحة'
     ],
     applications: [
       'Office buildings',
@@ -36,12 +52,27 @@ export function AcousticStretchCeilingPage({ onBack }: AcousticStretchCeilingPag
       'Restaurants and cafes',
       'Home theaters'
     ],
+    applicationsAr: [
+      'المباني المكتبية',
+      'غرف المؤتمرات',
+      'المؤسسات التعليمية',
+      'المرافق الصحية',
+      'المطاعم والمقاهي',
+      'غرف السينما المنزلية'
+    ],
     specifications: {
       material: 'Acoustic PVC membrane with micro-perforations',
       thickness: '0.18mm - 0.25mm',
       colors: 'Wide range of colors with acoustic properties',
       warranty: '10-year manufacturer warranty',
       installation: 'Professional installation with acoustic considerations'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC صوتي بفتحات دقيقة',
+      thickness: '0.18 مم - 0.25 مم',
+      colors: 'مجموعة واسعة من الألوان بخصائص صوتية',
+      warranty: 'ضمان الشركة المصنعة لمدة 10 سنوات',
+      installation: 'تركيب مهني مع مراعاة المتطلبات الصوتية'
     },
     images: {
       main: '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg',

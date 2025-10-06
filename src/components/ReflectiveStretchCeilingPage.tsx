@@ -20,6 +20,14 @@ export function ReflectiveStretchCeilingPage({ onBack }: ReflectiveStretchCeilin
       'Easy maintenance',
       'Durable construction'
     ],
+    featuresAr: [
+      'سطح عاكس شبيه بالمرآة',
+      'لمسة نهائية عالية اللمعان',
+      'تعزيز الإضاءة',
+      'تأثيرات تعزّز اتساع المساحة',
+      'صيانة سهلة',
+      'تصميم متين'
+    ],
     benefits: [
       'Creates illusion of larger space',
       'Amplifies natural and artificial light',
@@ -27,6 +35,14 @@ export function ReflectiveStretchCeilingPage({ onBack }: ReflectiveStretchCeilin
       'Perfect for dramatic lighting effects',
       'Easy to clean and maintain',
       'Increases perceived ceiling height'
+    ],
+    benefitsAr: [
+      'يخلق وهم مساحة أكبر',
+      'يعزز الإضاءة الطبيعية والاصطناعية',
+      'يضيف لمسة فاخرة وراقية',
+      'مثالي لتأثيرات إضاءة درامية',
+      'سهل التنظيف والصيانة',
+      'يزيد من الإحساس بارتفاع السقف'
     ],
     applications: [
       'Luxury hotels',
@@ -36,12 +52,27 @@ export function ReflectiveStretchCeilingPage({ onBack }: ReflectiveStretchCeilin
       'Residential master bedrooms',
       'Retail spaces'
     ],
+    applicationsAr: [
+      'الفنادق الفاخرة',
+      'المطاعم الراقية',
+      'مراكز السبا والعافية',
+      'المكاتب الحديثة',
+      'غرف النوم الرئيسية السكنية',
+      'المساحات التجارية'
+    ],
     specifications: {
       material: 'Reflective PVC membrane with mirror finish',
       thickness: '0.18mm - 0.25mm',
       colors: 'Silver, gold, and metallic finishes',
       warranty: '10-year manufacturer warranty',
       installation: 'Professional installation required'
+    },
+    specificationsAr: {
+      material: 'غشاء PVC عاكس بلمسة نهائية مرآتية',
+      thickness: '0.18 مم - 0.25 مم',
+      colors: 'تشطيبات فضية وذهبية ومعدنية',
+      warranty: 'ضمان الشركة المصنعة لمدة 10 سنوات',
+      installation: 'يتطلب تركيباً مهنياً'
     },
     images: {
       main: '/art-images/stretch-ceiling/reflective/NEWMAT-mirror-museum-1.jpg',
