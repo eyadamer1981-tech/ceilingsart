@@ -28,12 +28,15 @@ export function ProjectDetailPage({
   onSelectRelated?: (item: DetailItem) => void;
 }) {
   const [related, setRelated] = useState<DetailItem[]>([]);
+  const [resolvedItem, setResolvedItem] = useState<DetailItem>(item);
+  const [loadingRelated, setLoadingRelated] = useState<boolean>(false);
   const { language, isRTL } = useLanguage();
   
   useEffect(() => {
     let isMounted = true;
     const load = async () => {
       try {
+        if (isMounted) setLoadingRelated(true);
         // Determine the correct API endpoint based on category
         let apiEndpoint = '/api/projects'; // Default to projects
         
@@ -61,10 +64,49 @@ export function ProjectDetailPage({
           category: p.category,
           detailImages: p.detailImages || [],
         }));
+
+        // Enrich the current item with backend data to ensure detailImages/description are present
+        const match = items.find((p) => {
+          const incomingTitle = item.titleEn || item.title;
+          return (
+            p.titleEn?.toLowerCase() === incomingTitle?.toLowerCase() ||
+            p.title?.toLowerCase() === incomingTitle?.toLowerCase() ||
+            (item.titleAr && p.titleAr && p.titleAr.toLowerCase() === item.titleAr.toLowerCase())
+          );
+        });
+        if (match && isMounted) {
+          setResolvedItem((prev) => ({
+            // Prefer backend-enriched fields while preserving provided fallbacks
+            title: match.title || prev.title,
+            titleEn: match.titleEn || prev.titleEn,
+            titleAr: match.titleAr || prev.titleAr,
+            image: match.image || prev.image,
+            description: prev.description,
+            descriptionEn: match.descriptionEn || prev.descriptionEn,
+            descriptionAr: match.descriptionAr || prev.descriptionAr,
+            category: match.category || prev.category,
+            detailImages: (match.detailImages && match.detailImages.length > 0) ? match.detailImages : (prev.detailImages || []),
+          }));
+        } else if (isMounted) {
+          // If no match, keep the provided item
+          setResolvedItem(item);
+        }
         
         // Filter related items: exclude current item and optionally match by category
         const filtered = items
-          .filter(p => p.title !== item.title) // Exclude current item
+          .filter((p) => {
+            const same =
+              p.title === item.title ||
+              (p.titleEn && (p.titleEn === item.titleEn || p.titleEn === item.title)) ||
+              (p.titleAr && (p.titleAr === item.titleAr));
+            return !same;
+          })
+          // Prefer related by same category when available
+          .sort((a, b) => {
+            const aMatch = a.category && item.category && a.category === item.category;
+            const bMatch = b.category && item.category && b.category === item.category;
+            return (aMatch === bMatch) ? 0 : (aMatch ? -1 : 1);
+          })
           .slice(0, 3); // Take first 3 items
         
         if (isMounted) setRelated(filtered);
@@ -72,10 +114,13 @@ export function ProjectDetailPage({
         console.error('Error fetching related items:', error);
         if (isMounted) setRelated([]);
       }
+      finally {
+        if (isMounted) setLoadingRelated(false);
+      }
     };
     load();
     return () => { isMounted = false; };
-  }, [item.title, item.category, isService]);
+  }, [item.title, item.titleEn, item.titleAr, item.category, isService]);
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#2C2C2C" }}>
       {/* Note: Global site header remains rendered by the main page layout */}
@@ -107,8 +152,8 @@ export function ProjectDetailPage({
           <div className="relative">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <ImageWithFallback
-                src={item.image}
-                alt={isRTL && item.titleAr ? item.titleAr : (item.titleEn || item.title)}
+                src={resolvedItem.image}
+                alt={isRTL && resolvedItem.titleAr ? resolvedItem.titleAr : (resolvedItem.titleEn || resolvedItem.title)}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -121,11 +166,11 @@ export function ProjectDetailPage({
         <div className="grid lg:grid-cols-2 gap-16 mb-20">
           {/* Left Side - Small Images */}
           <div className="grid grid-cols-3 gap-4">
-            {(item.detailImages && item.detailImages.length > 0 ? item.detailImages.slice(0,3) : []).map((src, i) => (
+            {(resolvedItem.detailImages && resolvedItem.detailImages.length > 0 ? resolvedItem.detailImages.slice(0,3) : []).map((src, i) => (
               <div key={i} className="aspect-[4/3] rounded-lg overflow-hidden">
                 <ImageWithFallback
                   src={src}
-                  alt={`${isRTL && item.titleAr ? item.titleAr : (item.titleEn || item.title)} detail ${i + 1}`}
+                  alt={`${isRTL && resolvedItem.titleAr ? resolvedItem.titleAr : (resolvedItem.titleEn || resolvedItem.title)} detail ${i + 1}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -140,7 +185,7 @@ export function ProjectDetailPage({
             <p className="text-gray-300 leading-relaxed text-sm">
               {(() => {
                 // Prioritize backend data: descriptionAr/descriptionEn, then fallback to description, then static fallback
-                const byLang = language === 'ar' ? (item.descriptionAr || item.description) : (item.descriptionEn || item.description);
+                const byLang = language === 'ar' ? (resolvedItem.descriptionAr || resolvedItem.description) : (resolvedItem.descriptionEn || resolvedItem.description);
                 if (byLang) return byLang;
                 
                 // Static fallback text in both languages
@@ -166,7 +211,14 @@ export function ProjectDetailPage({
 
           <div className="flex items-end justify-between">
             <div className="grid grid-cols-3 gap-6 flex-1">
-              {related.map((rel, idx) => (
+              {loadingRelated && Array.from({ length: 3 }).map((_, idx) => (
+                <div key={`skeleton-${idx}`} className="w-full">
+                  <div className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-200 animate-pulse" />
+                  <div className="mt-2 h-4 w-3/4 bg-gray-200 rounded animate-pulse" />
+                </div>
+              ))}
+
+              {!loadingRelated && related.map((rel, idx) => (
                 <div key={idx} className="cursor-pointer" onClick={() => onSelectRelated?.(rel)}>
                   <div className="aspect-[4/3] rounded-lg overflow-hidden">
                     <ImageWithFallback
@@ -180,7 +232,8 @@ export function ProjectDetailPage({
                   </div>
                 </div>
               ))}
-              {related.length === 0 && (
+
+              {!loadingRelated && related.length === 0 && (
                 <div className="text-gray-500">{getTranslation(language, 'noRelatedItems')}</div>
               )}
             </div>

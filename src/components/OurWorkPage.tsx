@@ -3,6 +3,7 @@
 import React from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { GallerySkeleton } from './ui/GallerySkeleton';
+import { ProductCardSliderSkeleton } from './ProductCardSliderSkeleton';
 import { ProductCardSlider, ProductCard } from './ProductCardSlider';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion } from './ui/MotionWrapper';
@@ -130,7 +131,23 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
         <div className="container mx-auto px-4">
           {/* Our Work Content */}
           {loading && (
-            <GallerySkeleton count={pageSize} />
+            <MDiv 
+              className="space-y-16"
+              initial="hidden"
+              animate="show"
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15 } } }}
+            >
+              {/* Simulate a few slider rows to match final layout */}
+              <MDiv initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+                <ProductCardSliderSkeleton titleWidthPct={30} slides={8} />
+              </MDiv>
+              <MDiv initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.05 }}>
+                <ProductCardSliderSkeleton titleWidthPct={22} slides={8} />
+              </MDiv>
+              <MDiv initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+                <ProductCardSliderSkeleton titleWidthPct={36} slides={8} />
+              </MDiv>
+            </MDiv>
           )}
           {!loading && ourWorkImages.length === 0 && (
             <div className="text-center text-black">No projects found. Use the admin ingestion to import from art_images.</div>
