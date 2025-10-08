@@ -1,15 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { StretchCeiling, Project } from '../../../lib/models';
-import multer from 'multer';
+import { getGridFSBucket } from '../../../lib/gridfs';
+import { Readable } from 'stream';
 
-// Use memory storage to keep files in RAM and store in MongoDB
-const upload = multer({ storage: multer.memoryStorage() });
-
-function bufferToDataUrl(file: Express.Multer.File) {
-  const mime = file.mimetype || 'application/octet-stream';
-  const base64 = file.buffer.toString('base64');
-  return `data:${mime};base64,${base64}`;
+// Back-compat note: We will now store files in GridFS and set the image fields
+// to stable URLs under /api/images/[id], while also storing imageId(s).
+async function storeInGridFS(file: any): Promise<{ id: any; url: string }> {
+  const bucket = await getGridFSBucket();
+  const uploadStream = bucket.openUploadStream(file.originalname || 'upload', {
+    contentType: file.mimetype || 'application/octet-stream',
+    metadata: { size: file.size }
+  });
+  await new Promise<void>((resolve, reject) => {
+    Readable.from(file.buffer)
+      .pipe(uploadStream)
+      .on('error', reject)
+      .on('finish', () => resolve());
+  });
+  const id = uploadStream.id;
+  const url = `/api/images/${id}`;
+  return { id, url };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -27,6 +38,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'PUT') {
+      const multer = require('multer');
+      const upload = multer({ storage: multer.memoryStorage() });
+      
       // Handle file upload (main image + up to 3 detail images)
       upload.fields([
         { name: 'image', maxCount: 1 },
@@ -65,12 +79,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             featured: featured === 'true',
           };
 
+          // Save files to GridFS if provided
           if (mainImageFile) {
-            updateData.image = bufferToDataUrl(mainImageFile);
+            const mainStored = await storeInGridFS(mainImageFile);
+            updateData.image = mainStored.url;
+            updateData.imageId = mainStored.id;
           }
 
           if (detailImagesFiles.length > 0) {
-            updateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+            const detailStored = await Promise.all(
+              detailImagesFiles.map(async (f: any) => await storeInGridFS(f))
+            );
+            updateData.detailImages = detailStored.map((d) => d.url);
+            updateData.detailImageIds = detailStored.map((d) => d.id);
           }
 
           if (Array.isArray(features)) updateData.features = features;
@@ -94,11 +115,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           };
 
           if (mainImageFile) {
-            projectUpdateData.image = bufferToDataUrl(mainImageFile);
+            projectUpdateData.image = updateData.image;
+            projectUpdateData.imageId = updateData.imageId;
           }
 
           if (detailImagesFiles.length > 0) {
-            projectUpdateData.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+            projectUpdateData.detailImages = updateData.detailImages;
+            projectUpdateData.detailImageIds = updateData.detailImageIds;
           }
 
           await Project.findOneAndUpdate(
@@ -111,6 +134,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
           res.json(stretchCeiling);
         } catch (error: any) {
+          console.error('Stretch Ceilings API (PUT) error:', error);
           res.status(500).json({ message: error?.message || 'Server error' });
         }
       });

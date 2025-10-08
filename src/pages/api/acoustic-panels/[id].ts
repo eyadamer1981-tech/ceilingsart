@@ -1,20 +1,35 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { AcousticPanel, Project } from '../../../lib/models';
-import multer from 'multer';
+import { getGridFSBucket } from '../../../lib/gridfs';
+import { Readable } from 'stream';
 
-const upload = multer({ storage: multer.memoryStorage() });
-
-function bufferToDataUrl(file: Express.Multer.File) {
-  const mime = file.mimetype || 'application/octet-stream';
-  const base64 = file.buffer.toString('base64');
-  return `data:${mime};base64,${base64}`;
+// Back-compat note: We will now store files in GridFS and set the image fields
+// to stable URLs under /api/images/[id], while also storing imageId(s).
+async function storeInGridFS(file: any): Promise<{ id: any; url: string }> {
+  const bucket = await getGridFSBucket();
+  const uploadStream = bucket.openUploadStream(file.originalname || 'upload', {
+    contentType: file.mimetype || 'application/octet-stream',
+    metadata: { size: file.size }
+  });
+  await new Promise<void>((resolve, reject) => {
+    Readable.from(file.buffer)
+      .pipe(uploadStream)
+      .on('error', reject)
+      .on('finish', () => resolve());
+  });
+  const id = uploadStream.id;
+  const url = `/api/images/${id}`;
+  return { id, url };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query as { id: string };
 
   if (req.method === 'PUT') {
+    const multer = require('multer');
+    const upload = multer({ storage: multer.memoryStorage() });
+    
     upload.fields([
       { name: 'image', maxCount: 1 },
       { name: 'detailImages', maxCount: 3 },
@@ -41,11 +56,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (typeof featured !== 'undefined') updates.featured = featured === 'true' || featured === true;
         if (typeof rightLeftSection !== 'undefined') updates.rightLeftSection = rightLeftSection === 'true' || rightLeftSection === true;
 
+        // Save files to GridFS if provided
         if (mainImageFile) {
-          updates.image = bufferToDataUrl(mainImageFile);
+          const mainStored = await storeInGridFS(mainImageFile);
+          updates.image = mainStored.url;
+          updates.imageId = mainStored.id;
         }
+        
         if (detailImagesFiles && detailImagesFiles.length > 0) {
-          updates.detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+          const detailStored = await Promise.all(
+            detailImagesFiles.map(async (f: any) => await storeInGridFS(f))
+          );
+          updates.detailImages = detailStored.map((d) => d.url);
+          updates.detailImageIds = detailStored.map((d) => d.id);
         }
 
         const panel = await AcousticPanel.findByIdAndUpdate(id, updates, { new: true });
