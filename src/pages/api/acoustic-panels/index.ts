@@ -2,14 +2,27 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { AcousticPanel, Project } from '../../../lib/models';
 import multer from 'multer';
+import { getGridFSBucket } from '../../../lib/gridfs';
+import { Readable } from 'stream';
 
-// Use memory storage to keep files in RAM and store in MongoDB as data URLs
+// Use memory storage to keep files in RAM, then store in MongoDB GridFS
 const upload = multer({ storage: multer.memoryStorage() });
 
-function bufferToDataUrl(file: Express.Multer.File) {
-  const mime = file.mimetype || 'application/octet-stream';
-  const base64 = file.buffer.toString('base64');
-  return `data:${mime};base64,${base64}`;
+async function storeInGridFS(file: Express.Multer.File): Promise<{ id: any; url: string }> {
+  const bucket = await getGridFSBucket();
+  const uploadStream = bucket.openUploadStream(file.originalname || 'upload', {
+    contentType: file.mimetype || 'application/octet-stream',
+    metadata: { size: file.size }
+  });
+  await new Promise<void>((resolve, reject) => {
+    Readable.from(file.buffer)
+      .pipe(uploadStream)
+      .on('error', reject)
+      .on('finish', () => resolve());
+  });
+  const id = uploadStream.id;
+  const url = `/api/images/${id}`;
+  return { id, url };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -43,13 +56,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const mainImageFile = files.image?.[0];
         const detailImagesFiles = files.detailImages || [];
 
-        const image = mainImageFile ? bufferToDataUrl(mainImageFile) : '';
-        const detailImages = detailImagesFiles.map((f: Express.Multer.File) => bufferToDataUrl(f));
+        const mainStored = mainImageFile ? await storeInGridFS(mainImageFile) : null;
+        const detailStored = await Promise.all(
+          detailImagesFiles.map(async (f: Express.Multer.File) => await storeInGridFS(f))
+        );
 
         if (!titleEn || !titleAr || !descriptionEn || !descriptionAr) {
           return res.status(400).json({ message: 'Missing required fields (titleEn, titleAr, descriptionEn, descriptionAr).' });
         }
-        if (!image) {
+        if (!mainStored || !mainStored.url) {
           return res.status(400).json({ message: 'Main image is required.' });
         }
 
@@ -59,8 +74,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           titleAr,
           descriptionEn,
           descriptionAr,
-          image,
-          detailImages,
+          image: mainStored ? mainStored.url : '',
+          imageId: mainStored ? mainStored.id : undefined,
+          detailImages: detailStored.map((d) => d.url),
+          detailImageIds: detailStored.map((d) => d.id),
           featured: featured === 'true' || featured === true,
           rightLeftSection: rightLeftSection === 'true' || rightLeftSection === true,
         });
@@ -73,8 +90,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           titleAr,
           descriptionEn,
           descriptionAr,
-          image,
-          detailImages,
+          image: mainStored ? mainStored.url : '',
+          imageId: mainStored ? mainStored.id : undefined,
+          detailImages: detailStored.map((d) => d.url),
+          detailImageIds: detailStored.map((d) => d.id),
           category: 'Acoustic Panels',
           featured: featured === 'true' || featured === true,
         });

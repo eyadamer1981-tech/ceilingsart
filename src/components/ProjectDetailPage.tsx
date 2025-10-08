@@ -31,30 +31,90 @@ export function ProjectDetailPage({
   const [resolvedItem, setResolvedItem] = useState<DetailItem>(item);
   const [loadingRelated, setLoadingRelated] = useState<boolean>(false);
   const { language, isRTL } = useLanguage();
+
+  // Reset resolvedItem when item prop changes
+  useEffect(() => {
+    setResolvedItem({
+      ...item,
+      detailImages: item.detailImages || []
+    });
+  }, [item.title, item.titleEn, item.titleAr, item.image]);
   
   useEffect(() => {
     let isMounted = true;
     const load = async () => {
       try {
         if (isMounted) setLoadingRelated(true);
-        // Determine the correct API endpoint based on category
-        let apiEndpoint = '/api/projects'; // Default to projects
         
+        // First, enrich the current item with backend data
+        let apiEndpoint = '/api/projects';
         if (isService) {
-          // For services, determine which API to use based on category
           if (item.category?.toLowerCase().includes('acoustic')) {
             apiEndpoint = '/api/acoustic-panels';
           } else if (item.category?.toLowerCase().includes('stretch') || item.category?.toLowerCase().includes('ceiling')) {
             apiEndpoint = '/api/stretch-ceilings';
-          } else {
-            // For other service categories, use projects since services API no longer exists
-            apiEndpoint = '/api/projects';
           }
         }
         
-        const res = await fetch(apiEndpoint);
-        const data = await res.json();
-        const items: DetailItem[] = (Array.isArray(data) ? data : []).map((p: any) => ({
+        // Get current item details using specific project lookup
+        const itemParams = new URLSearchParams({
+          fields: 'title titleEn titleAr image descriptionEn descriptionAr detailImages category'
+        });
+        
+        // Add title parameters for exact matching
+        if (item.title) itemParams.append('title', item.title);
+        if (item.titleEn) itemParams.append('titleEn', item.titleEn);
+        if (item.titleAr) itemParams.append('titleAr', item.titleAr);
+
+        // Determine the correct by-title endpoint based on service type
+        let byTitleEndpoint = '/api/projects/by-title';
+        if (isService) {
+          if (item.category?.toLowerCase().includes('acoustic')) {
+            byTitleEndpoint = '/api/acoustic-panels/by-title';
+          } else if (item.category?.toLowerCase().includes('stretch') || item.category?.toLowerCase().includes('ceiling')) {
+            byTitleEndpoint = '/api/stretch-ceilings/by-title';
+          }
+        }
+
+        const itemRes = await fetch(`${byTitleEndpoint}?${itemParams}`);
+        const itemData = await itemRes.json();
+        
+        if (itemData && !itemData.message && isMounted) {
+          // Directly use the found project data
+          setResolvedItem({
+            title: itemData.title || item.title,
+            titleEn: itemData.titleEn || item.titleEn,
+            titleAr: itemData.titleAr || item.titleAr,
+            image: itemData.image || item.image,
+            description: item.description,
+            descriptionEn: itemData.descriptionEn || item.descriptionEn,
+            descriptionAr: itemData.descriptionAr || item.descriptionAr,
+            category: itemData.category || item.category,
+            detailImages: itemData.detailImages || [], // Always use fresh data, don't fallback to previous
+          });
+        } else if (isMounted) {
+          // If no match found, reset to the provided item with empty detailImages
+          setResolvedItem({
+            ...item,
+            detailImages: item.detailImages || []
+          });
+        }
+
+        // Fetch related projects using optimized endpoint
+        const relatedParams = new URLSearchParams({
+          limit: '3',
+          category: item.category || '',
+        });
+        
+        // Add title parameters for exclusion
+        if (item.title) relatedParams.append('currentTitle', item.title);
+        if (item.titleEn) relatedParams.append('currentTitleEn', item.titleEn);
+        if (item.titleAr) relatedParams.append('currentTitleAr', item.titleAr);
+
+        const relatedRes = await fetch(`/api/projects/related?${relatedParams}`);
+        const relatedData = await relatedRes.json();
+        
+        const relatedItems: DetailItem[] = (Array.isArray(relatedData) ? relatedData : []).map((p: any) => ({
           title: p.title || p.titleEn,
           titleEn: p.titleEn,
           titleAr: p.titleAr,
@@ -65,51 +125,7 @@ export function ProjectDetailPage({
           detailImages: p.detailImages || [],
         }));
 
-        // Enrich the current item with backend data to ensure detailImages/description are present
-        const match = items.find((p) => {
-          const incomingTitle = item.titleEn || item.title;
-          return (
-            p.titleEn?.toLowerCase() === incomingTitle?.toLowerCase() ||
-            p.title?.toLowerCase() === incomingTitle?.toLowerCase() ||
-            (item.titleAr && p.titleAr && p.titleAr.toLowerCase() === item.titleAr.toLowerCase())
-          );
-        });
-        if (match && isMounted) {
-          setResolvedItem((prev) => ({
-            // Prefer backend-enriched fields while preserving provided fallbacks
-            title: match.title || prev.title,
-            titleEn: match.titleEn || prev.titleEn,
-            titleAr: match.titleAr || prev.titleAr,
-            image: match.image || prev.image,
-            description: prev.description,
-            descriptionEn: match.descriptionEn || prev.descriptionEn,
-            descriptionAr: match.descriptionAr || prev.descriptionAr,
-            category: match.category || prev.category,
-            detailImages: (match.detailImages && match.detailImages.length > 0) ? match.detailImages : (prev.detailImages || []),
-          }));
-        } else if (isMounted) {
-          // If no match, keep the provided item
-          setResolvedItem(item);
-        }
-        
-        // Filter related items: exclude current item and optionally match by category
-        const filtered = items
-          .filter((p) => {
-            const same =
-              p.title === item.title ||
-              (p.titleEn && (p.titleEn === item.titleEn || p.titleEn === item.title)) ||
-              (p.titleAr && (p.titleAr === item.titleAr));
-            return !same;
-          })
-          // Prefer related by same category when available
-          .sort((a, b) => {
-            const aMatch = a.category && item.category && a.category === item.category;
-            const bMatch = b.category && item.category && b.category === item.category;
-            return (aMatch === bMatch) ? 0 : (aMatch ? -1 : 1);
-          })
-          .slice(0, 3); // Take first 3 items
-        
-        if (isMounted) setRelated(filtered);
+        if (isMounted) setRelated(relatedItems);
       } catch (error) {
         console.error('Error fetching related items:', error);
         if (isMounted) setRelated([]);

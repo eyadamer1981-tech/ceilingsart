@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
-import { Blog } from '../../../lib/models';
+import { Blog, InternalLinkMapping, SEOConfig } from '../../../lib/models';
 import multer from 'multer';
+import { generateSEOMetadata } from '../../../lib/seo-utils';
+import { generateInternalLinks } from '../../../lib/generateInternalLinks';
 
 // Use memory storage and store as data URL in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });
@@ -25,13 +27,115 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       try {
-        const { title, content, excerpt, author, featured } = req.body;
+        const {
+          title,
+          content,
+          excerpt,
+          author,
+          featured,
+          autoSEO,
+          autoInternalLinks,
+          manualSEO,
+          manualLinks,
+        } = req.body;
+
+        // Get existing blog
+        const existingBlog = await Blog.findById(id);
+        if (!existingBlog) {
+          return res.status(404).json({ message: 'Blog not found' });
+        }
+
+        // Get global config
+        let config = await SEOConfig.findOne({ configKey: 'global' });
+        if (!config) {
+          config = new SEOConfig({ configKey: 'global' });
+          await config.save();
+        }
+
+        // Determine if we should use auto features
+        const useAutoSEO = (autoSEO !== undefined ? autoSEO === 'true' : existingBlog.autoSEO) && config.globalAutoSEO;
+        const useAutoLinks = (autoInternalLinks !== undefined ? autoInternalLinks === 'true' : existingBlog.autoInternalLinks) && config.globalAutoInternalLinks;
+
+        // Generate SEO metadata (only if auto is enabled)
+        let slug = existingBlog.slug;
+        let metaTitle = existingBlog.metaTitle;
+        let metaDescription = existingBlog.metaDescription;
+        let metaKeywords = existingBlog.metaKeywords;
+
+        if (useAutoSEO) {
+          const seoMetadata = generateSEOMetadata(title, content, excerpt);
+
+          // Only update slug if title changed
+          if (title !== existingBlog.title) {
+            slug = seoMetadata.slug;
+            let slugCounter = 1;
+            while (await Blog.findOne({ slug, _id: { $ne: id } })) {
+              slug = `${seoMetadata.slug}-${slugCounter}`;
+              slugCounter++;
+            }
+          }
+
+          metaTitle = seoMetadata.metaTitle;
+          metaDescription = seoMetadata.metaDescription;
+          metaKeywords = seoMetadata.metaKeywords;
+        }
+
+        // Parse manual links if provided
+        let parsedManualLinks = existingBlog.manualLinks || [];
+        if (manualLinks) {
+          try {
+            parsedManualLinks = typeof manualLinks === 'string' ? JSON.parse(manualLinks) : manualLinks;
+          } catch (e) {
+            console.error('Failed to parse manualLinks:', e);
+          }
+        }
+
+        // Generate internal links
+        let processedContent = content;
+        let internalLinksApplied: string[] = [];
+
+        if (useAutoLinks || parsedManualLinks.length > 0) {
+          const autoLinkMappings = useAutoLinks ? await InternalLinkMapping.find({ isActive: true }) : [];
+
+          const linkResult = generateInternalLinks({
+            content,
+            autoLinks: autoLinkMappings,
+            manualLinks: parsedManualLinks,
+            useAutoLinks,
+            maxLinksPerPost: config.maxInternalLinksPerPost,
+          });
+
+          processedContent = linkResult.processedContent;
+          internalLinksApplied = linkResult.linksApplied;
+        }
+
+        // Parse manual SEO if provided
+        let parsedManualSEO = existingBlog.manualSEO || {};
+        if (manualSEO) {
+          try {
+            parsedManualSEO = typeof manualSEO === 'string' ? JSON.parse(manualSEO) : manualSEO;
+          } catch (e) {
+            console.error('Failed to parse manualSEO:', e);
+          }
+        }
+
         const updateData: any = {
           title,
           content,
           excerpt,
           author,
           featured: featured === 'true',
+          autoSEO: useAutoSEO,
+          autoInternalLinks: useAutoLinks,
+          slug,
+          metaTitle,
+          metaDescription,
+          metaKeywords,
+          manualSEO: parsedManualSEO,
+          manualLinks: parsedManualLinks,
+          processedContent,
+          internalLinksApplied,
+          updatedAt: new Date(),
         };
 
         if ((req as any).file) {
@@ -41,6 +145,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const blog = await Blog.findByIdAndUpdate(id, updateData, { new: true });
         res.json(blog);
       } catch (error) {
+        console.error('Error updating blog:', error);
         res.status(500).json({ message: 'Server error' });
       }
     });

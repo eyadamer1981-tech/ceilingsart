@@ -11,10 +11,15 @@ interface Blog {
   image: string;
   author: string;
   featured: boolean;
+  slug?: string;
   createdAt: string;
 }
 
-export function BlogPage() {
+interface BlogPageProps {
+  onBlogSelect?: (blogSlug: string) => void;
+}
+
+export function BlogPage({ onBlogSelect }: BlogPageProps) {
   const { t } = useLanguage();
   const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +128,18 @@ export function BlogPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {blogPosts.map((post) => (
-                <article key={post._id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group cursor-pointer">
+                <article
+                  key={post._id}
+                  onClick={() => {
+                    if (onBlogSelect) {
+                      onBlogSelect(post.slug || post._id);
+                    } else {
+                      // Fallback: try to navigate using window.location if no callback provided
+                      window.location.href = `/blog/${post.slug || post._id}`;
+                    }
+                  }}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
+                >
                   <div className="aspect-[4/3] overflow-hidden">
                     <ImageWithFallback
                       src={post.image}

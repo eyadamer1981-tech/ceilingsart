@@ -43,7 +43,48 @@ const blogSchema = new mongoose.Schema({
   imageId: { type: mongoose.Schema.Types.ObjectId, ref: 'images.files' },
   author: { type: String, required: true },
   featured: { type: Boolean, default: false },
+
+  // Automation flags
+  autoSEO: { type: Boolean, default: true },
+  autoInternalLinks: { type: Boolean, default: true },
+
+  // Auto-generated SEO fields
+  slug: { type: String, unique: true, sparse: true },
+  metaTitle: { type: String },
+  metaDescription: { type: String },
+  metaKeywords: { type: [String], default: [] },
+
+  // Manual SEO overrides
+  manualSEO: {
+    type: {
+      title: { type: String, default: '' },
+      description: { type: String, default: '' },
+      keywords: { type: [String], default: [] },
+      ogImage: { type: String, default: '' },
+      canonicalUrl: { type: String, default: '' },
+    },
+    default: {}
+  },
+
+  // Manual internal links
+  manualLinks: {
+    type: [
+      new mongoose.Schema({
+        keyword: { type: String, required: true },
+        url: { type: String, required: true },
+        caseSensitive: { type: Boolean, default: false },
+        maxOccurrences: { type: Number, default: 1 },
+      }, { _id: false })
+    ],
+    default: []
+  },
+
+  // Processed content with internal links
+  processedContent: { type: String },
+  internalLinksApplied: { type: [String], default: [] },
+
   createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const customSliderSchema = new mongoose.Schema({
@@ -120,6 +161,33 @@ const stretchCeilingSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+const internalLinkMappingSchema = new mongoose.Schema({
+  keyword: { type: String, required: true, unique: true },
+  url: { type: String, required: true },
+  priority: { type: Number, default: 0 }, // Higher priority links are applied first
+  caseSensitive: { type: Boolean, default: false },
+  maxOccurrences: { type: Number, default: 1 }, // Max times this keyword can be linked per post
+  isActive: { type: Boolean, default: true },
+  description: { type: String, default: '' }, // Admin note
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+const seoConfigSchema = new mongoose.Schema({
+  configKey: { type: String, required: true, unique: true, default: 'global' },
+  // Global automation flags
+  globalAutoSEO: { type: Boolean, default: true },
+  globalAutoInternalLinks: { type: Boolean, default: true },
+  // Default settings
+  maxInternalLinksPerPost: { type: Number, default: 5 },
+  defaultMetaKeywordsCount: { type: Number, default: 10 },
+  // Site-wide SEO defaults
+  siteName: { type: String, default: 'CA CEILINGS Art' },
+  defaultOGImage: { type: String, default: '' },
+  twitterHandle: { type: String, default: '' },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 
 export const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 export const Service = mongoose.models.Service || mongoose.model('Service', serviceSchema);
@@ -129,4 +197,6 @@ export const CustomSlider = mongoose.models.CustomSlider || mongoose.model('Cust
 export const PageCover = mongoose.models.PageCover || mongoose.model('PageCover', pageCoverSchema);
 export const AcousticPanel = mongoose.models.AcousticPanel || mongoose.model('AcousticPanel', acousticPanelSchema);
 export const StretchCeiling = mongoose.models.StretchCeiling || mongoose.model('StretchCeiling', stretchCeilingSchema);
+export const InternalLinkMapping = mongoose.models.InternalLinkMapping || mongoose.model('InternalLinkMapping', internalLinkMappingSchema);
+export const SEOConfig = mongoose.models.SEOConfig || mongoose.model('SEOConfig', seoConfigSchema);
 // GalleryImage removed per requirements

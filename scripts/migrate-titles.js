@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 // Connect to MongoDB
+// NOTE: We use the TEST database. Set MONGODB_URI to mongodb://localhost:27017/test when running.
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/art-ceiling');

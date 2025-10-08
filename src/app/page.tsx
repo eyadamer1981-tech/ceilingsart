@@ -77,8 +77,8 @@ export default function Home() {
             <ImageCarousel
               onSelect={(img) => {
                 setSelectedItem({ 
-                  title: img.alt, 
-                  titleEn: img.titleEn || img.alt,
+                  title: img.titleEn || img.title || img.alt, 
+                  titleEn: img.titleEn || img.alt || img.title,
                   titleAr: img.titleAr,
                   image: img.src, 
                   category: img.category || 'Gallery' 
@@ -162,8 +162,11 @@ export default function Home() {
           <>
             <OurWorkPage
               onSelect={(image) => {
+                const titleStr = image.title || image.titleEn || '';
                 setSelectedItem({
-                  title: image.title,
+                  title: titleStr,
+                  titleEn: image.titleEn || titleStr,
+                  titleAr: image.titleAr,
                   image: image.src,
                   category: image.category,
                 });
@@ -185,8 +188,11 @@ export default function Home() {
         return (
           <>
             <OurWorkPage onSelect={(image) => {
+              const titleStr = image.title || image.titleEn || '';
               setSelectedItem({
-                title: image.title,
+                title: titleStr,
+                titleEn: image.titleEn || titleStr,
+                titleAr: image.titleAr,
                 image: image.src,
                 category: image.category,
               });
@@ -198,7 +204,10 @@ export default function Home() {
       case 'BLOG':
         return (
           <>
-            <BlogPage />
+            <BlogPage onBlogSelect={(slug) => {
+              // Navigate to blog detail page using window.location
+              window.location.href = `/blog/${slug}`;
+            }} />
             <Footer />
           </>
         );

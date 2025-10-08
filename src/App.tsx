@@ -205,7 +205,10 @@ export default function App() {
       case 'BLOG':
         return (
           <>
-            <BlogPage />
+            <BlogPage onBlogSelect={(slug) => {
+              // Navigate to blog detail page using window.location
+              window.location.href = `/blog/${slug}`;
+            }} />
             <Footer />
           </>
         );

@@ -6,6 +6,8 @@ import { ProjectsManager } from './ProjectsManager';
 import { BlogsManager } from './BlogsManager';
 import { PageCoversManager } from './PageCoversManager';
 import { CustomSlidersManager } from './CustomSlidersManager';
+import { LinkMappingsManager } from './LinkMappingsManager';
+import { SEOConfigManager } from './SEOConfigManager';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -29,6 +31,10 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
         return <PageCoversManager />;
       case 'sliders':
         return <CustomSlidersManager />;
+      case 'link-mappings':
+        return <LinkMappingsManager />;
+      case 'seo-config':
+        return <SEOConfigManager />;
       default:
         return <AcousticPanelsManager />;
     }

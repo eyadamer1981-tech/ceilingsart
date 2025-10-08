@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB artceiling database
+// NOTE: Use the TEST database for development. Prefer setting MONGODB_URI to mongodb://localhost:27017/test.
 const connectDB = async () => {
   try {
     await mongoose.connect('mongodb://localhost:27017/artceiling');

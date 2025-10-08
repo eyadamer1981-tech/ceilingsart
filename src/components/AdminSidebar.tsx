@@ -1,4 +1,4 @@
-import { LogOut, Settings, Image, FileText, Briefcase, Sliders, X, Volume2, Layers, Monitor } from 'lucide-react';
+import { LogOut, Settings, Image, FileText, Briefcase, Sliders, X, Volume2, Layers, Monitor, Link } from 'lucide-react';
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -13,6 +13,8 @@ export function AdminSidebar({ activeTab, setActiveTab, onLogout, onCloseSidebar
     { id: 'stretch-ceilings', label: 'Stretch Ceilings', icon: Layers },
     { id: 'projects', label: 'Projects', icon: Image },
     { id: 'blogs', label: 'Blogs', icon: FileText },
+    { id: 'link-mappings', label: 'Internal Links', icon: Link },
+    { id: 'seo-config', label: 'SEO Config', icon: Settings },
     { id: 'page-covers', label: 'Page Covers', icon: Monitor },
     { id: 'sliders', label: 'Custom Sliders', icon: Sliders },
   ];

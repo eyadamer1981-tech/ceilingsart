@@ -21,11 +21,11 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Dimmable lighting'
     ],
     featuresAr: [
-      'تأثيرات نجوم بالألياف البصرية',
-      'أنماط نجوم قابلة للتخصيص',
+      'تأثيرات النجوم بالألياف البصرية',
+      'أنماط نجمية قابلة للتخصيص',
       'تقنية LED موفرة للطاقة',
       'تأثيرات إضاءة متلألئة',
-      'تشغيل بواسطة جهاز تحكم عن بُعد',
+      'تشغيل بالتحكم عن بُعد',
       'إضاءة قابلة للتعتيم'
     ],
     benefits: [
@@ -37,11 +37,11 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Creates unique ambiance'
     ],
     benefitsAr: [
-      'يخلق أجواء ليلية ساحرة بنجوم',
-      'مثالي لمساحات الاسترخاء',
+      'يخلق أجواء نجمية سحرية',
+      'مثالي للمساحات المريحة',
       'أنماط إضاءة قابلة للتخصيص',
       'تقنية موفرة للطاقة',
-      'سهولة التحكم عن بُعد',
+      'راحة التحكم عن بُعد',
       'يخلق أجواء فريدة'
     ],
     applications: [
@@ -53,12 +53,12 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       'Meditation and yoga spaces'
     ],
     applicationsAr: [
-      'غرف النوم والحضانة',
+      'غرف النوم والحضانات',
       'مراكز السبا والعافية',
       'غرف السينما',
       'المطاعم والمقاهي',
       'الفنادق والمنتجعات',
-      'أماكن التأمل واليوغا'
+      'مساحات التأمل واليوغا'
     ],
     specifications: {
       material: 'PVC membrane with integrated fiber optics',
@@ -71,7 +71,7 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
       material: 'غشاء PVC مع ألياف بصرية مدمجة',
       thickness: '0.20 مم - 0.30 مم',
       colors: 'أبيض، كريمي، وخيارات شفافة',
-      warranty: 'ضمان 10 سنوات للسقف، و5 سنوات للألياف البصرية',
+      warranty: 'ضمان 10 سنوات على السقف، 5 سنوات على الألياف البصرية',
       installation: 'تركيب مهني مع دمج الألياف البصرية'
     },
     images: {

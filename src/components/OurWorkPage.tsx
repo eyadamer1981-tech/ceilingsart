@@ -11,7 +11,7 @@ const MDiv = motion.div as any;
 const MH1 = motion.h1 as any;
 const MP = motion.p as any;
 
-export interface OurWorkItem { src: string; title: string; titleAr?: string; category: string; }
+export interface OurWorkItem { src: string; title: string; titleEn?: string; titleAr?: string; category: string; }
 
 interface OurWorkPageProps {
   onSelect?: (item: OurWorkItem) => void;
@@ -37,6 +37,7 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
         setOurWorkImages(items.map((p: any) => ({ 
           src: p.image, 
           title: isRTL && p.titleAr ? p.titleAr : (p.titleEn || p.title), 
+          titleEn: p.titleEn || p.title,
           titleAr: p.titleAr,
           category: p.category 
         })));
