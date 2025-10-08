@@ -89,7 +89,7 @@ export function StretchCeilingsManager() {
     formDataToSend.append('descriptionEn', formData.descriptionEn);
     formDataToSend.append('descriptionAr', formData.descriptionAr);
     formDataToSend.append('category', 'Stretch Ceilings'); // Force category
-    formDataToSend.append('featured', formData.featured.toString());
+    formDataToSend.append('featured', String(Boolean(formData.featured)));
     // Optional arrays/objects serialized as JSON strings
     if (formData.features && (formData.features as any as string).trim()) {
       try { formDataToSend.append('features', JSON.stringify((formData.features as any as string).split('\n').map(s => s.trim()).filter(Boolean))); } catch {}
@@ -161,10 +161,10 @@ export function StretchCeilingsManager() {
     setFormData({
       titleEn: service.titleEn || service.title || '',
       titleAr: service.titleAr || service.title || '',
-      descriptionEn: service.descriptionEn,
-      descriptionAr: service.descriptionAr,
+      descriptionEn: service.descriptionEn || '',
+      descriptionAr: service.descriptionAr || '',
       category: service.category || '',
-      featured: service.featured,
+      featured: Boolean(service.featured),
       features: Array.isArray(service.features) ? service.features.join('\n') : '',
       benefits: Array.isArray(service.benefits) ? service.benefits.join('\n') : '',
       applications: Array.isArray(service.applications) ? service.applications.join('\n') : '',

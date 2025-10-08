@@ -52,7 +52,7 @@ export function BlogsManager() {
     formDataToSend.append('content', formData.content);
     formDataToSend.append('excerpt', formData.excerpt);
     formDataToSend.append('author', formData.author);
-    formDataToSend.append('featured', formData.featured.toString());
+    formDataToSend.append('featured', String(Boolean(formData.featured)));
 
     if (imageFile) {
       formDataToSend.append('image', imageFile);
@@ -112,7 +112,7 @@ export function BlogsManager() {
       content: blog.content,
       excerpt: blog.excerpt,
       author: blog.author,
-      featured: blog.featured,
+      featured: Boolean(blog.featured),
     });
     setShowForm(true);
   };

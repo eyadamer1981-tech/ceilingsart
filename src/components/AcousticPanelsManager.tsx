@@ -70,8 +70,8 @@ export function AcousticPanelsManager() {
     formDataToSend.append('descriptionEn', formData.descriptionEn);
     formDataToSend.append('descriptionAr', formData.descriptionAr);
     formDataToSend.append('category', 'Acoustic Panels'); // Force category
-    formDataToSend.append('featured', formData.featured.toString());
-    formDataToSend.append('rightLeftSection', formData.rightLeftSection.toString());
+    formDataToSend.append('featured', String(Boolean(formData.featured)));
+    formDataToSend.append('rightLeftSection', String(Boolean(formData.rightLeftSection)));
 
     if (imageFile) {
       formDataToSend.append('image', imageFile);
@@ -130,11 +130,11 @@ export function AcousticPanelsManager() {
     setFormData({
       titleEn: service.titleEn || service.title || '',
       titleAr: service.titleAr || service.title || '',
-      descriptionEn: service.descriptionEn,
-      descriptionAr: service.descriptionAr,
+      descriptionEn: service.descriptionEn || '',
+      descriptionAr: service.descriptionAr || '',
       category: service.category || '',
-      featured: service.featured,
-      rightLeftSection: service.rightLeftSection || false,
+      featured: Boolean(service.featured),
+      rightLeftSection: Boolean(service.rightLeftSection),
     });
     setShowForm(true);
   };

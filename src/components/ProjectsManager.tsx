@@ -85,7 +85,7 @@ export function ProjectsManager() {
     formDataToSend.append('descriptionEn', formData.descriptionEn);
     formDataToSend.append('descriptionAr', formData.descriptionAr);
     formDataToSend.append('category', formData.category);
-    formDataToSend.append('featured', formData.featured.toString());
+    formDataToSend.append('featured', String(Boolean(formData.featured)));
 
     if (imageFile) {
       formDataToSend.append('image', imageFile);
@@ -144,10 +144,10 @@ export function ProjectsManager() {
     setFormData({
       titleEn: project.titleEn || project.title || '',
       titleAr: project.titleAr || project.title || '',
-      descriptionEn: project.descriptionEn,
-      descriptionAr: project.descriptionAr,
-      category: project.category,
-      featured: project.featured,
+      descriptionEn: project.descriptionEn || '',
+      descriptionAr: project.descriptionAr || '',
+      category: project.category || '',
+      featured: Boolean(project.featured),
     });
     setShowForm(true);
   };
