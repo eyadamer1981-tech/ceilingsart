@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { motion } from './ui/MotionWrapper';
 import { useState } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 const MH1 = motion.h1 as any;
 const MDiv = motion.div as any;
 const MP = motion.p as any;
@@ -12,28 +13,7 @@ const MButton = motion.button as any;
 
 export function ContactPage() {
   const { language, t, isRTL } = useLanguage();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    projectType: '',
-    message: ''
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-  };
+  const [state, handleSubmit] = useForm("xanppapj");
 
   const headerTitle = t('contactTitle');
   const getInTouch = language === 'ar' ? 'تواصل معنا' : 'Get In Touch';
@@ -172,122 +152,148 @@ export function ContactPage() {
                 {sendUsMsg}
               </h3>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {state.succeeded ? (
+                <MDiv
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-center py-8"
+                >
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <div className="text-green-600 text-lg font-medium mb-2">
+                      {language === 'ar' ? 'تم إرسال رسالتك بنجاح!' : 'Message sent successfully!'}
+                    </div>
+                    <p className="text-green-700">
+                      {language === 'ar' ? 'شكراً لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.' : 'Thank you for contacting us. We will get back to you as soon as possible.'}
+                    </p>
+                  </div>
+                </MDiv>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <MDiv
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.1 }}
+                    >
+                      <label className="block text-gray-700 mb-2">{firstName}</label>
+                      <input
+                        type="text"
+                        name="firstName"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                        placeholder={language === 'ar' ? 'أدخل اسمك الأول' : 'Enter your first name'}
+                      />
+                    </MDiv>
+                    <MDiv
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                      <label className="block text-gray-700 mb-2">{lastName}</label>
+                      <input
+                        type="text"
+                        name="lastName"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                        placeholder={language === 'ar' ? 'أدخل اسم العائلة' : 'Enter your last name'}
+                      />
+                    </MDiv>
+                  </div>
+
                   <MDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    <label className="block text-gray-700 mb-2">{firstName}</label>
+                    <label className="block text-gray-700 mb-2">{t('email')}</label>
                     <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
+                      type="email"
+                      name="email"
                       className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                      placeholder={language === 'ar' ? 'أدخل اسمك الأول' : 'Enter your first name'}
+                      placeholder={emailPlaceholder}
+                    />
+                    <ValidationError 
+                      prefix="Email" 
+                      field="email"
+                      errors={state.errors}
+                      className="text-red-500 text-sm mt-1"
                     />
                   </MDiv>
+
                   <MDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <label className="block text-gray-700 mb-2">{lastName}</label>
+                    <label className="block text-gray-700 mb-2">{t('phone')}</label>
                     <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
+                      type="tel"
+                      name="phone"
                       className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                      placeholder={language === 'ar' ? 'أدخل اسم العائلة' : 'Enter your last name'}
+                      placeholder={phonePlaceholder}
+                      dir="ltr"
                     />
                   </MDiv>
-                </div>
 
-                <MDiv
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                  <label className="block text-gray-700 mb-2">{t('email')}</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                    placeholder={emailPlaceholder}
-                  />
-                </MDiv>
-
-                <MDiv
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  <label className="block text-gray-700 mb-2">{t('phone')}</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
-                    placeholder={phonePlaceholder}
-                    dir="ltr"
-                  />
-                </MDiv>
-
-                <MDiv
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                >
-                  <label className="block text-gray-700 mb-2">{projectType}</label>
-                  <select 
-                    name="projectType"
-                    value={formData.projectType}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                  <MDiv
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
                   >
-                    <option value="">{selectProject}</option>
-                    <option value="residential">{residential}</option>
-                    <option value="commercial">{commercial}</option>
-                    <option value="hospitality">{hospitality}</option>
-                    <option value="retail">{retail}</option>
-                  </select>
-                </MDiv>
+                    <label className="block text-gray-700 mb-2">{projectType}</label>
+                    <select 
+                      name="projectType"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors text-black"
+                    >
+                      <option value="">{selectProject}</option>
+                      <option value="residential">{residential}</option>
+                      <option value="commercial">{commercial}</option>
+                      <option value="hospitality">{hospitality}</option>
+                      <option value="retail">{retail}</option>
+                    </select>
+                  </MDiv>
 
-                <MDiv
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                >
-                  <label className="block text-gray-700 mb-2">{messageLabel}</label>
-                  <textarea
-                    rows={4}
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors resize-none text-black"
-                    placeholder={messagePlaceholder}
-                  ></textarea>
-                </MDiv>
+                  <MDiv
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                  >
+                    <label className="block text-gray-700 mb-2">{messageLabel}</label>
+                    <textarea
+                      rows={4}
+                      name="message"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none transition-colors resize-none text-black"
+                      placeholder={messagePlaceholder}
+                    ></textarea>
+                    <ValidationError 
+                      prefix="Message" 
+                      field="message"
+                      errors={state.errors}
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </MDiv>
 
-                <MButton 
-                  type="submit"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gradient-to-r from-orange-400 to-yellow-500 text-white py-4 rounded-lg hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 shadow-lg font-medium tracking-wide flex items-center justify-center gap-2"
-                >
-                  <Send size={20} />
-                  {sendMessage}
-                </MButton>
-              </form>
+                  <MButton 
+                    type="submit"
+                    disabled={state.submitting}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    whileHover={{ scale: state.submitting ? 1 : 1.05 }}
+                    whileTap={{ scale: state.submitting ? 1 : 0.95 }}
+                    className={`w-full py-4 rounded-lg transition-all duration-300 shadow-lg font-medium tracking-wide flex items-center justify-center gap-2 ${
+                      state.submitting 
+                        ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-orange-400 to-yellow-500 text-white hover:from-orange-500 hover:to-yellow-600'
+                    }`}
+                  >
+                    <Send size={20} />
+                    {state.submitting 
+                      ? (language === 'ar' ? 'جاري الإرسال...' : 'Sending...') 
+                      : sendMessage
+                    }
+                  </MButton>
+                </form>
+              )}
             </MDiv>
 
             {/* Contact Information */}
