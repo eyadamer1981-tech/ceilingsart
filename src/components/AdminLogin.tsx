@@ -30,8 +30,10 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('adminToken', data.token);
-        localStorage.setItem('hasAdminAccess', 'true');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('adminToken', data.token);
+          localStorage.setItem('hasAdminAccess', 'true');
+        }
         onLogin(data.token);
       } else {
         setError(data.message || 'Login failed');

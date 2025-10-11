@@ -29,7 +29,6 @@ export function Footer() {
             viewport={{ once: true }}
           >
             <div className="mb-4">
-              <div className="text-2xl font-bold tracking-wider">CA</div>
               <img 
                 src="/footer-text.png" 
                 alt="Ceilings Art" 

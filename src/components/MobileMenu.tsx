@@ -200,7 +200,6 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
         {/* Footer */}
         <div className="p-6 text-center">
           <div className="text-white mb-2">
-            <div className="text-lg font-bold tracking-wider">CA</div>
             <div className="text-xs tracking-widest opacity-80">CEILINGS ART</div>
           </div>
           <div className="text-xs text-gray-400">

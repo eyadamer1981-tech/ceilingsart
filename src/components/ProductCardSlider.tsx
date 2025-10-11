@@ -75,9 +75,15 @@ export function ProductCardSlider({ title, items, onSelect }: ProductCardSliderP
     <div className="mb-16 slider-container" dir="ltr">
       {/* Category Title */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-light text-gray-900 tracking-wide">
-          {translateCategory(title, language)}
-        </h2>
+        <div className="relative">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-600 bg-clip-text text-transparent tracking-wide relative z-10">
+            {translateCategory(title, language)}
+          </h2>
+          {/* Subtle shadow effect */}
+          <h2 className="absolute top-0 left-0 text-4xl md:text-5xl font-bold text-gray-300 tracking-wide opacity-30 -z-10" style={{ transform: 'translate(2px, 2px)' }}>
+            {translateCategory(title, language)}
+          </h2>
+        </div>
          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
            <button
              onClick={isRTL ? nextSlide : prevSlide}

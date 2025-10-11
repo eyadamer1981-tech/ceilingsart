@@ -136,7 +136,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
           {/* Logo */}
           <div className="flex items-center">
             <a href="#" onClick={() => onPageChange('HOME')} className="flex items-center">
-              <img src="/logo.png" alt="Ceilings Art" className="h-[30px] w-auto" />
+              <img src="/logo.png" alt="Ceilings Art" className="h-[50px] w-auto" />
             </a>
           </div>
 

@@ -10,12 +10,15 @@ interface PageCovers {
     hero?: string;
     about?: string;
     services?: string;
+    stretchCeilings?: string;
+    acousticPanels?: string;
   };
 }
 
 export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceType: string) => void }) {
   const { t, isRTL } = useLanguage();
-  const [servicesImage, setServicesImage] = useState<string>('/stretchceilinginhomepage.png'); // Fallback image
+  const [stretchCeilingsImage, setStretchCeilingsImage] = useState<string>('/stretchceilinginhomepage.png'); // Fallback image
+  const [acousticPanelsImage, setAcousticPanelsImage] = useState<string>('/acusticpanelinhomepage.png'); // Fallback image
 
   useEffect(() => {
     fetchPageCovers();
@@ -26,26 +29,29 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
       const response = await fetch('/api/page-covers/public?pageType=home');
       const data = await response.json();
       
-      // Set services image from MongoDB or use fallback
-      if (data.home?.services) {
-        setServicesImage(data.home.services);
+      // Set individual service images from MongoDB or use fallback
+      if (data.home?.stretchCeilings) {
+        setStretchCeilingsImage(data.home.stretchCeilings);
+      }
+      if (data.home?.acousticPanels) {
+        setAcousticPanelsImage(data.home.acousticPanels);
       }
     } catch (error) {
       console.error('Error fetching page covers:', error);
-      // Keep fallback image if API fails
+      // Keep fallback images if API fails
     }
   };
 
   const services = [
     {
       type: 'STRETCH CEILINGS',
-      title: isRTL ? 'الأسقف المعلقة' : 'Stretch Ceilings',
-      titleAr: 'الأسقف المعلقة',
+      title: isRTL ? 'الأسقف الفرنسية' : 'Stretch Ceilings',
+      titleAr: 'الاسقف الفرنسية',
       titleEn: 'Stretch Ceilings',
       description: isRTL 
         ? 'تصاميم أسقف معلقة مبتكرة وأنيقة تناسب المساحات السكنية والتجارية. نقدم حلول متعددة تشمل الأسقف اللامعة والمطبوعة والشفافة.'
         : 'Innovative and elegant stretch ceiling designs suitable for residential and commercial spaces. We offer multiple solutions including glossy, printed, and translucent ceilings.',
-      image: servicesImage,
+      image: stretchCeilingsImage,
       features: isRTL ? [
         'أسقف لامعة',
         'أسقف مطبوعة',
@@ -68,7 +74,7 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
       description: isRTL
         ? 'حلول صوتية متقدمة لتحسين جودة الصوت والتحكم في الضوضاء. ألواح عازلة للصوت مصممة للمساحات السكنية والتجارية.'
         : 'Advanced acoustic solutions to improve sound quality and noise control. Soundproof panels designed for residential and commercial spaces.',
-      image: servicesImage,
+      image: acousticPanelsImage,
       features: isRTL ? [
         'ألواح من الألياف',
         'ألواح من البوليستر',

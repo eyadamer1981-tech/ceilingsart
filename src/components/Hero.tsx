@@ -189,17 +189,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-8 tracking-wide leading-tight ${isRTL ? 'text-right' : 'text-center'}`}>
-          {isRTL ? (
-            <>
-              حول مساحتك<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>بتصاميم أسقف مخصصة
-            </>
-          ) : (
-            <>
-              TRANSFORM YOUR SPACE<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ART
-            </>
-          )}
+          {t('heroTitle')}
         </h1>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">

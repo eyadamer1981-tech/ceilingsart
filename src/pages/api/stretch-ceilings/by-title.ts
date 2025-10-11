@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (titleAr) searchQuery.$or.push({ titleAr: titleAr });
 
     // Select only necessary fields to reduce response size
-    let selectFields = 'title titleEn titleAr image descriptionEn descriptionAr detailImages category createdAt';
+    let selectFields = 'title titleEn titleAr image descriptionEn descriptionAr detailImages category featured createdAt';
     if (fields && typeof fields === 'string') {
       selectFields = fields;
     }

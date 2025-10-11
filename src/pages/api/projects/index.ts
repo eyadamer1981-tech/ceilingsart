@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const maxLimit = Math.min(100, parseInt((limit as string) || '50', 10));
       
       // Select only necessary fields to reduce response size
-      let selectFields = 'title titleEn titleAr image category descriptionEn descriptionAr detailImages createdAt';
+      let selectFields = 'title titleEn titleAr image category descriptionEn descriptionAr detailImages featured createdAt';
       if (fields && typeof fields === 'string') {
         selectFields = fields;
       }

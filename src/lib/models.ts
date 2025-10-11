@@ -99,7 +99,7 @@ const customSliderSchema = new mongoose.Schema({
 
 const pageCoverSchema = new mongoose.Schema({
   pageType: { type: String, required: true, enum: ['home', 'aboutus', 'acousticpanel', 'stretchceiling', 'ourwork'] },
-  coverType: { type: String, enum: ['hero', 'about', 'services'], default: 'hero' },
+  coverType: { type: String, enum: ['hero', 'about', 'services', 'stretchCeilings', 'acousticPanels'], default: 'hero' },
   title: { type: String, required: true },
   image: { type: String, required: true },
   imageId: { type: mongoose.Schema.Types.ObjectId, ref: 'images.files' },

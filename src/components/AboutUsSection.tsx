@@ -8,6 +8,8 @@ interface PageCovers {
     hero?: string;
     about?: string;
     services?: string;
+    stretchCeilings?: string;
+    acousticPanels?: string;
   };
 }
 

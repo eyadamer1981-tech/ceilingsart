@@ -59,10 +59,29 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
   const [loading, setLoading] = useState(true);
   const [selectedCeilingType, setSelectedCeilingType] = useState<string | null>(initialSelectedCeilingType || null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [pageCover, setPageCover] = useState<string>('/ourservices.webp'); // Fallback image
 
   useEffect(() => {
     fetchServices();
+    fetchPageCover();
   }, []);
+
+  const fetchPageCover = async () => {
+    try {
+      // Determine page type based on category
+      const pageType = category === 'acoustic' ? 'acousticpanel' : 'stretchceiling';
+      const response = await fetch(`/api/page-covers/public?pageType=${pageType}`);
+      const data = await response.json();
+      
+      // Set page cover from MongoDB or use fallback
+      if (data[pageType]?.hero) {
+        setPageCover(data[pageType].hero);
+      }
+    } catch (error) {
+      console.error('Error fetching page cover:', error);
+      // Keep fallback image if API fails
+    }
+  };
 
   useEffect(() => {
     if (initialSelectedCeilingType) {
@@ -184,9 +203,12 @@ export function ServicesPage({ onSelect, category, pageTitle, pageSubtitle, init
         {/* Cover Image Background */}
         <div className="absolute inset-0">
           <img 
-            src="/ourservices.webp"
+            src={pageCover}
             alt="Services cover"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/ourservices.webp';
+            }}
           />
         </div>
 

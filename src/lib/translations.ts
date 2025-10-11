@@ -284,7 +284,7 @@ export const translations: Record<Language, Translations> = {
     admin: 'Admin',
     
     // Hero Section
-    heroTitle: 'Transform Your Space',
+    heroTitle: 'The New Standard in Stretch Ceilings & Acoustic Panels',
     heroSubtitle: 'Professional Ceiling Solutions',
     heroDescription: 'We specialize in creating stunning ceiling designs that elevate your interior spaces with unmatched quality and craftsmanship.',
     getStarted: 'Get Started',
@@ -547,7 +547,7 @@ export const translations: Record<Language, Translations> = {
     admin: 'الإدارة',
     
     // Hero Section
-    heroTitle: 'حول مساحتك',
+    heroTitle: 'المعيار الجديد في الأسقف الفرنسية والألواح الصوتية',
     heroSubtitle: 'حلول الأسقف المهنية',
     heroDescription: 'نحن متخصصون في إنشاء تصاميم أسقف مذهلة ترفع من مستوى مساحاتك الداخلية بجودة وحرفية لا مثيل لها.',
     getStarted: 'ابدأ الآن',
@@ -801,6 +801,7 @@ export const getTranslation = (language: Language, key: keyof Translations): str
 export const translateCategory = (category: string, language: Language): string => {
   const categoryMap: { [key: string]: keyof Translations } = {
     'Stretch Ceiling': 'stretchCeiling',
+    'Stretch Ceilings': 'stretchCeiling',
     'Acoustic': 'acoustic',
     'Acoustic Panels': 'acousticPanels',
     'Wood Wool': 'woodWool',

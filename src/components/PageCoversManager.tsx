@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Upload, Save, Eye, Trash2, Image as ImageIcon, Home, User, Volume2, Layers, Briefcase } from 'lucide-react';
+import { Upload, Save, Eye, Image as ImageIcon, Home, User, Volume2, Layers, Briefcase, RefreshCw } from 'lucide-react';
 
 interface PageCover {
   id: string;
   pageType: 'home' | 'aboutus' | 'acousticpanel' | 'stretchceiling' | 'ourwork';
-  coverType?: 'hero' | 'about' | 'services'; // For specific circular images
+  coverType?: 'hero' | 'about' | 'services' | 'stretchCeilings' | 'acousticPanels'; // For specific circular images
   title: string;
   image: string;
   imageId?: string;
@@ -18,7 +18,8 @@ export function PageCoversManager() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [activePage, setActivePage] = useState<'home' | 'aboutus' | 'acousticpanel' | 'stretchceiling' | 'ourwork'>('home');
-  const [activeCoverType, setActiveCoverType] = useState<'hero' | 'about' | 'services'>('hero');
+  const [activeCoverType, setActiveCoverType] = useState<'hero' | 'about' | 'services' | 'stretchCeilings' | 'acousticPanels'>('hero');
+  const [imageCacheBuster, setImageCacheBuster] = useState<number>(Date.now());
 
   const pageTypes = [
     { key: 'home', label: 'Home Page', icon: Home, description: 'Main homepage covers and circular images', hasSubTypes: true },
@@ -31,7 +32,9 @@ export function PageCoversManager() {
   const coverTypes = [
     { key: 'hero', label: 'Hero Circular Image', description: 'Main circular ellipse image in hero section' },
     { key: 'about', label: 'About Us Image', description: 'About us section image' },
-    { key: 'services', label: 'Services Images', description: 'Main services section images' }
+    { key: 'services', label: 'Services Images', description: 'Main services section images' },
+    { key: 'stretchCeilings', label: 'Stretch Ceilings Service Image', description: 'Stretch ceilings service image in main services section' },
+    { key: 'acousticPanels', label: 'Acoustic Panels Service Image', description: 'Acoustic panels service image in main services section' }
   ];
 
   useEffect(() => {
@@ -51,6 +54,7 @@ export function PageCoversManager() {
       if (response.ok) {
         const data = await response.json();
         setPageCovers(data);
+        setImageCacheBuster(Date.now()); // Update cache buster to refresh images
       }
     } catch (error) {
       console.error('Error fetching page covers:', error);
@@ -73,15 +77,29 @@ export function PageCoversManager() {
 
     setSaving(true);
     try {
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        alert('You are not logged in. Please log in again.');
+        window.location.reload();
+        return;
+      }
+      
       const formData = new FormData();
       formData.append('image', selectedFile);
       formData.append('pageType', activePage);
       formData.append('coverType', activeCoverType);
 
+      console.log('PageCoversManager - Sending request with:', {
+        pageType: activePage,
+        coverType: activeCoverType,
+        file: selectedFile ? { name: selectedFile.name, size: selectedFile.size } : 'No file'
+      });
+
       const response = await fetch('/api/page-covers', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`
         },
         body: formData
       });
@@ -92,7 +110,16 @@ export function PageCoversManager() {
         setPreviewUrl('');
         alert('Page cover updated successfully!');
       } else {
-        alert('Error updating page cover');
+        const errorData = await response.json();
+        console.error('Page covers API error:', errorData);
+        
+        if (response.status === 401) {
+          alert('Your session has expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          window.location.reload();
+        } else {
+          alert(`Error updating page cover: ${errorData.message || 'Unknown error'}`);
+        }
       }
     } catch (error) {
       console.error('Error saving page cover:', error);
@@ -102,29 +129,6 @@ export function PageCoversManager() {
     }
   };
 
-  const handleDelete = async (pageType: string, coverType?: string) => {
-    if (!confirm('Are you sure you want to delete this page cover?')) return;
-
-    try {
-      const url = `/api/page-covers/${pageType}${coverType ? `?coverType=${coverType}` : ''}`;
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        }
-      });
-
-      if (response.ok) {
-        await fetchPageCovers();
-        alert('Page cover deleted successfully!');
-      } else {
-        alert('Error deleting page cover');
-      }
-    } catch (error) {
-      console.error('Error deleting page cover:', error);
-      alert('Error deleting page cover');
-    }
-  };
 
   const getCurrentCover = (pageType: string, coverType?: string) => {
     if (pageType === 'home' && coverType) {
@@ -202,7 +206,7 @@ export function PageCoversManager() {
             {coverTypes.map((cover) => (
               <button
                 key={cover.key}
-                onClick={() => setActiveCoverType(cover.key as any)}
+                onClick={() => setActiveCoverType(cover.key as 'hero' | 'about' | 'services' | 'stretchCeilings' | 'acousticPanels')}
                 className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
                   activeCoverType === cover.key
                     ? 'border-orange-500 bg-orange-50'
@@ -230,11 +234,21 @@ export function PageCoversManager() {
       {/* Current Cover Display */}
       {getCurrentCover(activePage, activePage === 'home' ? activeCoverType : undefined) && (
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-6">Current Cover</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-medium text-gray-900">Current Cover</h3>
+            <button
+              onClick={fetchPageCovers}
+              className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
+              title="Refresh page covers"
+            >
+              <RefreshCw className="w-4 h-4" />
+              <span className="text-sm">Refresh</span>
+            </button>
+          </div>
           <div className="flex items-start space-x-6">
             <div className="w-48 h-32 bg-gray-100 rounded-lg overflow-hidden">
               <img 
-                src={getCurrentCover(activePage, activePage === 'home' ? activeCoverType : undefined)?.image} 
+                src={`${getCurrentCover(activePage, activePage === 'home' ? activeCoverType : undefined)?.image}?t=${imageCacheBuster}`} 
                 alt={`${activePage} cover`}
                 className="w-full h-full object-cover"
               />
@@ -246,13 +260,6 @@ export function PageCoversManager() {
               <p className="text-sm text-gray-600 mb-4">
                 Last updated: {new Date(getCurrentCover(activePage, activePage === 'home' ? activeCoverType : undefined)?.updatedAt || '').toLocaleDateString()}
               </p>
-              <button
-                onClick={() => handleDelete(activePage, activePage === 'home' ? activeCoverType : undefined)}
-                className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span className="text-sm">Delete Cover</span>
-              </button>
             </div>
           </div>
         </div>

@@ -20,20 +20,24 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<Language>('en');
 
   useEffect(() => {
-    // Load saved language from localStorage
-    const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ar')) {
-      setLanguage(savedLanguage);
+    // Load saved language from localStorage (client-side only)
+    if (typeof window !== 'undefined') {
+      const savedLanguage = localStorage.getItem('language') as Language;
+      if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ar')) {
+        setLanguage(savedLanguage);
+      }
     }
   }, []);
 
   useEffect(() => {
-    // Save language to localStorage
-    localStorage.setItem('language', language);
-    
-    // Update document direction and lang attribute
-    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = language;
+    // Save language to localStorage (client-side only)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('language', language);
+      
+      // Update document direction and lang attribute
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = language;
+    }
   }, [language]);
 
   const t = (key: keyof Translations): string => {

@@ -30,8 +30,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ...item.toObject(),
           title: lang === 'ar' ? item.titleAr : item.titleEn,
           description: lang === 'ar' ? item.descriptionAr : item.descriptionEn,
-          // Translate category based on language
-          category: translateCategory(item.category, lang as 'en' | 'ar')
+          // Keep original category for grouping, but add translated category for display
+          category: item.category, // Keep original category for grouping
+          translatedCategory: translateCategory(item.category, lang as 'en' | 'ar') // Add translated version
         };
       };
 

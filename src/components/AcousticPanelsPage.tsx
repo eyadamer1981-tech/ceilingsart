@@ -32,10 +32,27 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
   const [acousticPanels, setAcousticPanels] = useState<AcousticPanel[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPanel, setSelectedPanel] = useState<AcousticPanel | null>(null);
+  const [pageCover, setPageCover] = useState<string>('/acusticpanelinhomepage.png'); // Fallback image
 
   useEffect(() => {
     fetchAcousticPanels();
+    fetchPageCover();
   }, []);
+
+  const fetchPageCover = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=acousticpanel');
+      const data = await response.json();
+      
+      // Set page cover from MongoDB or use fallback
+      if (data.acousticpanel?.hero) {
+        setPageCover(data.acousticpanel.hero);
+      }
+    } catch (error) {
+      console.error('Error fetching page cover:', error);
+      // Keep fallback image if API fails
+    }
+  };
 
   // Auto-select panel based on panelType prop
   useEffect(() => {
@@ -147,11 +164,17 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
         {/* Cover Image Background */}
         <div className="absolute inset-0">
           <img 
-            src="/acusticpanelinhomepage.png"
+            src={pageCover}
             alt="Acoustic Panels cover"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/acusticpanelinhomepage.png';
+            }}
           />
         </div>
+
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content over the cover */}
         <div className="relative z-10 container mx-auto px-4 text-center">

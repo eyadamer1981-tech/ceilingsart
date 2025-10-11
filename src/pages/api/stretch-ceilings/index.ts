@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Set cache headers for 10 minutes
       res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
 
-      const stretchCeilings = await StretchCeiling.find().sort({ createdAt: -1 });
+      const stretchCeilings = await StretchCeiling.find().select('titleEn titleAr descriptionEn descriptionAr image detailImages features benefits applications specifications featured createdAt').sort({ createdAt: -1 });
       res.json(stretchCeilings);
     } catch (error) {
       console.error('Stretch Ceilings API error:', error);

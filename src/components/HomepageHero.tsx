@@ -131,9 +131,9 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
         </MDiv>
       </div>
 
-      {/* Top logo (higher on mobile) */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-20 top-10 sm:top-10 md:top-40" aria-hidden>
-        <img src="/logo.png" alt="Logo" width={229} height={229} className="w-[229px] h-[229px] object-contain" />
+      {/* Top logo (positioned on the left) */}
+      <div className="absolute z-20 top-10 sm:top-10 md:top-40 left-8" aria-hidden>
+        <img src="/logo.png" alt="Logo" width={400} height={400} className="w-[400px] h-[400px] object-contain" />
       </div>
 
       {/* Headline and CTA centered like homepage (lowered) */}
@@ -148,17 +148,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
           className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-8 tracking-wide leading-tight ${isRTL ? 'text-right' : 'text-center'}`}
           variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: 'easeOut' } } }}
         >
-          {isRTL ? (
-            <>
-              حول مساحتك<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>بتصاميم أسقف مخصصة
-            </>
-          ) : (
-            <>
-              TRANSFORM YOUR SPACE<br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>WITH BESPOKE CEILING ART
-            </>
-          )}
+          {t('heroTitle')}
         </MH1>
         <MDiv 
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"

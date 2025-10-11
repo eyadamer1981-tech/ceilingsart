@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { GallerySkeleton } from './ui/GallerySkeleton';
 import { ProductCardSliderSkeleton } from './ProductCardSliderSkeleton';
@@ -20,6 +20,26 @@ interface OurWorkPageProps {
 
 export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
   const { t, isRTL, language } = useLanguage();
+  const [pageCover, setPageCover] = useState<string>('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYWxsZXJ5JTIwY2VpbGluZyUyMGRlc2lnbnxlbnwxfHx8fDE3NTg1ODU5NTV8MA&ixlib=rb-4.1.0&q=80&w=1080'); // Fallback image
+
+  useEffect(() => {
+    fetchPageCover();
+  }, []);
+
+  const fetchPageCover = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=ourwork');
+      const data = await response.json();
+      
+      // Set page cover from MongoDB or use fallback
+      if (data.ourwork?.hero) {
+        setPageCover(data.ourwork.hero);
+      }
+    } catch (error) {
+      console.error('Error fetching page cover:', error);
+      // Keep fallback image if API fails
+    }
+  };
   const [ourWorkImages, setOurWorkImages] = React.useState<OurWorkItem[]>([]);
   const [customSliders, setCustomSliders] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -92,9 +112,12 @@ export function OurWorkPage({ onSelect, onStartProject }: OurWorkPageProps) {
         {/* Cover Image Background */}
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYWxsZXJ5JTIwY2VpbGluZyUyMGRlc2lnbnxlbnwxfHx8fDE3NTg1ODU5NTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            src={pageCover}
             alt="Our Work cover"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYWxsZXJ5JTIwY2VpbGluZyUyMGRlc2lnbnxlbnwxfHx8fDE3NTg1ODU5NTV8MA&ixlib=rb-4.1.0&q=80&w=1080';
+            }}
           />
         </div>
 

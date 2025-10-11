@@ -13,10 +13,12 @@ export default function AdminPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if admin is already logged in
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      setIsAdminLoggedIn(true);
+    // Check if admin is already logged in (client-side only)
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        setIsAdminLoggedIn(true);
+      }
     }
     setLoading(false);
   }, []);
@@ -26,7 +28,9 @@ export default function AdminPage() {
   };
 
   const handleAdminLogout = () => {
-    localStorage.removeItem('adminToken');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('adminToken');
+    }
     setIsAdminLoggedIn(false);
     router.push('/');
   };

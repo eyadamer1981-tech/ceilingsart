@@ -124,10 +124,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             projectUpdateData.detailImageIds = updateData.detailImageIds;
           }
 
+          // Find the project by the original title before update, or by the new title
           await Project.findOneAndUpdate(
             { 
-              titleEn: stretchCeiling.titleEn,
-              category: 'Stretch Ceilings'
+              $or: [
+                { titleEn: stretchCeiling.titleEn, category: 'Stretch Ceilings' },
+                { titleEn: titleEn, category: 'Stretch Ceilings' }
+              ]
             },
             projectUpdateData
           );

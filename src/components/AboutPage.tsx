@@ -15,6 +15,26 @@ import { SuccessPartnersSection } from './SuccessPartnersSection';
 
 export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const { language, t, isRTL } = useLanguage();
+  const [pageCover, setPageCover] = useState<string>('/Gemini_Generated_Image_3b5nq03b5nq03b5n.png'); // Fallback image
+
+  useEffect(() => {
+    fetchPageCover();
+  }, []);
+
+  const fetchPageCover = async () => {
+    try {
+      const response = await fetch('/api/page-covers/public?pageType=aboutus');
+      const data = await response.json();
+      
+      // Set page cover from MongoDB or use fallback
+      if (data.aboutus?.hero) {
+        setPageCover(data.aboutus.hero);
+      }
+    } catch (error) {
+      console.error('Error fetching page cover:', error);
+      // Keep fallback image if API fails
+    }
+  };
 
   const aboutHeading = language === 'ar' ? 'سيلينجز آرت' : 'Ceilings Art';
   const aboutTitle = language === 'ar' ? 'من نحن' : 'About Us';
@@ -95,9 +115,12 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
         {/* Cover Image Background */}
         <div className="absolute inset-0">
           <img 
-            src="/Gemini_Generated_Image_3b5nq03b5nq03b5n.png"
+            src={pageCover}
             alt="About us cover"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/Gemini_Generated_Image_3b5nq03b5nq03b5n.png';
+            }}
           />
         </div>
 
