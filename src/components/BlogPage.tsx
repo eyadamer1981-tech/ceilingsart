@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Skeleton } from './ui/skeleton';
+import { NewsletterSubscription } from './NewsletterSubscription';
 
 interface Blog {
   _id: string;
@@ -177,24 +178,10 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
           )}
 
           {/* Newsletter Signup */}
-          <div className="mt-20 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-wide">
-              {t('stayUpdated')}
-            </h2>
-            <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-              {t('newsletterDescription')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder={t('yourEmailAddress')}
-                className="flex-1 px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
-              />
-              <button className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium tracking-wide">
-                {t('subscribe')}
-              </button>
-            </div>
-          </div>
+          <NewsletterSubscription 
+            source="blog"
+            className="mt-20"
+          />
         </div>
       </div>
     </section>

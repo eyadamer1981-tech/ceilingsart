@@ -4,6 +4,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Skeleton } from './ui/skeleton';
 import { SEO, mergeSEOData, SEOProps } from './SEO';
+import { NewsletterSubscription } from './NewsletterSubscription';
 
 interface Blog {
   _id: string;
@@ -242,6 +243,16 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
               </div>
             </div>
           )}
+
+          {/* Newsletter Subscription */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <NewsletterSubscription 
+              source="blog_detail"
+              compact={true}
+              title={t('stayUpdated')}
+              description={t('newsletterDescription')}
+            />
+          </div>
 
           {/* Back to Blog */}
           <div className="mt-12 pt-8 border-t border-gray-200">
