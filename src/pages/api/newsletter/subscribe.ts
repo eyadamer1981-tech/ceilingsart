@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { emailOctopusService } from '../../lib/emailoctopus';
+import { emailOctopusService } from '../../../lib/emailoctopus';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
