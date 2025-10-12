@@ -2,41 +2,28 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { PageCover } from '../../../lib/models';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { getGridFSBucket } from '../../../lib/gridfs';
+import { Readable } from 'stream';
 
-// Configure multer for file uploads - use memory storage for Vercel compatibility
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    console.log('Multer fileFilter - File info:', {
-      originalname: file.originalname,
-      mimetype: file.mimetype,
-      fieldname: file.fieldname
-    });
-    
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+// Use memory storage to keep files in RAM and store in MongoDB GridFS
+const upload = multer({ storage: multer.memoryStorage() });
 
-    console.log('Multer fileFilter - Validation:', {
-      extname: extname,
-      mimetype: mimetype,
-      allowed: mimetype && extname
-    });
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      const error = new Error('Only image files are allowed');
-      console.error('Multer fileFilter - Error:', error.message);
-      cb(error);
-    }
-  },
-});
+async function storeInGridFS(file: Express.Multer.File): Promise<{ id: any; url: string }> {
+  const bucket = await getGridFSBucket();
+  const uploadStream = bucket.openUploadStream(file.originalname || 'upload', {
+    contentType: file.mimetype || 'application/octet-stream',
+    metadata: { size: file.size }
+  });
+  await new Promise<void>((resolve, reject) => {
+    Readable.from(file.buffer)
+      .pipe(uploadStream)
+      .on('error', reject)
+      .on('finish', () => resolve());
+  });
+  const id = uploadStream.id;
+  const url = `/api/images/${id}`;
+  return { id, url };
+}
 
 // Helper function to run multer middleware
 const runMiddleware = (req: NextApiRequest, res: NextApiResponse, fn: any) => {
@@ -118,18 +105,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Invalid cover type' });
       }
 
-      // Generate unique filename
-      const fileExtension = path.extname(file.originalname);
-      const fileName = `${pageType}-cover-${Date.now()}${fileExtension}`;
-      
-      // For Vercel compatibility, we'll store the file data directly
-      // In production, you might want to use a cloud storage service like AWS S3, Cloudinary, etc.
-      // For now, we'll create a base64 data URL for the image
-      const base64Data = file.buffer.toString('base64');
-      const dataUrl = `data:${file.mimetype};base64,${base64Data}`;
-      
-      // Store the file reference (in a real production app, you'd upload to cloud storage)
-      const fileReference = `/uploads/${fileName}`;
+      // Store file in GridFS
+      console.log('Page covers API - Storing file in GridFS');
+      const storedFile = await storeInGridFS(file);
+      console.log('Page covers API - File stored successfully:', storedFile.url);
 
       // Check if page cover already exists
       console.log('Page covers API - Checking for existing cover:', { pageType, coverType });
@@ -141,7 +120,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // Update existing cover
           console.log('Page covers API - Updating existing cover');
           existingCover.title = `${pageType.charAt(0).toUpperCase() + pageType.slice(1)} ${coverType.charAt(0).toUpperCase() + coverType.slice(1)} Cover`;
-          existingCover.image = dataUrl; // Use data URL for Vercel compatibility
+          existingCover.image = storedFile.url;
+          existingCover.imageId = storedFile.id;
           existingCover.updatedAt = new Date();
           await existingCover.save();
           console.log('Page covers API - Existing cover updated successfully');
@@ -154,7 +134,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             pageType,
             coverType,
             title: `${pageType.charAt(0).toUpperCase() + pageType.slice(1)} ${coverType.charAt(0).toUpperCase() + coverType.slice(1)} Cover`,
-            image: dataUrl, // Use data URL for Vercel compatibility
+            image: storedFile.url,
+            imageId: storedFile.id,
           });
           
           await pageCover.save();
