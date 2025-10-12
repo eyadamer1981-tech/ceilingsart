@@ -74,10 +74,14 @@ export function FabricWrapsPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {[
-                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.49_f9306ccb.jpg',
-                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.17.15_63ea1272.jpg',
-                '/art-images/acoustic-panels/fabric-wrapped-acoustic/1A-studio-panel-1024x683-1.jpg',
-                '/art-images/acoustic-panels/fabric-wrapped-acoustic/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg'
+                '/fabric gallery/1A-studio-panel-1024x683-1.jpg',
+                '/fabric gallery/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_10448b85.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_3b0a0590.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_4c51506a.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_24275333.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_3d9986b9.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_5c771dba.jpg'
               ].map((imageSrc, index) => (
                 <div 
                   key={index}

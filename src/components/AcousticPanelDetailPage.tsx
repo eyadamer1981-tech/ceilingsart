@@ -127,8 +127,14 @@ export function AcousticPanelDetailPage({ panel, onBack }: AcousticPanelDetailPa
                 '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.48_ea77f8c0.jpg',
                 '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.49_916786da.jpg'
               ] : [
-                '/art-images/acoustic-panels/fabric-wrapped-acoustic/1A-studio-panel-1024x683-1.jpg',
-                '/art-images/acoustic-panels/fabric-wrapped-acoustic/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg'
+                '/fabric gallery/1A-studio-panel-1024x683-1.jpg',
+                '/fabric gallery/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_10448b85.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_3b0a0590.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.05_4c51506a.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_24275333.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_3d9986b9.jpg',
+                '/fabric gallery/WhatsApp Image 2025-10-12 at 21.16.06_5c771dba.jpg'
               ]).map((imageSrc, index) => (
                 <div 
                   key={index}
