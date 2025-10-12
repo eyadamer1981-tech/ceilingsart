@@ -74,6 +74,8 @@ export function FabricWrapsPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {[
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.49_f9306ccb.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.17.15_63ea1272.jpg',
                 '/art-images/acoustic-panels/fabric-wrapped-acoustic/1A-studio-panel-1024x683-1.jpg',
                 '/art-images/acoustic-panels/fabric-wrapped-acoustic/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg'
               ].map((imageSrc, index) => (

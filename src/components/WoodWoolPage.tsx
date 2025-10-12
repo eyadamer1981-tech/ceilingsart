@@ -74,6 +74,7 @@ export function WoodWoolPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {[
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.17.18_9f21c23f.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_EnvirocousticWoodWool_InUse_WallPanel_Beveled-1024x768.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Baffles_office_7666_small-1024x683.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_CeilingPanel_office_15-1024x683.jpg',
