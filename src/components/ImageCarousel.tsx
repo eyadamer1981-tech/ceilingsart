@@ -237,7 +237,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
           {/* Navigation Arrows */}
           <button
             onClick={prevImage}
-            className="absolute top-1/2 -translate-y-1/2 left-6 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+            className={`absolute top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10 ${isRTL ? 'right-6' : 'left-6'}`}
             aria-label="Previous image"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,7 +247,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
 
           <button
             onClick={nextImage}
-            className="absolute top-1/2 -translate-y-1/2 right-6 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+            className={`absolute top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-10 ${isRTL ? 'left-6' : 'right-6'}`}
             aria-label="Next image"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
