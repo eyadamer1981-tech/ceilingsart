@@ -105,7 +105,7 @@ export function Hero() {
           <div
             className="absolute inset-0 pointer-events-none rounded-full"
             style={{
-              boxShadow: '0 0 120px 40px rgba(55,62,68,0.55) inset'
+              boxShadow: '0 0 120px 40px rgba(74,82,89,0.55) inset'
             }}
           />
         </div>
@@ -125,7 +125,7 @@ export function Hero() {
       {/* Bottom full-width vector image */}
       <div className="absolute bottom-0 left-0 w-full">
         <img
-          src="/Vector.png"
+          src="/Vector 1 (1).png"
           alt="Section bottom decoration"
           className="w-full select-none pointer-events-none block"
           style={{

@@ -43,7 +43,7 @@ const TopTextBar: React.FC = () => {
     <div className="hidden md:block sticky top-0 left-0 right-0 z-50">
       <div
         className={
-          "w-full px-4 sm:px-6 md:px-8 py-1.5 text-[12.5px] text-white bg-[#373E44]"
+          "w-full px-4 sm:px-6 md:px-8 py-1.5 text-[12.5px] text-white bg-[#4A5259]"
         }
         dir={isRTL ? "rtl" : "ltr"}
       >

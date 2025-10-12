@@ -73,7 +73,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
       {/* Background block color like homepage header */}
       <div className="absolute inset-0"         style={{
-          background: 'linear-gradient(to bottom, #373E44 0%, #373E44 80%, #ffffff 80%, #ffffff 100%)'
+          background: 'linear-gradient(to bottom, #4A5259 0%, #4A5259 80%, #ffffff 80%, #ffffff 100%)'
         }} />
 
       {/* Rotated background blob like homepage asset */}
@@ -124,13 +124,13 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
           >
           <div
             className="absolute inset-0 rounded-full"
-            style={{ boxShadow: '0 0 140px 60px rgba(55,62,68,0.5) inset' }}
+            style={{ boxShadow: '0 0 140px 60px rgba(74,82,89,0.5) inset' }}
           />
           <div
             className="absolute inset-0 rounded-full pointer-events-none"
             style={{
               background:
-                'radial-gradient(circle at center, rgba(55,62,68,0) 70%, rgba(55,62,68,0.18) 88%, rgba(55,62,68,0.3) 100%)'
+                'radial-gradient(circle at center, rgba(74,82,89,0) 70%, rgba(74,82,89,0.18) 88%, rgba(74,82,89,0.3) 100%)'
             }}
           />
         </MDiv>
@@ -216,7 +216,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
       {/* Bottom wave from homepage vector */}
       <div className="absolute bottom-0 left-0 w-full">
         <img
-          src="/Vector.png"
+          src="/Vector 1 (1).png"
           alt="Section bottom decoration"
           className="w-full select-none pointer-events-none block"
           style={{
