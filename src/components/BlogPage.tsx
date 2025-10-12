@@ -3,6 +3,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Skeleton } from './ui/skeleton';
 import { NewsletterSubscription } from './NewsletterSubscription';
+import { motion } from './ui/MotionWrapper';
 
 interface Blog {
   _id: string;
@@ -72,43 +73,104 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+      {/* Banner Section */}
+      <div className="relative h-96 lg:h-[500px] overflow-hidden">
+        <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
+        <img
+          src="/blogbanner.jpg"
+          alt="Blog Banner"
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Content Overlay */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl px-8">
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6 tracking-wide">
+              {t('blogPageTitle')}
+            </h1>
+            <p className="text-lg lg:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+              {t('blogPageSubtitle')}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Header Section */}
-      <div className="relative py-20 text-center">
-        {/* Decorative wave at top */}
-        <div className="absolute top-0 left-0 w-full opacity-30">
-          <svg
+      <div className="relative py-32 text-center">
+        {/* Decorative wave at top with pulsing animation */}
+        <div className="absolute top-0 left-0 w-full">
+          <motion.svg
             viewBox="0 0 1200 60"
             fill="none"
             className="w-full h-auto"
+            animate={{
+              opacity: [0.2, 0.6, 0.2],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
-            <path
+            <motion.path
               d="M0,30C150,20 300,40 600,30C900,20 1050,40 1200,30L1200,60L0,60Z"
               fill="white"
+              animate={{
+                d: [
+                  "M0,30C150,20 300,40 600,30C900,20 1050,40 1200,30L1200,60L0,60Z",
+                  "M0,25C150,15 300,45 600,35C900,15 1050,45 1200,35L1200,60L0,60Z",
+                  "M0,30C150,20 300,40 600,30C900,20 1050,40 1200,30L1200,60L0,60Z"
+                ]
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
             />
-          </svg>
+          </motion.svg>
         </div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4">
-            {t('blogPageTitle')}
-          </h1>
-          <p className="text-xl text-gray-300 tracking-wide">
-            {t('blogPageSubtitle')}
-          </p>
+          {/* Content moved to banner section above */}
         </div>
 
-        {/* Decorative wave at bottom */}
-        <div className="absolute bottom-0 left-0 w-full opacity-30">
-          <svg
+        {/* Decorative wave at bottom with pulsing animation */}
+        <div className="absolute bottom-0 left-0 w-full">
+          <motion.svg
             viewBox="0 0 1200 60"
             fill="none"
             className="w-full h-auto"
+            animate={{
+              opacity: [0.2, 0.6, 0.2],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1.5
+            }}
           >
-            <path
+            <motion.path
               d="M0,30C150,40 300,20 600,30C900,40 1050,20 1200,30L1200,0L0,0Z"
               fill="white"
+              animate={{
+                d: [
+                  "M0,30C150,40 300,20 600,30C900,40 1050,20 1200,30L1200,0L0,0Z",
+                  "M0,35C150,45 300,15 600,25C900,45 1050,15 1200,25L1200,0L0,0Z",
+                  "M0,30C150,40 300,20 600,30C900,40 1050,20 1200,30L1200,0L0,0Z"
+                ]
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.5
+              }}
             />
-          </svg>
+          </motion.svg>
         </div>
       </div>
 

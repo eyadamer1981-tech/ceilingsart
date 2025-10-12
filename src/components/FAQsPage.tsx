@@ -78,16 +78,30 @@ export function FAQsPage({ onContactClick }: FAQsPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-800 text-white pt-32">
+      {/* Banner Section */}
+      <div className="relative h-96 lg:h-[500px] overflow-hidden">
+        <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
+        <img
+          src="/faqs banner.jpg"
+          alt="FAQs Banner"
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Content Overlay */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl px-8">
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6 tracking-wide">
+              {t('stretchCeilingsFAQs') || 'Stretch Ceilings - Frequently Asked Questions'}
+            </h1>
+            <p className="text-lg lg:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+              {t('commonQuestionsAboutStretchCeilings') || 'Common Questions About Stretch Ceilings'}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Header Section */}
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide mb-4">
-            {t('stretchCeilingsFAQs') || 'Stretch Ceilings - Frequently Asked Questions'}
-          </h1>
-          <p className="text-xl text-white tracking-wide underline decoration-orange-400 decoration-2 underline-offset-4">
-            {t('commonQuestionsAboutStretchCeilings') || 'Common Questions About Stretch Ceilings'}
-          </p>
-        </div>
 
         {/* FAQ Accordion */}
         <div className="max-w-4xl mx-auto">

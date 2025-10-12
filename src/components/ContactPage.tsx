@@ -89,8 +89,17 @@ export function ContactPage() {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+      {/* Banner Section */}
+      <div className="relative h-80 lg:h-96 overflow-hidden">
+        <img
+          src="/contact us banner.jpg"
+          alt="Contact Us Banner"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* Header Section */}
-      <div className="relative py-20 text-center">
+      <div className="relative py-32 text-center">
         {/* Animated decorative wave at top */}
         <div className="hidden md:block absolute top-0 left-0 w-full overflow-hidden">
           <motion.svg
@@ -128,14 +137,7 @@ export function ContactPage() {
         </div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <MH1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-light text-black tracking-wide"
-          >
-            {headerTitle}
-          </MH1>
+          {/* Text removed - only decorative waves remain */}
         </div>
 
         {/* Animated decorative wave at bottom with enhanced orange gradient */}
