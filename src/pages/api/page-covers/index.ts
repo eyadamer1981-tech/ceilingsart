@@ -5,15 +5,9 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-// Ensure temp-uploads directory exists
-const tempUploadsDir = path.join(process.cwd(), 'temp-uploads');
-if (!fs.existsSync(tempUploadsDir)) {
-  fs.mkdirSync(tempUploadsDir, { recursive: true });
-}
-
-// Configure multer for file uploads
+// Configure multer for file uploads - use memory storage for Vercel compatibility
 const upload = multer({
-  dest: tempUploadsDir,
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
@@ -127,45 +121,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Generate unique filename
       const fileExtension = path.extname(file.originalname);
       const fileName = `${pageType}-cover-${Date.now()}${fileExtension}`;
-      const publicPath = path.join(process.cwd(), 'public', 'uploads');
       
-      // Ensure uploads directory exists
-      try {
-        if (!fs.existsSync(publicPath)) {
-          fs.mkdirSync(publicPath, { recursive: true });
-        }
-      } catch (dirError) {
-        console.error('Error creating uploads directory:', dirError);
-        return res.status(500).json({ message: 'Error creating uploads directory' });
-      }
+      // For Vercel compatibility, we'll store the file data directly
+      // In production, you might want to use a cloud storage service like AWS S3, Cloudinary, etc.
+      // For now, we'll create a base64 data URL for the image
+      const base64Data = file.buffer.toString('base64');
+      const dataUrl = `data:${file.mimetype};base64,${base64Data}`;
       
-      const filePath = path.join(publicPath, fileName);
-
-      // Move file to final location with error handling
-      try {
-        fs.renameSync(file.path, filePath);
-      } catch (moveError) {
-        console.error('Error moving file:', moveError);
-        // Clean up temp file if move failed
-        try {
-          if (fs.existsSync(file.path)) {
-            fs.unlinkSync(file.path);
-          }
-        } catch (cleanupError) {
-          console.error('Error cleaning up temp file:', cleanupError);
-        }
-        return res.status(500).json({ message: 'Error saving file' });
-      }
-      
-      // Clean up temp file if it still exists
-      try {
-        if (fs.existsSync(file.path)) {
-          fs.unlinkSync(file.path);
-        }
-      } catch (cleanupError) {
-        console.error('Error cleaning up temp file:', cleanupError);
-        // Don't fail the request for cleanup errors
-      }
+      // Store the file reference (in a real production app, you'd upload to cloud storage)
+      const fileReference = `/uploads/${fileName}`;
 
       // Check if page cover already exists
       console.log('Page covers API - Checking for existing cover:', { pageType, coverType });
@@ -177,7 +141,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // Update existing cover
           console.log('Page covers API - Updating existing cover');
           existingCover.title = `${pageType.charAt(0).toUpperCase() + pageType.slice(1)} ${coverType.charAt(0).toUpperCase() + coverType.slice(1)} Cover`;
-          existingCover.image = `/uploads/${fileName}`;
+          existingCover.image = dataUrl; // Use data URL for Vercel compatibility
           existingCover.updatedAt = new Date();
           await existingCover.save();
           console.log('Page covers API - Existing cover updated successfully');
@@ -190,7 +154,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             pageType,
             coverType,
             title: `${pageType.charAt(0).toUpperCase() + pageType.slice(1)} ${coverType.charAt(0).toUpperCase() + coverType.slice(1)} Cover`,
-            image: `/uploads/${fileName}`,
+            image: dataUrl, // Use data URL for Vercel compatibility
           });
           
           await pageCover.save();
@@ -199,14 +163,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       } catch (dbError) {
         console.error('Database error saving page cover:', dbError);
-        // Clean up the uploaded file if database operation failed
-        try {
-          if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-          }
-        } catch (cleanupError) {
-          console.error('Error cleaning up uploaded file after DB error:', cleanupError);
-        }
         return res.status(500).json({ message: 'Error saving page cover to database' });
       }
     } catch (error) {
