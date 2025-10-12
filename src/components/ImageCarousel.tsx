@@ -25,7 +25,7 @@ interface ImageCarouselProps {
 }
 
 export function ImageCarousel({ onSelect }: ImageCarouselProps) {
-  const { language } = useLanguage();
+  const { language, isRTL } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [featuredContent, setFeaturedContent] = useState<FeaturedContent>({
     acousticPanels: [],
@@ -256,7 +256,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
           </button>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 space-x-3">
+          <div className={`flex justify-center mt-8 ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
             {displayImages.map((_, index) => (
               <button
                 key={index}
@@ -274,7 +274,7 @@ export function ImageCarousel({ onSelect }: ImageCarouselProps) {
           {/* Image Counter */}
           <div className="text-center mt-4">
             <span className="text-sm text-gray-600">
-              {currentIndex + 1} / {displayImages.length}
+              {isRTL ? `${displayImages.length} / ${currentIndex + 1}` : `${currentIndex + 1} / ${displayImages.length}`}
             </span>
           </div>
         </div>
