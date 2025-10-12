@@ -79,7 +79,6 @@ export function WoodWoolPage() {
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Baffles_office_7666_small-1024x683.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_CeilingPanel_office_15-1024x683.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_CeilingTile_school_7594_small-1024x683.jpg',
-                '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Designs_Custom_15_1000px.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Designs_Custom_16_1000px.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Shapes_Diamond_office_10-1024x683.jpg',
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Shapes_Hex_office_6549_small-1024x684.jpg',
