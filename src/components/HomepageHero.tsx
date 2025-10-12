@@ -28,6 +28,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
   });
   const [pageCovers, setPageCovers] = useState<PageCovers>({});
   const [heroImage, setHeroImage] = useState<string>('/image.png'); // Fallback image
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const sectionRef = useRef<HTMLElement>(null!);
   const { scrollYProgress } = useScroll({ target: sectionRef as any, offset: ["start start", "end start"] });
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
@@ -59,9 +60,12 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
       if (data.home?.hero) {
         setHeroImage(data.home.hero);
       }
+      // Always set imageLoaded to true after API call completes
+      setImageLoaded(true);
     } catch (error) {
       console.error('Error fetching page covers:', error);
-      // Keep fallback image if API fails
+      // Keep fallback image if API fails, but still show it
+      setImageLoaded(true);
     }
   };
 
@@ -97,26 +101,27 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
       />
 
       {/* Center ellipse 870x870 with inner vignette (raised slightly) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10" aria-hidden>
-        <MDiv
-          className="relative rounded-full bg-center-image"
-          style={{
-            width: '600px',
-            height: '600px',
-            transform: 'translateY(100px)',
-            backgroundImage: `url('${heroImage}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.9,
-            WebkitMaskImage:
-              'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
-            maskImage:
-              'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
-            willChange: 'transform',
-            scale: heroScale, 
-            y: heroY
-          }}
-        >
+      {imageLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10" aria-hidden>
+          <MDiv
+            className="relative rounded-full bg-center-image"
+            style={{
+              width: '600px',
+              height: '600px',
+              transform: 'translateY(100px)',
+              backgroundImage: `url('${heroImage}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.9,
+              WebkitMaskImage:
+                'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
+              maskImage:
+                'radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0.6) 62%, rgba(0,0,0,0.35) 82%, rgba(0,0,0,0) 100%)',
+              willChange: 'transform',
+              scale: heroScale, 
+              y: heroY
+            }}
+          >
           <div
             className="absolute inset-0 rounded-full"
             style={{ boxShadow: '0 0 140px 60px rgba(55,62,68,0.5) inset' }}
@@ -130,6 +135,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
           />
         </MDiv>
       </div>
+      )}
 
       {/* Top logo (positioned on the left) */}
       <div className="absolute z-20 top-10 sm:top-10 md:top-40 left-8" aria-hidden>
