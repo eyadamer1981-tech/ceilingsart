@@ -133,7 +133,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
 
       {/* Top logo (positioned on the left) */}
       <div className="absolute z-20 top-10 sm:top-10 md:top-40 left-8" aria-hidden>
-        <img src="/newlogo.png" alt="Logo" width={200} height={200} className="w-[200px] h-[200px] object-contain" />
+        <img src="/newlogo.png" alt="Logo" width={400} height={400} className="w-[400px] h-[400px] object-contain" />
       </div>
 
       {/* Headline and CTA centered like homepage (lowered) */}
