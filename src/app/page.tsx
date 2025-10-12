@@ -9,6 +9,7 @@ import { MainServicesSection } from '../components/MainServicesSection';
 import { ImageCarousel } from '../components/ImageCarousel';
 import { Footer } from '../components/Footer';
 import { useLanguage } from '../contexts/LanguageContext';
+import TopTextBar from '../components/TopTextBar';
 import { AboutPage } from '../components/AboutPage';
 import { ServicesPage } from '../components/ServicesPage';
 import { AcousticPanelsPage } from '../components/AcousticPanelsPage';
@@ -219,13 +220,6 @@ export default function Home() {
           </>
         );
       // Acoustic Panels dropdown items
-      case 'ACOUSTIC_PANELS_ALANDALUS':
-        return (
-          <>
-            <AlandalusAcousticPage />
-            <Footer />
-          </>
-        );
       case 'FLOOR_INSULATION':
         return (
           <>
@@ -325,6 +319,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      {/* Top Text Bar */}
+      <TopTextBar />
       {/* Header */}
       <Header 
         onMenuToggle={handleMenuToggle} 
@@ -345,12 +341,24 @@ export default function Home() {
         {renderPage()}
       </main>
 
-      {/* Sticky Floating CTA: WhatsApp Call */}
+      {/* Sticky Floating CTA: Phone & WhatsApp */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+        {/* Phone Button */}
         <button
-          onClick={() => window.open('whatsapp://call?number=966575474699', '_blank')}
-          className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg transition"
-          title="WhatsApp Call"
+          onClick={() => window.open('tel:+966575474699', '_self')}
+          className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg transition-colors"
+          title="Call Us"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor" aria-hidden>
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+        </button>
+        
+        {/* WhatsApp Button */}
+        <button
+          onClick={() => window.open('https://wa.me/966575474699', '_blank')}
+          className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg transition-colors"
+          title="WhatsApp Us"
         >
           {/* WhatsApp icon */}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="w-7 h-7 text-white" fill="currentColor" aria-hidden>

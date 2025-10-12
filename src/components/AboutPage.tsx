@@ -15,7 +15,7 @@ import { SuccessPartnersSection } from './SuccessPartnersSection';
 
 export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const { language, t, isRTL } = useLanguage();
-  const [pageCover, setPageCover] = useState<string>('/Gemini_Generated_Image_3b5nq03b5nq03b5n.png'); // Fallback image
+  const [pageCover, setPageCover] = useState<string>('/uploads/home-cover-1760127314788.png'); // Fallback image
 
   useEffect(() => {
     fetchPageCover();
@@ -38,13 +38,13 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
 
   const aboutHeading = language === 'ar' ? 'سيلينجز آرت' : 'Ceilings Art';
   const aboutTitle = language === 'ar' ? 'من نحن' : 'About Us';
-  const sectionHeading = language === 'ar' ? 'تصميم أسقف متميّز مع حلول صوتية متقدمة' : 'Premium Stretch Ceilings & Advanced Acoustic Solutions';
+  const sectionHeading = language === 'ar' ? 'من نحن' : 'About Us';
   const p1 = language === 'ar'
-    ? 'بخبرة تتجاوز 10 سنوات في الرياض، متخصّصون في الأسقف الفرنسية المشدودة والحلول الصوتية المتقدمة. نصنع ونركّب أنظمة أسقف تجمع بين الجمال والوظيفة وفق أعلى معايير الجودة.'
-    : 'With over 10 years of expertise in Riyadh, we specialize in French stretch ceilings and advanced acoustic solutions. We craft and install ceiling systems that blend elegance with superior functionality.';
+    ? 'نحن فريق سيلينجز آرت الاحترافي، مختصّون في تقديم حلول الأسقف الفرنسية والعزل الصوتي على أعلى مستوى، مع خبرة تتجاوز عشر سنوات في المملكة العربية السعودية. نلتزم بالدقة والإتقان في كل مشروع، ونسعى دائماً لتقديم لمسات فنية راقية تحوّل أي مساحة إلى تحفة معمارية نتشرف بخدمتكم وتلبية جميع احتياجاتكم في عالم الأسقف المعلقة والحلول الصوتية.'
+    : 'We are the professional team of Ceilings Art, specializing in French stretch ceilings and acoustic solutions with over a decade of experience in Saudi Arabia. We pride ourselves on precision and excellence in every project, delivering elegant, artistic touches that transform any space into an architectural masterpiece. We look forward to serving you and meeting all your needs in the world of stretch ceilings and acoustic solutions.';
   const p2 = language === 'ar'
-    ? 'نلتزم بالجودة والتنفيذ الدقيق، ونركز على الاستدامة وتنوع التصاميم – لامعة، مطفية، ناقلة للضوء، مطبوعة، وثلاثية الأبعاد – لتلبية الاحتياجات السكنية والتجارية على حد سواء.'
-    : 'We are committed to quality, precise execution, and sustainability. From glossy and matte to translucent, printed, and 3D designs, our solutions suit both residential and commercial spaces.';
+    ? 'كل ما تحتاج معرفته عن الأسقف الفرنسية المشدودة والعزل الصوتي'
+    : 'Everything You Need to Know About Stretch Ceilings and Acoustic Solutions';
 
   const values = language === 'ar'
     ? [
@@ -85,25 +85,25 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   // Extended content about French stretch ceilings
   const extendedContent = language === 'ar'
     ? {
-        title: 'كل ما تحتاج معرفته عن الأسقف الفرنسية المشدودة',
+        title: 'كل ما تحتاج معرفته عن الأسقف الفرنسية المشدودة والعزل الصوتي',
         paragraphs: [
-          'الأسقف الفرنسية المشدودة تقنية حديثة تمنحك مظهرًا فخمًا بدون عيوب. يتم تركيب قماش خاص مشدود فوق إطار معدني، ما يخلق سقفًا مثاليًا وجذابًا.',
-          'في بصمة الأندلس، نقدم تشكيلة متنوعة من الأسقف: لامعة، مطفية، ثلاثية الأبعاد، بإضاءة خفية أو برسومات مطبوعة، كلها مصممة لتناسب الذوق العصري.',
-          'نستخدم خامات أوروبية مقاومة للرطوبة والعوامل البيئية، مع تقديم عزل حراري وصوتي ممتاز، وضمان تنفيذ احترافي.',
-          'خدمتنا تشمل كافة مدن المملكة مثل الرياض، جدة، والخبر، مع التزام تام بسرعة التنفيذ والدقة في المواعيد.',
-          'إذا كنت تبحث عن تجربة تصميم راقية، فخدماتنا هي الخيار الأمثل لمنزلك أو مشروعك التجاري.'
+          'الأسقف الفرنسية المشدودة تُعد من أحدث وأرقى حلول التشطيب الداخلي التي تجمع بين الجمال، المرونة، والدقة في التنفيذ. يتم تصنيعها من غشاء PVC أو قماش خاص يُشدّ على هيكل من الألمنيوم، مما يمنح السقف سطحًا أملسًا وأنيقًا يمكن تشكيله بأي لون أو إضاءة أو نمط تصميمي يناسب ذوقك ومساحتك.',
+          'تتميز هذه الأسقف بسهولة التركيب وسرعته، فهي لا تحتاج إلى أعمال دهان أو جبس تقليدية، كما يمكن فكّها وتركيبها من جديد دون أي ضرر. وتتيح أنظمة Ceilings Art دمج الإضاءة الحديثة — مثل خطوط الـLED المخفية أو الإضاءة الخلفية الشفافة — لتصميم سقفٍ ينبض بالحياة ويمنح المكان عمقًا بصريًا مميزًا.',
+          'أما من ناحية الأداء، فإن الأسقف الفرنسية المشدودة تتميز بمقاومتها للرطوبة، وعدم تأثرها بالغبار أو الحرارة، مما يجعلها مثالية للاستخدام في المنازل، المكاتب، الصالات، والفنادق، وحتى المشاريع الكبرى.',
+          'وفي مجال العزل الصوتي، تقدّم Ceilings Art حلولًا احترافية باستخدام أغشية مايكرو-مثقبة (Micro-Perforated Membranes) وأنظمة امتصاص صوتي متطورة تقلل من الضجيج وتُحسّن جودة الصوت في المساحات الداخلية — سواء كانت قاعات اجتماعات، مطاعم، أو مسارح.',
+          'نحن في Ceilings Art نوفّر لعملائنا أنظمة متكاملة من الأسقف المشدودة والعزل الصوتي مع ضمان أعلى درجات الجودة، والإتقان في التنفيذ، والتصميم بما يتناسب مع متطلبات المشاريع السكنية والتجارية على حدّ سواء.'
         ],
         cta: 'اطلب استشارتك المجانية الآن!',
         contactButton: 'اضغط للتواصل'
       }
     : {
-        title: 'Everything You Need to Know About French Stretch Ceilings',
+        title: 'Everything You Need to Know About Stretch Ceilings and Acoustic Solutions',
         paragraphs: [
-          'French stretch ceilings are a modern technology that gives you a luxurious appearance without flaws. A special stretched fabric is installed over a metal frame, creating a perfect and attractive ceiling.',
-          'At Andalusia\'s Touch, we offer a diverse range of ceilings: glossy, matte, 3D, with hidden lighting or printed designs, all designed to suit modern taste.',
-          'We use European materials resistant to humidity and environmental factors, providing excellent thermal and acoustic insulation, with professional installation guarantee.',
-          'Our services cover all cities of the Kingdom including Riyadh, Jeddah, and Al Khobar, with complete commitment to fast execution and punctuality.',
-          'If you are looking for an elegant design experience, our services are the optimal choice for your home or commercial project.'
+          'Stretch ceilings represent one of the most modern and elegant interior finishing solutions, combining aesthetics, flexibility, and precision. They are made from a special PVC or fabric membrane stretched over an aluminum frame, creating a smooth, flawless surface that can be customized in any color, shape, or lighting design to perfectly match your space.',
+          'Installation is clean and fast — no need for painting or traditional gypsum work — and the ceiling can be easily removed and reinstalled without damage. With Ceilings Art systems, you can integrate modern lighting features such as hidden LED lines or backlit translucent designs, bringing life and dimension to your ceilings.',
+          'From a performance perspective, stretch ceilings are highly resistant to humidity, dust, and heat, making them ideal for homes, offices, halls, hotels, and large commercial projects alike.',
+          'When it comes to acoustic performance, Ceilings Art provides professional solutions using advanced micro-perforated membranes and sound-absorbing systems that reduce noise and improve sound quality in interior spaces — perfect for meeting rooms, restaurants, cinemas, and theaters.',
+          'At Ceilings Art, we offer complete, high-quality systems for stretch ceilings and acoustic insulation — combining craftsmanship, precision, and creativity to meet the needs of both residential and commercial projects across Saudi Arabia.'
         ],
         cta: 'Request your free consultation now!',
         contactButton: 'Click to Contact'
@@ -119,7 +119,7 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
             alt="About us cover"
             className="w-full h-full object-cover"
             onError={(e) => {
-              e.currentTarget.src = '/Gemini_Generated_Image_3b5nq03b5nq03b5n.png';
+              e.currentTarget.src = '/uploads/home-cover-1760127314788.png';
             }}
           />
         </div>
@@ -268,14 +268,82 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    if (onContactClick) {
-                      onContactClick();
+                    // Navigate directly to contact page
+                    try {
+                      const event = new CustomEvent('navigate', { detail: { page: 'CONTACT US' } });
+                      window.dispatchEvent(event);
+                    } catch (error) {
+                      console.error('Navigation error:', error);
                     }
                   }}
                 >
                   {extendedContent.contactButton}
                 </MButton>
               </MDiv>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Image Gallery Section */}
+      <div className="bg-white py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <MDiv 
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
+                {isRTL ? 'معرض الصور' : 'Image Gallery'}
+              </h2>
+              <p className="text-gray-600 text-lg">
+                {isRTL 
+                  ? 'استكشف مجموعة متنوعة من مشاريعنا في الأسقف الفرنسية والعزل الصوتي'
+                  : 'Explore our diverse range of projects in stretch ceilings and acoustic solutions'
+                }
+              </p>
+            </MDiv>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {[
+                '/art-images/stretch-ceiling/glossy/High-Gloss-Ceiling-Installation-In-The-Bathroom-1024x690.jpg.webp',
+                '/art-images/stretch-ceiling/glossy/High-Gloss-Ceiling-Installation-On-the-Kitchen-1024x894.jpg.webp',
+                '/art-images/stretch-ceiling/glossy/luxury-condo-family-room-with-multilevel-red-stretch-ceiling-deutchland.jpg.webp',
+                '/art-images/stretch-ceiling/glossy/multilevel-waved-reflective-white-glossy-stretch-ceiling-in-monopoly-1024x918.jpg.webp',
+                '/art-images/acoustic-panels/wood-wool/AS_WoodWool_CeilingPanel_office_15-1024x683.jpg',
+                '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Designs_Custom_15_1000px.jpg',
+                '/art-images/acoustic-panels/fabric-wrapped-acoustic/1A-studio-panel-1024x683-1.jpg',
+                '/art-images/acoustic-panels/polyester-acoustic/Customed-Acoustic-Panel-Polyester-Fiber-Wall-Panel.webp'
+              ].map((imageSrc, index) => (
+                <MDiv 
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="aspect-square overflow-hidden rounded-lg bg-gray-700 group cursor-pointer"
+                  onClick={() => {
+                    window.open(imageSrc, '_blank');
+                  }}
+                >
+                  <img
+                    src={imageSrc}
+                    alt={`Project ${index + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder-acoustic.jpg';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                  </div>
+                </MDiv>
+              ))}
             </div>
           </div>
         </div>

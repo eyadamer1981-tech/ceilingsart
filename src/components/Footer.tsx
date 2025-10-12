@@ -47,13 +47,13 @@ export function Footer() {
             transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-medium mb-4">{t('quickLinks')}</h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <button onClick={() => navigate('HOME')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('home')}</button>
-              <button onClick={() => navigate('ABOUT US')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('about')}</button>
-              <button onClick={() => navigate('OUR SERVICES')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('services')}</button>
-              <button onClick={() => navigate('OUR WORK')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('ourWork')}</button>
-              <button onClick={() => navigate('CONTACT US')} className="block text-left w-full hover:text-orange-400 cursor-pointer transition-colors">{t('contact')}</button>
+            <h3 className={`text-lg font-medium mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>{t('quickLinks')}</h3>
+            <div className={`space-y-2 text-sm text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <button onClick={() => navigate('HOME')} className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}>{t('home')}</button>
+              <button onClick={() => navigate('ABOUT US')} className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}>{t('about')}</button>
+              <button onClick={() => navigate('OUR SERVICES')} className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}>{t('services')}</button>
+              <button onClick={() => navigate('OUR WORK')} className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}>{t('ourWork')}</button>
+              <button onClick={() => navigate('CONTACT US')} className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}>{t('contact')}</button>
             </div>
           </MDiv>
 
@@ -64,13 +64,20 @@ export function Footer() {
             transition={{ duration: 0.7, ease: 'easeOut', delay: 0.25 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-medium mb-4">{t('services')}</h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <p>{t('luxuryCeilingDesign')}</p>
-              <p>{t('decorativePatterns')}</p>
-              <p>{t('modernArchitecture')}</p>
-              <p>{t('traditionalCoffered')}</p>
-              <p>{t('vaultedCeilings')}</p>
+            <h3 className={`text-lg font-medium mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>{t('services')}</h3>
+            <div className={`space-y-2 text-sm text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <button 
+                onClick={() => navigate('STRETCH CEILINGS')} 
+                className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}
+              >
+                {isRTL ? 'الاسقف الفرنسية المشدودة' : 'Stretch Ceilings'}
+              </button>
+              <button 
+                onClick={() => navigate('ACOUSTIC PANELS')} 
+                className={`block w-full hover:text-orange-400 cursor-pointer transition-colors ${isRTL ? 'text-right' : 'text-left'}`}
+              >
+                {isRTL ? 'العزل الصوتي' : 'Acoustic Panels'}
+              </button>
             </div>
           </MDiv>
 
@@ -81,12 +88,64 @@ export function Footer() {
             transition={{ duration: 0.7, ease: 'easeOut', delay: 0.35 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-medium mb-4">{t('contactInfo')}</h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <p dir="ltr">+966 575474699</p>
-              <p dir="ltr">info@ceilingsart.com</p>
-              <p>{language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}</p>
-              <p>{language === 'ar' ? 'السبت - الخميس: 9 صباحاً - 6 مساءً' : 'Sat - Thu: 9AM - 6PM'}</p>
+            <h3 className={`text-lg font-medium mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>{t('contactInfo')}</h3>
+            <div className={`space-y-2 text-sm text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <a 
+                href="tel:+966575474699" 
+                className="block hover:text-orange-400 cursor-pointer transition-colors"
+                dir="ltr"
+              >
+                +966 575474699
+              </a>
+              <button 
+                onClick={() => {
+                  const email = 'info@ceilingsart.com';
+                  const subject = 'Contact from Website';
+                  const body = 'Hello, I would like to get more information about your services.';
+                  
+                  // Create mailto link
+                  const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                  
+                  // Try multiple approaches to open email client
+                  try {
+                    // Method 1: Create a temporary link and click it
+                    const link = document.createElement('a');
+                    link.href = mailtoLink;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  } catch (error) {
+                    try {
+                      // Method 2: Use window.open
+                      window.open(mailtoLink, '_self');
+                    } catch (error2) {
+                      try {
+                        // Method 3: Use window.location
+                        window.location.href = mailtoLink;
+                      } catch (error3) {
+                        // Method 4: Copy to clipboard
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                          navigator.clipboard.writeText(email).then(() => {
+                            alert(`Email copied to clipboard: ${email}`);
+                          }).catch(() => {
+                            alert(`Please send an email to: ${email}`);
+                          });
+                        } else {
+                          // Final fallback: Show email in alert
+                          alert(`Please send an email to: ${email}`);
+                        }
+                      }
+                    }
+                  }
+                }}
+                className={`block hover:text-orange-400 cursor-pointer transition-colors w-full ${isRTL ? 'text-right' : 'text-left'}`}
+                dir="ltr"
+              >
+                info@ceilingsart.com
+              </button>
+              <p className={isRTL ? 'text-right' : 'text-left'}>{language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}</p>
+              <p className={isRTL ? 'text-right' : 'text-left'}>{language === 'ar' ? 'السبت - الخميس: 9 صباحاً - 6 مساءً' : 'Sat - Thu: 9AM - 6PM'}</p>
             </div>
           </MDiv>
         </MDiv>

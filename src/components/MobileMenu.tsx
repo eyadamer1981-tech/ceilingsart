@@ -45,7 +45,6 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
       translation: t('acousticPanels'),
       hasDropdown: true,
       dropdownItems: [
-        { key: 'ACOUSTIC_PANELS_ALANDALUS', translation: t('acousticPanelsAlandalus') },
         { key: 'FLOOR_INSULATION', translation: t('floorInsulation') },
         { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels') },
         { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps') }

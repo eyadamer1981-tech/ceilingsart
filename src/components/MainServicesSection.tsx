@@ -45,8 +45,8 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
   const services = [
     {
       type: 'STRETCH CEILINGS',
-      title: isRTL ? 'الأسقف الفرنسية' : 'Stretch Ceilings',
-      titleAr: 'الاسقف الفرنسية',
+      title: isRTL ? 'الاسقف الفرنسية المشدودة' : 'Stretch Ceilings',
+      titleAr: 'الاسقف الفرنسية المشدودة',
       titleEn: 'Stretch Ceilings',
       description: isRTL 
         ? 'تصاميم أسقف معلقة مبتكرة وأنيقة تناسب المساحات السكنية والتجارية. نقدم حلول متعددة تشمل الأسقف اللامعة والمطبوعة والشفافة.'
@@ -68,8 +68,8 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
     },
     {
       type: 'ACOUSTIC PANELS',
-      title: isRTL ? 'الألواح العازلة' : 'Acoustic Panels',
-      titleAr: 'الألواح العازلة',
+      title: isRTL ? 'العزل الصوتي' : 'Acoustic Panels',
+      titleAr: 'العزل الصوتي',
       titleEn: 'Acoustic Panels',
       description: isRTL
         ? 'حلول صوتية متقدمة لتحسين جودة الصوت والتحكم في الضوضاء. ألواح عازلة للصوت مصممة للمساحات السكنية والتجارية.'
@@ -103,12 +103,12 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
           viewport={{ once: true }}
         >
           <h2 className={`text-4xl font-light text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-center'}`}>
-            {isRTL ? 'خدماتنا الرئيسية' : 'Our Main Services'}
+            {isRTL ? 'خدماتنا' : 'Our Services'}
           </h2>
           <p className={`text-lg text-gray-600 max-w-3xl mx-auto ${isRTL ? 'text-right' : 'text-center'}`}>
             {isRTL 
-              ? 'نقدم حلول شاملة للأسقف والصوتيات مصممة خصيصاً لاحتياجاتك'
-              : 'We provide comprehensive ceiling and acoustic solutions tailored to your needs'
+              ? 'نقدم في سيليجنز آرت خدمات الأسقف الفرنسية المشدودة وحلول العزل الصوتي عالية الجودة، مصممة خصيصاً لتلبية احتياجاتكم بأعلى معايير الإتقان'
+              : 'At Ceilings Art, we offer high-quality French stretch ceiling solutions as well as premium Acoustic panels'
             }
           </p>
         </MDiv>
@@ -153,14 +153,9 @@ export function MainServicesSection({ onLearnMore }: { onLearnMore?: (serviceTyp
                   </h4>
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {service.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-2">
-                        {!isRTL && (
-                          <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex-shrink-0"></div>
-                        )}
+                      <div key={featureIndex} className={`flex items-center ${isRTL ? 'flex-row-reverse space-x-reverse space-x-2' : 'space-x-2'}`}>
+                        <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex-shrink-0"></div>
                         <span className="text-gray-700">{feature}</span>
-                        {isRTL && (
-                          <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex-shrink-0"></div>
-                        )}
                       </div>
                     ))}
                   </div>

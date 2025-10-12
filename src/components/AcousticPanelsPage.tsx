@@ -69,7 +69,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             descriptionEn: 'Elegant acoustic panels wrapped with high-quality fabric to improve acoustics while maintaining modern design. Perfect for offices, studios, and commercial spaces.',
             descriptionAr: 'ألواح صوتية أنيقة مغلفة بقماش عالي الجودة لتحسين الصوتيات مع الحفاظ على التصميم العصري. مثالية للمكاتب والاستوديوهات والمساحات التجارية.',
             category: 'Fabric Wrapped',
-            image: '/fabrice.webp',
+            image: '/3.jpg',
             featured: true,
             rightLeftSection: false
           };
@@ -78,11 +78,11 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
           targetPanel = {
             _id: 'polyester-panels',
             titleEn: 'Polyester Acoustic Panels',
-            titleAr: 'الألواح الصوتية البوليستر',
+            titleAr: 'ألواح البوليستر العازلة للصوت',
             descriptionEn: 'Acoustic panels made from high-density polyester fibers for excellent sound absorption and moisture resistance. Ideal for humid environments and high-traffic areas.',
             descriptionAr: 'ألواح صوتية مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.',
             category: 'Polyester',
-            image: '/polyeseter.webp',
+            image: '/2.jpg',
             featured: true,
             rightLeftSection: false
           };
@@ -95,7 +95,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
             descriptionEn: 'Natural acoustic panels made from treated wood fibers, providing excellent sound insulation and beautiful natural appearance. Perfect for eco-friendly and sustainable design projects.',
             descriptionAr: 'ألواح صوتية طبيعية مصنوعة من ألياف الخشب المعالجة، توفر عزل صوتي ممتاز ومظهر طبيعي جميل. مثالية لمشاريع التصميم الصديقة للبيئة والمستدامة.',
             category: 'Wood Wool',
-            image: '/wood wool.webp',
+            image: '/4.jpg',
             featured: true,
             rightLeftSection: false
           };
@@ -213,7 +213,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
           >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
-                src="/fabrice.webp"
+                src="/3.jpg"
                 alt={isRTL ? 'أغلفة القماش الصوتية' : 'Acoustic Fabric Wraps'}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
@@ -238,7 +238,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                 descriptionEn: 'Elegant acoustic panels wrapped with high-quality fabric to improve acoustics while maintaining modern design. Perfect for offices, studios, and commercial spaces.',
                 descriptionAr: 'ألواح صوتية أنيقة مغلفة بقماش عالي الجودة لتحسين الصوتيات مع الحفاظ على التصميم العصري. مثالية للمكاتب والاستوديوهات والمساحات التجارية.',
                 category: 'Fabric Wrapped',
-                image: '/fabrice.webp',
+                image: '/3.jpg',
                 featured: true,
                 rightLeftSection: false
               })}
@@ -257,8 +257,8 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
           >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
-                src="/polyeseter.webp"
-                alt={isRTL ? 'الألواح العازلة البوليستر' : 'Polyester Acoustic Panels'}
+                src="/2.jpg"
+                alt={isRTL ? 'ألواح البوليستر العازلة للصوت' : 'Polyester Acoustic Panels'}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
                   e.currentTarget.src = '/placeholder-acoustic.jpg';
@@ -266,7 +266,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               />
             </div>
             <h3 className="text-xl font-semibold mb-4 text-white">
-              {isRTL ? 'الألواح العازلة البوليستر' : 'Polyester Acoustic Panels'}
+              {isRTL ? 'ألواح البوليستر العازلة للصوت' : 'Polyester Acoustic Panels'}
             </h3>
             <p className="text-gray-300 text-sm mb-4">
               {isRTL 
@@ -278,11 +278,11 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
               onClick={() => handlePanelSelect({
                 _id: 'polyester-panels',
                 titleEn: 'Polyester Acoustic Panels',
-                titleAr: 'الألواح العازلة البوليستر',
+                titleAr: 'ألواح البوليستر العازلة للصوت',
                 descriptionEn: 'Acoustic panels made from high-density polyester fibers for excellent sound absorption and moisture resistance. Ideal for humid environments and high-traffic areas.',
                 descriptionAr: 'ألواح صوتية مصنوعة من ألياف البوليستر عالية الكثافة لامتصاص الصوت الممتاز ومقاومة الرطوبة. مثالية للبيئات الرطبة والمناطق عالية الحركة.',
                 category: 'Polyester',
-                image: '/polyeseter.webp',
+                image: '/2.jpg',
                 featured: true,
                 rightLeftSection: false
               })}
@@ -301,7 +301,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
           >
             <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
               <img
-                src="/wood wool.webp"
+                src="/4.jpg"
                 alt={isRTL ? 'ألواح الصوف الخشبي' : 'Wood Wool Panels'}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
@@ -326,7 +326,7 @@ export function AcousticPanelsPage({ onSelect, panelType }: AcousticPanelsPagePr
                 descriptionEn: 'Natural acoustic panels made from treated wood fibers, providing excellent sound insulation and beautiful natural appearance. Perfect for eco-friendly and sustainable design projects.',
                 descriptionAr: 'ألواح صوتية طبيعية مصنوعة من ألياف الخشب المعالجة، توفر عزل صوتي ممتاز ومظهر طبيعي جميل. مثالية لمشاريع التصميم الصديقة للبيئة والمستدامة.',
                 category: 'Wood Wool',
-                image: '/wood wool.webp',
+                image: '/4.jpg',
                 featured: true,
                 rightLeftSection: false
               })}

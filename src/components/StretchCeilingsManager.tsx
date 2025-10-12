@@ -280,13 +280,13 @@ export function StretchCeilingsManager() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Detail Images (up to 3, shown only on ceiling detail)
+                  Detail Images (up to 6, shown only on ceiling detail)
                 </label>
                 <input
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => setDetailImageFiles(Array.from(e.target.files || []).slice(0,3))}
+                  onChange={(e) => setDetailImageFiles(Array.from(e.target.files || []).slice(0,6))}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
                 />
                 <p className="text-xs text-gray-500 mt-1">These images are only displayed on the detail page.</p>

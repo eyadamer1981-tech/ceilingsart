@@ -133,7 +133,7 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
 
       {/* Top logo (positioned on the left) */}
       <div className="absolute z-20 top-10 sm:top-10 md:top-40 left-8" aria-hidden>
-        <img src="/logo.png" alt="Logo" width={400} height={400} className="w-[400px] h-[400px] object-contain" />
+        <img src="/newlogo.png" alt="Logo" width={200} height={200} className="w-[200px] h-[200px] object-contain" />
       </div>
 
       {/* Headline and CTA centered like homepage (lowered) */}
@@ -200,10 +200,10 @@ export function HomepageHero({ onGetStarted }: { onGetStarted?: () => void }) {
 
         <div className={`mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-white/90 ${isRTL ? 'text-right' : 'text-center'}`}>
           <span className="text-sm sm:text-base">{isRTL ? 'ضمان 10 سنوات' : '10-year warranty'}</span>
-          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="hidden sm:inline text-white/40">.</span>
           <span className="text-sm sm:text-base">{isRTL ? 'خامات أوروبية' : 'European materials'}</span>
-          <span className="hidden sm:inline text-white/40">|</span>
-          <span className="text-sm sm:text-base">{isRTL ? 'فنيون معتمدون' : 'Certified installers'}</span>
+          <span className="hidden sm:inline text-white/40">.</span>
+          <span className="text-sm sm:text-base">{isRTL ? 'تركيب إحترافي' : 'Professional installation'}</span>
         </div>
       </MDiv>
 

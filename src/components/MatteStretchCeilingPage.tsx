@@ -9,7 +9,7 @@ export function MatteStretchCeilingPage({ onBack }: MatteStretchCeilingPageProps
   const ceilingData = {
     ceilingType: 'matte',
     titleEn: 'Matte Stretch Ceiling Designs',
-    titleAr: 'تصاميم أسقف مشدودة غير لامعة',
+    titleAr: 'أسقف مشدودة غير لامعة (مطفية)',
     descriptionEn: 'Elegant matte finish stretch ceilings that provide a sophisticated, non-reflective surface perfect for contemporary and minimalist designs.',
     descriptionAr: 'أسقف مشدودة بلمسة نهائية غير لامعة أنيقة توفر سطحاً راقياً غير عاكس مثالي للتصاميم المعاصرة والحديثة.',
     features: [
@@ -75,14 +75,14 @@ export function MatteStretchCeilingPage({ onBack }: MatteStretchCeilingPageProps
       installation: 'يتطلب تركيباً مهنياً'
     },
     images: {
-      main: '/art-images/stretch-ceiling/matte/multilevel-waved-reflective-white-glossy-stretch-ceiling-in-monopoly-1024x918.jpg.webp',
+      main: '/6.jpg',
       gallery: [
+        '/6.jpg',
         '/art-images/stretch-ceiling/matte/multilevel-waved-reflective-white-glossy-stretch-ceiling-in-monopoly-1024x918.jpg.webp',
         '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg',
         '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-002.jpg',
         '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-050.jpg',
-        '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-085.jpg',
-        '/art-images/stretch-ceiling/translucent/NEWMAT-ceiling-mounted-lightbox-scaled.jpg'
+        '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-085.jpg'
       ]
     }
   };

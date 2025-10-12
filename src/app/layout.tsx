@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { LanguageProvider } from '../contexts/LanguageContext'
-import TopTextBar from '../components/TopTextBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,10 +11,10 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/logo.png', type: 'image/png' }
+      { url: '/newlogo.png', type: 'image/png' }
     ],
     shortcut: '/favicon.ico',
-    apple: '/logo.png',
+    apple: '/newlogo.png',
   },
 }
 
@@ -28,7 +27,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <LanguageProvider>
-          <TopTextBar />
           {children}
         </LanguageProvider>
       </body>

@@ -9,7 +9,7 @@ export function AcousticStretchCeilingPage({ onBack }: AcousticStretchCeilingPag
   const ceilingData = {
     ceilingType: 'acoustic',
     titleEn: 'Perforated and Acoustic Stretch Ceilings',
-    titleAr: 'أسقف مشدودة مثقبة وعازلة للصوت',
+    titleAr: 'أسقف مشدودة مثقبة',
     descriptionEn: 'Advanced acoustic stretch ceilings with perforated designs that provide excellent sound absorption and noise reduction for optimal acoustic performance.',
     descriptionAr: 'أسقف مشدودة صوتية متقدمة بتصاميم مثقبة توفر امتصاص صوت ممتاز وتقليل الضوضاء لأداء صوتي مثالي.',
     features: [
@@ -75,14 +75,14 @@ export function AcousticStretchCeilingPage({ onBack }: AcousticStretchCeilingPag
       installation: 'تركيب مهني مع مراعاة المتطلبات الصوتية'
     },
     images: {
-      main: '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg',
+      main: '/8.jpg',
       gallery: [
+        '/8.jpg',
         '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-002.jpg',
         '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-050.jpg',
         '/art-images/stretch-ceiling/acoustic/AJC-Syd-Grammar-Library-085.jpg',
         '/art-images/stretch-ceiling/acoustic/NEWMAT-ceiling-mounted-lightbox-scaled.jpg',
-        '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg',
-        '/art-images/stretch-ceiling/acoustic/Qantas-T1-Domestic-scaled.jpg'
+        '/art-images/stretch-ceiling/acoustic/NEWMAT-suspended-panels-museum-scaled.jpg'
       ]
     }
   };

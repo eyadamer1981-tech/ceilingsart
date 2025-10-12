@@ -114,7 +114,7 @@ export function Hero() {
       {/* Top-centered logo (229x229) */}
       <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 translate-y-1/2" aria-hidden="true">
         <img
-          src="/logo.png"
+          src="/newlogo.png"
           alt="Company Logo"
           className="w-[229px] h-[229px] object-contain"
           width={229}

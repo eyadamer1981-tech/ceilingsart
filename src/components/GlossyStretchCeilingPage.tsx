@@ -75,8 +75,9 @@ export function GlossyStretchCeilingPage({ onBack }: GlossyStretchCeilingPagePro
       installation: 'يتطلب تركيب مهني'
     },
     images: {
-      main: '/art-images/stretch-ceiling/glossy/luxury-condo-family-room-with-multilevel-red-stretch-ceiling-deutchland.jpg.webp',
+      main: '/7.jpg',
       gallery: [
+        '/7.jpg',
         '/art-images/stretch-ceiling/glossy/High-Gloss-Ceiling-Installation-In-The-Bathroom-1024x690.jpg.webp',
         '/art-images/stretch-ceiling/glossy/High-Gloss-Ceiling-Installation-On-the-Kitchen-1024x894.jpg.webp',
         '/art-images/stretch-ceiling/glossy/multilevel-waved-reflective-white-glossy-stretch-ceiling-in-monopoly-1024x918.jpg.webp',

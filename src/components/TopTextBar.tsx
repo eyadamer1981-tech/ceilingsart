@@ -48,13 +48,53 @@ const TopTextBar: React.FC = () => {
         dir={isRTL ? "rtl" : "ltr"}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <a
-            href="mailto:info@busmat-alandalus.sa"
+          <button
+            onClick={() => {
+              const email = 'info@ceilingsart.com';
+              const subject = 'Contact from Website';
+              const body = 'Hello, I would like to get more information about your services.';
+              
+              // Create mailto link
+              const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+              
+              // Try multiple approaches to open email client
+              try {
+                // Method 1: Create a temporary link and click it
+                const link = document.createElement('a');
+                link.href = mailtoLink;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              } catch (error) {
+                try {
+                  // Method 2: Use window.open
+                  window.open(mailtoLink, '_self');
+                } catch (error2) {
+                  try {
+                    // Method 3: Use window.location
+                    window.location.href = mailtoLink;
+                  } catch (error3) {
+                    // Method 4: Copy to clipboard
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                      navigator.clipboard.writeText(email).then(() => {
+                        alert(`Email copied to clipboard: ${email}`);
+                      }).catch(() => {
+                        alert(`Please send an email to: ${email}`);
+                      });
+                    } else {
+                      // Final fallback: Show email in alert
+                      alert(`Please send an email to: ${email}`);
+                    }
+                  }
+                }
+              }
+            }}
             className="flex items-center gap-2 opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white/60 rounded px-1"
           >
             <span aria-hidden>✉️</span>
             <span className="hidden sm:inline">{isRTL ? "البريد الالكتروني" : "Email"}</span>
-          </a>
+          </button>
           <span
             className={(isRTL ? "text-right" : "text-left") + " inline-block leading-6 mx-4 flex-1"}
           >

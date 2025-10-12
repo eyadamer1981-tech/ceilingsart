@@ -57,11 +57,6 @@ export function FAQsPage({ onContactClick }: FAQsPageProps) {
       id: 'suspended-ceilings',
       questionKey: 'faqSuspendedCeilings',
       answerKey: 'faqSuspendedCeilingsAnswer'
-    },
-    {
-      id: 'clipso-technology',
-      questionKey: 'faqClipsoTechnology',
-      answerKey: 'faqClipsoTechnologyAnswer'
     }
   ];
 

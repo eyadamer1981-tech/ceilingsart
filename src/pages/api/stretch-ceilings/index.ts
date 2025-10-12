@@ -62,10 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.json([]);
     }
   } else if (req.method === 'POST') {
-    // Handle file upload (main image + up to 3 detail images)
+    // Handle file upload (main image + up to 6 detail images)
     upload.fields([
       { name: 'image', maxCount: 1 },
-      { name: 'detailImages', maxCount: 3 },
+      { name: 'detailImages', maxCount: 6 },
     ])(req as any, res as any, async (err: any) => {
       if (err) {
         return res.status(400).json({ message: 'File upload error' });

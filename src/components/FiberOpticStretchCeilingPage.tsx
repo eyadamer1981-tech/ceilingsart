@@ -9,7 +9,7 @@ export function FiberOpticStretchCeilingPage({ onBack }: FiberOpticStretchCeilin
   const ceilingData = {
     ceilingType: 'fiber-optic',
     titleEn: 'Fiber Optic Ceilings (Rose)',
-    titleAr: 'أسقف الألياف البصرية (الوردة)',
+    titleAr: 'أسقف الألياف البصرية (روز)',
     descriptionEn: 'Magical fiber optic stretch ceilings that create stunning starry night effects and customizable lighting patterns for truly enchanting spaces.',
     descriptionAr: 'أسقف مشدودة بألياف بصرية سحرية تخلق تأثيرات ليلة نجمية مذهلة وأنماط إضاءة قابلة للتخصيص لمساحات ساحرة حقاً.',
     features: [

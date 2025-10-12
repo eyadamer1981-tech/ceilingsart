@@ -20,7 +20,7 @@ export function AlandalusAcousticPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Title */}
         <h1 className="text-3xl md:text-5xl font-light tracking-wide mb-8 text-center">
-          {isRTL ? 'لوح عازل للصوت - C.Arts' : 'Acoustic Panel - C.Arts'}
+          {isRTL ? 'لوح العزل الصوتي - C.Arts' : 'Acoustic Panel - C.Arts'}
         </h1>
 
         {/* Intro bullets */}

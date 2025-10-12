@@ -213,27 +213,6 @@ export default function App() {
           </>
         );
       // Acoustic Panels dropdown items
-      case 'ACOUSTIC_PANELS_ALANDALUS':
-        return (
-          <>
-            <AcousticPanelsPage
-              panelType="alandalus"
-              onSelect={(panel, isService) => {
-                setSelectedItem({
-                  title: panel.title,
-                  image: panel.image,
-                  description: panel.description,
-                  descriptionEn: panel.descriptionEn,
-                  descriptionAr: panel.descriptionAr,
-                  detailImages: panel.detailImages,
-                  category: 'Acoustic Panel',
-                });
-                setSelectedIsService(isService);
-              }}
-            />
-            <Footer />
-          </>
-        );
       case 'FLOOR_INSULATION':
         return (
           <>

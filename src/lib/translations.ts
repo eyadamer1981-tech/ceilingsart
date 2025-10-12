@@ -186,8 +186,6 @@ export interface Translations {
   faqBenefitsAnswer: string;
   faqSuspendedCeilings: string;
   faqSuspendedCeilingsAnswer: string;
-  faqClipsoTechnology: string;
-  faqClipsoTechnologyAnswer: string;
   
   // Acoustic Panels Page
   acousticPanelsDescription: string;
@@ -451,8 +449,6 @@ export const translations: Record<Language, Translations> = {
     faqBenefitsAnswer: 'Stretch ceilings offer numerous benefits including: easy installation, maintenance-free operation, moisture resistance, fire retardant properties, sound absorption, thermal insulation, unlimited design possibilities, easy cleaning, and long-lasting durability. They also hide existing ceiling imperfections and can accommodate lighting and ventilation systems.',
     faqSuspendedCeilings: 'What are suspended ceilings?',
     faqSuspendedCeilingsAnswer: 'Suspended ceilings, also known as drop ceilings or false ceilings, are secondary ceilings installed below the main structural ceiling. They create a gap between the two ceilings, which can be used for hiding electrical wiring, plumbing, HVAC systems, and other utilities while providing easy access for maintenance.',
-    faqClipsoTechnology: 'What is CLIPSO technology?',
-    faqClipsoTechnologyAnswer: 'CLIPSO is a leading manufacturer of stretch ceiling systems known for their innovative technology and high-quality materials. CLIPSO technology offers advanced features such as improved tension systems, enhanced durability, better acoustic properties, and a wider range of design options. We use CLIPSO-certified materials and installation techniques.',
     
     // Acoustic Panels Page
     acousticPanelsDescription: 'Professional acoustic solutions for superior sound control and noise reduction',
@@ -547,7 +543,7 @@ export const translations: Record<Language, Translations> = {
     admin: 'الإدارة',
     
     // Hero Section
-    heroTitle: 'المعيار الجديد في الأسقف الفرنسية والألواح الصوتية',
+    heroTitle: 'الرئيسيةالمعيار الجديد للأسقف الفرنسية و العزل الصوتي',
     heroSubtitle: 'حلول الأسقف المهنية',
     heroDescription: 'نحن متخصصون في إنشاء تصاميم أسقف مذهلة ترفع من مستوى مساحاتك الداخلية بجودة وحرفية لا مثيل لها.',
     getStarted: 'ابدأ الآن',
@@ -634,12 +630,12 @@ export const translations: Record<Language, Translations> = {
     ourWorkPageSubtitle: 'اكتشف محفظة تصاميم الأسقف الاستثنائية',
     readyToTransform: 'مستعد لتحويل مساحتك؟',
     transformDescription: 'دعنا ننشئ تصميم سقف مخصص يعكس أسلوبك ورؤيتك الفريدة.',
-    startYourProject: 'ابدأ مشروعك',
+    startYourProject: 'التواصل معنا',
     
     // Category Names
     stretchCeiling: 'أسقف مشدودة',
-    acoustic: 'عازل للصوت',
-    acousticPanels: 'ألواح عازلة للصوت',
+    acoustic: 'العزل الصوتي',
+    acousticPanels: 'العزل الصوتي',
     noAcousticPanels: 'لا توجد ألواح عازلة متاحة في الوقت الحالي',
     checkBackLater: 'يرجى العودة لاحقاً للحصول على التحديثات',
     needCustomAcousticSolution: 'هل تحتاج إلى حل صوتي مخصص؟',
@@ -714,8 +710,6 @@ export const translations: Record<Language, Translations> = {
     faqBenefitsAnswer: 'تقدم الأسقف الفرنسية فوائد عديدة تشمل: سهولة التركيب والتشغيل الخالي من الصيانة ومقاومة الرطوبة وخصائص مقاومة الحريق وامتصاص الصوت والعزل الحراري وإمكانيات تصميم غير محدودة وسهولة التنظيف والمتانة طويلة الأمد. كما تخفي عيوب السقف الموجودة ويمكن أن تستوعب أنظمة الإضاءة والتهوية.',
     faqSuspendedCeilings: 'ما هي الأسقف المعلقة؟',
     faqSuspendedCeilingsAnswer: 'الأسقف المعلقة، المعروفة أيضاً باسم الأسقف المعلقة أو الأسقف الوهمية، هي أسقف ثانوية يتم تركيبها أسفل السقف الهيكلي الرئيسي. تخلق فجوة بين السقفين، والتي يمكن استخدامها لإخفاء الأسلاك الكهربائية والسباكة وأنظمة التدفئة والتهوية والتكييف والمرافق الأخرى مع توفير وصول سهل للصيانة.',
-    faqClipsoTechnology: 'ما هي تقنية CLIPSO؟',
-    faqClipsoTechnologyAnswer: 'CLIPSO هي شركة رائدة في تصنيع أنظمة الأسقف الفرنسية المعروفة بتقنيتها المبتكرة وموادها عالية الجودة. تقدم تقنية CLIPSO ميزات متقدمة مثل أنظمة التوتر المحسنة والمتانة المعززة وخصائص صوتية أفضل ومجموعة أوسع من خيارات التصميم. نستخدم مواد وتقنيات تركيب معتمدة من CLIPSO.',
     
     // Acoustic Panels Page
     acousticPanelsDescription: 'حلول صوتية مهنية للتحكم المتفوق في الصوت وتقليل الضوضاء',
@@ -778,23 +772,72 @@ export const translations: Record<Language, Translations> = {
     successPartnersDescription: 'نفتخر بالعمل مع الشركات والمؤسسات الرائدة التي تثق في خبرتنا في حلول الأسقف.',
 
     // Header dropdown items
-    acousticPanelsAlandalus: 'لوح عازل للصوت - C.Arts',
-    floorInsulation: 'عزل الأرضيات',
+    acousticPanelsAlandalus: 'لوح العزل الصوتي - C.Arts',
+    floorInsulation: 'ألواح الصوف الخشبي',
     stretchGlossy: 'الأسقف الفرنسية - لامعة',
     stretchHiddenLighting: 'الأسقف الفرنسية بإضاءة مخفية',
-    stretchPerforatedAcoustic: 'الأسقف الفرنسية - مثقبة وصوتية',
+    stretchPerforatedAcoustic: 'الأسقف الفرنسية - مثقبة',
     stretch3D: 'الأسقف الفرنسية - ثلاثية الأبعاد',
     stretchReflective: 'الأسقف الفرنسية - عاكسة',
     stretchMatte: 'الأسقف الفرنسية - مطفية',
     stretchFiberOpticRose: 'الأسقف الفرنسية - ألياف بصرية (روز)',
     stretchPrinted: 'الأسقف الفرنسية المطبوعة',
     stretchLightTransmitting: 'الأسقف الفرنسية - ناقلة للضوء',
-    stretchPaper: 'الأسقف الفرنسية - ورقية',
+    stretchPaper: 'ورق السقف الفرنسي',
   }
 };
 
+// Lazy loading function to prevent webpack issues
+let translationsCache: Record<Language, Translations> | null = null;
+
+const getTranslations = (): Record<Language, Translations> => {
+  if (!translationsCache) {
+    translationsCache = translations;
+  }
+  return translationsCache;
+};
+
 export const getTranslation = (language: Language, key: keyof Translations): string => {
-  return translations[language][key] || translations.en[key] || key;
+  try {
+    const translationsObj = getTranslations();
+    
+    // Ensure translations object exists and is properly structured
+    if (!translationsObj || typeof translationsObj !== 'object') {
+      console.warn('Translations object is not properly initialized');
+      return key;
+    }
+    
+    // Ensure the language exists in translations
+    if (!translationsObj[language] || typeof translationsObj[language] !== 'object') {
+      console.warn(`Language '${language}' not found in translations, falling back to English`);
+      language = 'en';
+    }
+    
+    // Ensure English fallback exists
+    if (!translationsObj.en || typeof translationsObj.en !== 'object') {
+      console.warn('English translations not found');
+      return key;
+    }
+    
+    // Try to get translation for the specified language
+    const translation = translationsObj[language][key];
+    if (translation && typeof translation === 'string') {
+      return translation;
+    }
+    
+    // Fallback to English
+    const englishTranslation = translationsObj.en[key];
+    if (englishTranslation && typeof englishTranslation === 'string') {
+      return englishTranslation;
+    }
+    
+    // Final fallback to the key itself
+    console.warn(`Translation not found for key: ${key} in language: ${language}`);
+    return key;
+  } catch (error) {
+    console.error('Error in getTranslation:', error, 'Key:', key, 'Language:', language);
+    return key;
+  }
 };
 
 // Function to translate category names

@@ -9,7 +9,7 @@ export function PaperStretchCeilingPage({ onBack }: PaperStretchCeilingPageProps
   const ceilingData = {
     ceilingType: 'paper',
     titleEn: 'Paper Stretch Ceilings',
-    titleAr: 'أسقف مشدودة ورقية',
+    titleAr: 'ورق السقف الفرنسي',
     descriptionEn: 'Eco-friendly paper stretch ceilings that combine natural aesthetics with modern functionality, perfect for sustainable and environmentally conscious designs.',
     descriptionAr: 'أسقف مشدودة ورقية صديقة للبيئة تجمع بين الجماليات الطبيعية والوظائف الحديثة، مثالية للتصاميم المستدامة والواعية بيئياً.',
     features: [

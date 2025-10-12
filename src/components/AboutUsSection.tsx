@@ -72,16 +72,9 @@ export function AboutUsSection() {
               <div className={`space-y-4 text-lg text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
                 <p>
                   {isRTL ? (
-                    'نحن متخصصون في تصميم وتركيب الأسقف المعلقة والحلول الصوتية المتقدمة. مع سنوات من الخبرة في الصناعة، نقدم خدمات عالية الجودة تلبي احتياجات العملاء في المملكة العربية السعودية.'
+                    'نحن فريق سيلينجز آرت الاحترافي، مختصّون في تقديم حلول الأسقف الفرنسية والعزل الصوتي على أعلى مستوى، مع خبرة تتجاوز عشر سنوات في المملكة العربية السعودية. نلتزم بالدقة والإتقان في كل مشروع، ونسعى دائماً لتقديم لمسات فنية راقية تحوّل أي مساحة إلى تحفة معمارية نتشرف بخدمتكم وتلبية جميع احتياجاتكم في عالم الأسقف المعلقة والحلول الصوتية.'
                   ) : (
-                    'We specialize in designing and installing stretch ceilings and advanced acoustic solutions. With years of experience in the industry, we provide high-quality services that meet our clients\' needs across Saudi Arabia.'
-                  )}
-                </p>
-                <p>
-                  {isRTL ? (
-                    'نلتزم بالجودة والدقة في كل مشروع نقوم به. هدفنا هو تقديم نتائج استثنائية ورفع مستوى المساحات الداخلية مع الحفاظ على أعلى معايير الحرفية.'
-                  ) : (
-                    'We are committed to quality and precision in every project we undertake. Our goal is to deliver exceptional results and elevate interior spaces while maintaining the highest standards of craftsmanship.'
+                    'We are the professional team of Ceilings Art, specializing in French stretch ceilings and acoustic solutions with over a decade of experience in Saudi Arabia. We pride ourselves on precision and excellence in every project, delivering elegant, artistic touches that transform any space into an architectural masterpiece. We look forward to serving you and meeting all your needs in the world of stretch ceilings and acoustic solutions.'
                   )}
                 </p>
               </div>
