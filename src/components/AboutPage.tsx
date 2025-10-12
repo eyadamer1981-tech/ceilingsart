@@ -54,7 +54,7 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
           desc: 'نسعى للكمال في كل مشروع، مع أعلى معايير الجودة والدقة.' 
         },
         { 
-          banner: '/3.jpg', 
+          banner: '/art-images/stretch-ceiling/acoustic/NEWMAT_225george_001.jpg', 
           title: 'الابتكار', 
           desc: 'نستكشف باستمرار تقنيات ومواد جديدة لدفع حدود التصميم.' 
         },
@@ -71,7 +71,7 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
           desc: 'We pursue perfection in every project with the highest quality standards.' 
         },
         { 
-          banner: '/3.jpg', 
+          banner: '/art-images/stretch-ceiling/acoustic/NEWMAT_225george_001.jpg', 
           title: 'Innovation', 
           desc: 'We continuously explore new techniques and materials to push boundaries.' 
         },

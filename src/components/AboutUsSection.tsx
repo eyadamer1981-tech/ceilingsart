@@ -82,7 +82,7 @@ export function AboutUsSection() {
               {/* Pillars: Innovation / Excellence / Craftsmanship */}
               <div className={`mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {[
-                  { src: '/3.jpg', labelEn: 'Innovation', labelAr: 'الابتكار' },
+                  { src: '/art-images/stretch-ceiling/acoustic/NEWMAT_225george_001.jpg', labelEn: 'Innovation', labelAr: 'الابتكار' },
                   { src: '/1.jpg', labelEn: 'Excellence', labelAr: 'التميّز' },
                   { src: '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_31a375ed.jpg', labelEn: 'Craftsmanship', labelAr: 'الحرفية' }
                 ].map((item, i) => (
