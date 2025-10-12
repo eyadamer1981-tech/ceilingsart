@@ -59,7 +59,7 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
           desc: 'نستكشف باستمرار تقنيات ومواد جديدة لدفع حدود التصميم.' 
         },
         { 
-          banner: '/5.jpg', 
+          banner: '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_31a375ed.jpg', 
           title: 'الحِرَفية', 
           desc: 'خبرتنا تصنع أعمالًا متقنة تدوم طويلاً وتُلهم المساحات.' 
         }
@@ -76,7 +76,7 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
           desc: 'We continuously explore new techniques and materials to push boundaries.' 
         },
         { 
-          banner: '/5.jpg', 
+          banner: '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_31a375ed.jpg', 
           title: 'Craftsmanship', 
           desc: 'Our expertise delivers enduring work that elevates every space.' 
         }

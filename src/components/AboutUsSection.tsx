@@ -84,7 +84,7 @@ export function AboutUsSection() {
                 {[
                   { src: '/3.jpg', labelEn: 'Innovation', labelAr: 'الابتكار' },
                   { src: '/1.jpg', labelEn: 'Excellence', labelAr: 'التميّز' },
-                  { src: '/5.jpg', labelEn: 'Craftsmanship', labelAr: 'الحرفية' }
+                  { src: '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_31a375ed.jpg', labelEn: 'Craftsmanship', labelAr: 'الحرفية' }
                 ].map((item, i) => (
                   <MDiv
                     key={item.src}
