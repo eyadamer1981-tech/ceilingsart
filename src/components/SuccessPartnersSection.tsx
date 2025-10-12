@@ -38,6 +38,7 @@ export function SuccessPartnersSection() {
     '/شركاء النجاح/IMG-20251004-WA0056.jpg',
     '/شركاء النجاح/IMG-20251004-WA0057.jpg',
     '/شركاء النجاح/IMG-20251004-WA0058.jpg',
+    '/شركاء النجاح/WhatsApp Image 2025-10-12 at 20.00.28_899bc694.jpg',
   ];
 
   return (
