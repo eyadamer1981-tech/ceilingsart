@@ -543,7 +543,7 @@ export const translations: Record<Language, Translations> = {
     admin: 'الإدارة',
     
     // Hero Section
-    heroTitle: 'الرئيسيةالمعيار الجديد للأسقف الفرنسية و العزل الصوتي',
+    heroTitle: 'المعيار الجديد للأسقف الفرنسية و العزل الصوتي',
     heroSubtitle: 'حلول الأسقف المهنية',
     heroDescription: 'نحن متخصصون في إنشاء تصاميم أسقف مذهلة ترفع من مستوى مساحاتك الداخلية بجودة وحرفية لا مثيل لها.',
     getStarted: 'ابدأ الآن',
