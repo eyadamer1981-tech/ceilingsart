@@ -8,22 +8,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { id } = req.query;
     if (!id || typeof id !== 'string') return res.status(400).json({ message: 'Missing id' });
+    
+    // Validate ObjectId format before creating ObjectId instance
+    if (!ObjectId.isValid(id)) return res.status(400).json({ message: 'Invalid id format' });
+    
     const _id = new ObjectId(id);
-
     const bucket = await getGridFSBucket();
-    const files = await bucket.find({ _id }).toArray();
-    if (!files || files.length === 0) return res.status(404).json({ message: 'Not found' });
-    const file = files[0] as any;
 
-    // Set content type and stream
+    // Use findOne instead of find().toArray() for better performance
+    const file = await bucket.find({ _id }).limit(1).next();
+    if (!file) return res.status(404).json({ message: 'Not found' });
+
+    // Set optimized headers
     if (file.contentType) res.setHeader('Content-Type', file.contentType);
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('ETag', `"${id}"`);
+    
+    // Handle conditional requests (If-None-Match)
+    const ifNoneMatch = req.headers['if-none-match'];
+    if (ifNoneMatch === `"${id}"`) {
+      return res.status(304).end();
+    }
 
+    // Stream the file with better error handling
     const downloadStream = bucket.openDownloadStream(_id);
-    downloadStream.on('error', () => res.status(500).end());
+    
+    downloadStream.on('error', (error) => {
+      console.error('GridFS download error:', error);
+      if (!res.headersSent) {
+        res.status(500).json({ message: 'Error streaming file' });
+      }
+    });
+
+    downloadStream.on('end', () => {
+      if (!res.headersSent) {
+        res.end();
+      }
+    });
+
     downloadStream.pipe(res);
   } catch (e) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Images API error:', e);
+    if (!res.headersSent) {
+      res.status(500).json({ message: 'Server error' });
+    }
   }
 }
 
