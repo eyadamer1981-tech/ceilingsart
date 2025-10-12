@@ -82,9 +82,9 @@ export function AboutUsSection() {
               {/* Pillars: Innovation / Excellence / Craftsmanship */}
               <div className={`mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {[
-                  { src: '/innovation.webp', labelEn: 'Innovation', labelAr: 'الابتكار' },
-                  { src: '/excellence.webp', labelEn: 'Excellence', labelAr: 'التميّز' },
-                  { src: '/craftsmanship.webp', labelEn: 'Craftsmanship', labelAr: 'الحرفية' }
+                  { src: '/3.jpg', labelEn: 'Innovation', labelAr: 'الابتكار' },
+                  { src: '/1.jpg', labelEn: 'Excellence', labelAr: 'التميّز' },
+                  { src: '/5.jpg', labelEn: 'Craftsmanship', labelAr: 'الحرفية' }
                 ].map((item, i) => (
                   <MDiv
                     key={item.src}

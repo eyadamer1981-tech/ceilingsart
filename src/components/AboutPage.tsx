@@ -49,34 +49,34 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const values = language === 'ar'
     ? [
         { 
-          banner: '/excellence.webp', 
+          banner: '/1.jpg', 
           title: 'التميّز', 
           desc: 'نسعى للكمال في كل مشروع، مع أعلى معايير الجودة والدقة.' 
         },
         { 
-          banner: '/innovation.webp', 
+          banner: '/3.jpg', 
           title: 'الابتكار', 
           desc: 'نستكشف باستمرار تقنيات ومواد جديدة لدفع حدود التصميم.' 
         },
         { 
-          banner: '/craftsmanship.webp', 
+          banner: '/5.jpg', 
           title: 'الحِرَفية', 
           desc: 'خبرتنا تصنع أعمالًا متقنة تدوم طويلاً وتُلهم المساحات.' 
         }
       ]
     : [
         { 
-          banner: '/excellence.webp', 
+          banner: '/1.jpg', 
           title: 'Excellence', 
           desc: 'We pursue perfection in every project with the highest quality standards.' 
         },
         { 
-          banner: '/innovation.webp', 
+          banner: '/3.jpg', 
           title: 'Innovation', 
           desc: 'We continuously explore new techniques and materials to push boundaries.' 
         },
         { 
-          banner: '/craftsmanship.webp', 
+          banner: '/5.jpg', 
           title: 'Craftsmanship', 
           desc: 'Our expertise delivers enduring work that elevates every space.' 
         }
