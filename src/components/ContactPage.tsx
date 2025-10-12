@@ -91,18 +91,40 @@ export function ContactPage() {
     <section className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
       {/* Header Section */}
       <div className="relative py-20 text-center">
-        {/* Decorative wave at top (hidden on mobile) */}
-        <div className="hidden md:block absolute top-0 left-0 w-full">
-          <svg
+        {/* Animated decorative wave at top */}
+        <div className="hidden md:block absolute top-0 left-0 w-full overflow-hidden">
+          <motion.svg
             viewBox="0 0 1200 120"
             fill="none"
             className="w-full h-auto transform rotate-180"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <path
+            <defs>
+              <linearGradient id="topWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{stopColor:'#ffffff', stopOpacity:0.9}} />
+                <stop offset="50%" style={{stopColor:'#ffffff', stopOpacity:1}} />
+                <stop offset="100%" style={{stopColor:'#ffffff', stopOpacity:0.9}} />
+              </linearGradient>
+            </defs>
+            <motion.path
               d="M0,64L48,74.7C96,85,192,107,288,112C384,117,480,107,576,90.7C672,75,768,53,864,48C960,43,1056,53,1152,64C1200,75,1248,85,1296,90.7L1344,96L1344,0L1296,0C1248,0,1152,0,1056,0C960,0,864,0,768,0C672,0,576,0,480,0C384,0,288,0,192,0C96,0,48,0,24,0L0,0Z"
-              fill="white"
+              fill="url(#topWaveGradient)"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
             />
-          </svg>
+            {/* Animated overlay wave for depth */}
+            <motion.path
+              d="M0,80L48,85C96,90,192,100,288,105C384,110,480,110,576,100C672,90,768,70,864,65C960,60,1056,70,1152,80C1200,90,1248,100,1296,105L1344,110L1344,0L1296,0C1248,0,1152,0,1056,0C960,0,864,0,768,0C672,0,576,0,480,0C384,0,288,0,192,0C96,0,48,0,24,0L0,0Z"
+              fill="white"
+              fillOpacity="0.3"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 2.5, ease: "easeInOut", delay: 1 }}
+            />
+          </motion.svg>
         </div>
 
         <div className="relative z-10 container mx-auto px-4">
@@ -116,24 +138,107 @@ export function ContactPage() {
           </MH1>
         </div>
 
-        {/* Decorative wave at bottom with orange gradient */}
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg
+        {/* Animated decorative wave at bottom with enhanced orange gradient */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden">
+          <motion.svg
             viewBox="0 0 1200 120"
             fill="none"
             className="w-full h-auto"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
           >
             <defs>
               <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" style={{stopColor:'#f97316', stopOpacity:1}} />
+                <stop offset="30%" style={{stopColor:'#fb923c', stopOpacity:1}} />
+                <stop offset="70%" style={{stopColor:'#fbbf24', stopOpacity:1}} />
                 <stop offset="100%" style={{stopColor:'#eab308', stopOpacity:1}} />
               </linearGradient>
+              <linearGradient id="orangeGradientOverlay" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{stopColor:'#ea580c', stopOpacity:0.8}} />
+                <stop offset="50%" style={{stopColor:'#f59e0b', stopOpacity:0.6}} />
+                <stop offset="100%" style={{stopColor:'#d97706', stopOpacity:0.8}} />
+              </linearGradient>
+              {/* Animated gradient for flowing effect */}
+              <linearGradient id="flowingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <motion.stop
+                  offset="0%"
+                  style={{stopColor:'#f97316', stopOpacity:1}}
+                  animate={{ stopOpacity: [1, 0.7, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.stop
+                  offset="50%"
+                  style={{stopColor:'#fbbf24', stopOpacity:1}}
+                  animate={{ stopOpacity: [0.8, 1, 0.8] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                />
+                <motion.stop
+                  offset="100%"
+                  style={{stopColor:'#eab308', stopOpacity:1}}
+                  animate={{ stopOpacity: [0.9, 0.6, 0.9] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                />
+              </linearGradient>
             </defs>
-            <path
+            
+            {/* Main animated wave */}
+            <motion.path
               d="M0,64L48,74.7C96,85,192,107,288,112C384,117,480,107,576,90.7C672,75,768,53,864,48C960,43,1056,53,1152,64C1200,75,1248,85,1296,90.7L1344,96L1344,120L1296,120C1248,120,1152,120,1056,120C960,120,864,120,768,120C672,120,576,120,480,120C384,120,288,120,192,120C96,120,48,120,24,120L0,120Z"
-              fill="url(#orangeGradient)"
+              fill="url(#flowingGradient)"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2.5, ease: "easeInOut", delay: 0.8 }}
             />
-          </svg>
+            
+            {/* Secondary wave for depth */}
+            <motion.path
+              d="M0,80L48,85C96,90,192,100,288,105C384,110,480,110,576,100C672,90,768,70,864,65C960,60,1056,70,1152,80C1200,90,1248,100,1296,105L1344,110L1344,120L1296,120C1248,120,1152,120,1056,120C960,120,864,120,768,120C672,120,576,120,480,120C384,120,288,120,192,120C96,120,48,120,24,120L0,120Z"
+              fill="url(#orangeGradientOverlay)"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 3, ease: "easeInOut", delay: 1.2 }}
+            />
+            
+            {/* Floating particles effect */}
+            <motion.circle
+              cx="200"
+              cy="40"
+              r="2"
+              fill="white"
+              fillOpacity="0.6"
+              animate={{ 
+                cy: [40, 30, 40],
+                opacity: [0.6, 1, 0.6]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.circle
+              cx="600"
+              cy="35"
+              r="1.5"
+              fill="white"
+              fillOpacity="0.4"
+              animate={{ 
+                cy: [35, 25, 35],
+                opacity: [0.4, 0.8, 0.4]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
+            <motion.circle
+              cx="1000"
+              cy="45"
+              r="1"
+              fill="white"
+              fillOpacity="0.5"
+              animate={{ 
+                cy: [45, 35, 45],
+                opacity: [0.5, 0.9, 0.5]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            />
+          </motion.svg>
         </div>
       </div>
 
@@ -366,6 +471,37 @@ export function ContactPage() {
             </MDiv>
           </div>
         </div>
+      </div>
+
+      {/* Animated Wave Separator */}
+      <div className="relative bg-white">
+        <MDiv
+          initial={{ opacity: 0, scaleY: 0 }}
+          whileInView={{ opacity: 1, scaleY: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="overflow-hidden"
+        >
+          <svg
+            viewBox="0 0 1200 60"
+            fill="none"
+            className="w-full h-16"
+          >
+            <defs>
+              <linearGradient id="separatorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{stopColor:'#f3f4f6', stopOpacity:1}} />
+                <stop offset="50%" style={{stopColor:'#e5e7eb', stopOpacity:1}} />
+                <stop offset="100%" style={{stopColor:'#f3f4f6', stopOpacity:1}} />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M0,30L48,35C96,40,192,50,288,45C384,40,480,20,576,25C672,30,768,50,864,45C960,40,1056,20,1152,25C1200,30,1248,40,1296,35L1344,30L1344,60L1296,60C1248,60,1152,60,1056,60C960,60,864,60,768,60C672,60,576,60,480,60C384,60,288,60,192,60C96,60,48,60,24,60L0,60Z"
+              fill="url(#separatorGradient)"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              transition={{ duration: 2, ease: "easeInOut" }}
+            />
+          </svg>
+        </MDiv>
       </div>
 
       {/* Extended Content Section */}
