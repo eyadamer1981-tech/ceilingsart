@@ -119,10 +119,14 @@ export function AcousticPanelDetailPage({ panel, onBack }: AcousticPanelDetailPa
                 '/art-images/acoustic-panels/wood-wool/AS_WoodWool_Shapes_Hex_office_6549_small-1024x684.jpg',
                 '/art-images/acoustic-panels/wood-wool/Baux-wood-wool-panels-ona634-9.jpg'
               ] : isPolyesterPanel ? [
-                '/art-images/acoustic-panels/polyester-acoustic/3.Site-Photo-1024x580-1.jpg',
-                '/art-images/acoustic-panels/polyester-acoustic/baffle-ceiling-system.webp',
-                '/art-images/acoustic-panels/polyester-acoustic/baffles-in-ceiling.webp',
-                '/art-images/acoustic-panels/polyester-acoustic/Customed-Acoustic-Panel-Polyester-Fiber-Wall-Panel.webp'
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.46_1a2e5647.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.46_885741ea.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_0e12d4fb.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.47_31a375ed.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.48_1d651bd4.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.48_26d71e8d.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.48_ea77f8c0.jpg',
+                '/acustic gallery/WhatsApp Image 2025-10-12 at 20.15.49_916786da.jpg'
               ] : [
                 '/art-images/acoustic-panels/fabric-wrapped-acoustic/1A-studio-panel-1024x683-1.jpg',
                 '/art-images/acoustic-panels/fabric-wrapped-acoustic/AS_Fabrisorb_Fabric-Wrapped-Panels-4-1-1024x768-1.jpg'
