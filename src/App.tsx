@@ -289,6 +289,7 @@ export default function App() {
           onMenuToggle={handleMenuToggle}
           currentPage={currentPage}
           onPageChange={handlePageChange}
+          isMobileMenuOpen={isMobileMenuOpen}
         />
       </div>
 

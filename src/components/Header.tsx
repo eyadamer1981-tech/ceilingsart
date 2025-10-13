@@ -10,10 +10,10 @@ interface HeaderProps {
   onMenuToggle: (isOpen: boolean) => void;
   currentPage?: string;
   onPageChange: (page: string) => void;
+  isMobileMenuOpen?: boolean;
 }
 
-export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: HeaderProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMobileMenuOpen = false }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [acousticDropdownPos, setAcousticDropdownPos] = useState({ top: 0, left: 0 });
@@ -85,9 +85,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
 
 
   const handleMenuToggle = () => {
-    const newState = !isMobileMenuOpen;
-    setIsMobileMenuOpen(newState);
-    onMenuToggle(newState);
+    onMenuToggle(!isMobileMenuOpen);
   };
 
   const navItems = [
@@ -140,7 +138,7 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
           </div>
 
           {/* Mobile: language toggle + menu */}
-          <div className="flex items-center gap-3 lg:hidden">
+          <div className="flex items-center gap-3 lg:hidden mobile-menu-container">
             <button
               onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
               className="flex items-center gap-2 px-3 py-2 rounded-md border border-gray-600 text-white/90 hover:text-white hover:border-orange-400 transition-colors"
@@ -152,7 +150,8 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange }: Hea
             {/* Mobile Menu Button */}
             <button
               onClick={handleMenuToggle}
-              className="lg:hidden text-white hover:text-orange-400 transition-colors"
+              className="lg:hidden text-white hover:text-orange-400 transition-colors p-2 mobile-menu-button"
+              aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? (
                 <X size={24} />

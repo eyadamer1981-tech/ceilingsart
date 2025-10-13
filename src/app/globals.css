@@ -193,3 +193,39 @@ section, div {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mobile Menu Button - Ensure it's always visible */
+@media (max-width: 1023px) {
+  .mobile-menu-button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 50 !important;
+  }
+  
+  /* Ensure the mobile menu button container is always visible */
+  .mobile-menu-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Force visibility of mobile menu elements */
+  .lg\\:hidden {
+    display: flex !important;
+  }
+}
+
+/* Desktop - Hide mobile menu button */
+@media (min-width: 1024px) {
+  .mobile-menu-button {
+    display: none !important;
+  }
+  
+  .mobile-menu-container {
+    display: none !important;
+  }
+}

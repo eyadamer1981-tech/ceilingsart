@@ -326,6 +326,7 @@ export default function Home() {
         onMenuToggle={handleMenuToggle} 
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        isMobileMenuOpen={isMobileMenuOpen}
       />
 
       {/* Mobile Menu */}
