@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -11,9 +13,18 @@ interface MobileMenuProps {
 
 export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange }: MobileMenuProps) {
   const { t, isRTL } = useLanguage();
+  const pathname = usePathname();
   const showAdmin = typeof window !== 'undefined' && localStorage.getItem('hasAdminAccess') === 'true';
   const [isAcousticDropdownOpen, setIsAcousticDropdownOpen] = useState(false);
   const [isStretchDropdownOpen, setIsStretchDropdownOpen] = useState(false);
+
+  // Helper function to check if current path matches
+  const isActivePath = (path: string) => {
+    if (!pathname) return false;
+    if (path === '/' && pathname === '/') return true;
+    if (path !== '/' && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -38,39 +49,41 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
   }, [isOpen]);
   
   const navItems = [
-    { key: 'HOME', translation: t('home') },
-    { key: 'ABOUT US', translation: t('about') },
+    { key: 'HOME', translation: t('home'), href: '/' },
+    { key: 'ABOUT US', translation: t('about'), href: '/about' },
     { 
       key: 'ACOUSTIC PANELS', 
       translation: t('acousticPanels'),
+      href: '/acoustic-panels',
       hasDropdown: true,
       dropdownItems: [
-        { key: 'FLOOR_INSULATION', translation: t('floorInsulation') },
-        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels') },
-        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps') }
+        { key: 'FLOOR_INSULATION', translation: t('floorInsulation'), href: '/acoustic-panels/floor-insulation' },
+        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels'), href: '/acoustic-panels/polyester-acoustic' },
+        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps'), href: '/acoustic-panels/acoustic-fabric-wraps' }
       ]
     },
     { 
       key: 'STRETCH CEILINGS', 
       translation: t('stretchCeilings'),
+      href: '/stretch-ceilings',
       hasDropdown: true,
       dropdownItems: [
-        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy') },
-        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting') },
-        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic') },
-        { key: 'STRETCH_3D', translation: t('stretch3D') },
-        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective') },
-        { key: 'STRETCH_MATTE', translation: t('stretchMatte') },
-        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose') },
-        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted') },
-        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting') },
-        { key: 'STRETCH_PAPER', translation: t('stretchPaper') }
+        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy'), href: '/stretch-ceilings/glossy' },
+        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting'), href: '/stretch-ceilings/hidden-lighting' },
+        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic'), href: '/stretch-ceilings/perforated-acoustic' },
+        { key: 'STRETCH_3D', translation: t('stretch3D'), href: '/stretch-ceilings/3d' },
+        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective'), href: '/stretch-ceilings/reflective' },
+        { key: 'STRETCH_MATTE', translation: t('stretchMatte'), href: '/stretch-ceilings/matte' },
+        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose'), href: '/stretch-ceilings/fiber-optic-rose' },
+        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted'), href: '/stretch-ceilings/printed' },
+        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting'), href: '/stretch-ceilings/light-transmitting' },
+        { key: 'STRETCH_PAPER', translation: t('stretchPaper'), href: '/stretch-ceilings/paper' }
       ]
     },
-    { key: 'OUR WORK', translation: t('ourWork') },
-    { key: 'FAQS', translation: t('faqs') },
-    { key: 'BLOG', translation: t('blog') },
-    { key: 'CONTACT US', translation: t('contact') }
+    { key: 'OUR WORK', translation: t('ourWork'), href: '/our-work' },
+    { key: 'FAQS', translation: t('faqs'), href: '/faqs' },
+    { key: 'BLOG', translation: t('blog'), href: '/blog' },
+    { key: 'CONTACT US', translation: t('contact'), href: '/contact' }
   ];
 
   if (!isOpen) return null;
@@ -113,18 +126,16 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
               return (
                 <div key={item.key} className="w-full flex flex-col items-center">
                   <div className="flex items-center justify-center w-full max-w-xs">
-                    <button
-                      onClick={() => {
-                        onPageChange(item.key);
-                        onClose();
-                      }}
+                    <Link
+                      href={item.href}
+                      onClick={onClose}
                       className={`text-2xl font-medium uppercase tracking-widest transition-colors hover:text-orange-400 text-center ${
-                        currentPage === item.key ? 'text-orange-400' : 'text-white'
+                        isActivePath(item.href) ? 'text-orange-400' : 'text-white'
                       }`}
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       {item.translation}
-                    </button>
+                    </Link>
                     <button
                       onClick={() => {
                         setDropdownOpen(!isDropdownOpen);
@@ -141,19 +152,17 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
                   {isDropdownOpen && (
                     <div className="mt-4 space-y-2 w-full max-w-xs">
                       {item.dropdownItems?.map((dropdownItem, dropdownIndex) => (
-                        <button
+                        <Link
                           key={dropdownItem.key}
-                          onClick={() => {
-                            onPageChange(dropdownItem.key);
-                            onClose();
-                          }}
+                          href={dropdownItem.href}
+                          onClick={onClose}
                           className={`text-lg font-normal uppercase tracking-wide transition-colors hover:text-orange-400 w-full text-center ${
-                            currentPage === dropdownItem.key ? 'text-orange-400' : 'text-gray-300'
+                            isActivePath(dropdownItem.href) ? 'text-orange-400' : 'text-gray-300'
                           }`}
                           style={{ animationDelay: `${(index + dropdownIndex + 1) * 0.1}s` }}
                         >
                           {dropdownItem.translation}
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -162,19 +171,17 @@ export function MobileMenu({ isOpen, onClose, currentPage = 'HOME', onPageChange
             }
             
             return (
-              <button
+              <Link
                 key={item.key}
-                onClick={() => {
-                  onPageChange(item.key);
-                  onClose();
-                }}
+                href={item.href}
+                onClick={onClose}
                 className={`text-2xl font-medium uppercase tracking-widest transition-colors hover:text-orange-400 text-center ${
-                  currentPage === item.key ? 'text-orange-400' : 'text-white'
+                  isActivePath(item.href) ? 'text-orange-400' : 'text-white'
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item.translation}
-              </button>
+              </Link>
             );
           })}
           

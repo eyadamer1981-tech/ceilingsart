@@ -15,24 +15,117 @@ import { SuccessPartnersSection } from './SuccessPartnersSection';
 
 export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
   const { language, t, isRTL } = useLanguage();
-  const [pageCover, setPageCover] = useState<string>('/uploads/home-cover-1760127314788.png'); // Fallback image
+  const [pageCover, setPageCover] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState<boolean>(false);
+
+  // Cache configuration
+  const CACHE_KEY = 'aboutus_page_cover';
+  const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+  // Function to manually refresh the page cover
+  const refreshPageCover = () => {
+    console.log('AboutPage - Manual refresh triggered');
+    fetchPageCover(true); // Force refresh
+  };
 
   useEffect(() => {
-    fetchPageCover();
+    loadPageCover();
+    
+    // Expose cache management functions globally for debugging/admin purposes
+    (window as any).aboutPageCache = {
+      refresh: refreshPageCover,
+      clear: clearPageCoverCache,
+      getCache: getCachedPageCover
+    };
   }, []);
 
-  const fetchPageCover = async () => {
+  const loadPageCover = async () => {
+    // First, try to load from cache
+    const cachedData = getCachedPageCover();
+    if (cachedData) {
+      setPageCover(cachedData.image);
+      setIsLoading(false);
+      
+      // Check if cache is stale and refresh in background
+      if (isCacheStale(cachedData.timestamp)) {
+        fetchPageCover(false); // Background refresh
+      }
+    } else {
+      // No cache, fetch immediately
+      await fetchPageCover(false);
+    }
+  };
+
+  const getCachedPageCover = () => {
     try {
-      const response = await fetch('/api/page-covers/public?pageType=aboutus');
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (error) {
+      console.error('Error reading cache:', error);
+    }
+    return null;
+  };
+
+  const setCachedPageCover = (image: string) => {
+    try {
+      const cacheData = {
+        image,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+    } catch (error) {
+      console.error('Error setting cache:', error);
+    }
+  };
+
+  const isCacheStale = (timestamp: number) => {
+    return Date.now() - timestamp > CACHE_DURATION;
+  };
+
+  // Utility function to clear cache (can be called externally)
+  const clearPageCoverCache = () => {
+    try {
+      localStorage.removeItem(CACHE_KEY);
+      console.log('About page cover cache cleared');
+    } catch (error) {
+      console.error('Error clearing cache:', error);
+    }
+  };
+
+  const fetchPageCover = async (forceRefresh: boolean = false) => {
+    try {
+      setIsLoading(true);
+      setHasError(false);
+      
+      // Add cache-busting parameter if force refresh
+      const url = forceRefresh 
+        ? `/api/page-covers/public?pageType=aboutus&t=${Date.now()}`
+        : '/api/page-covers/public?pageType=aboutus';
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       
-      // Set page cover from MongoDB or use fallback
+      // Set page cover from MongoDB
       if (data.aboutus?.hero) {
         setPageCover(data.aboutus.hero);
+        setCachedPageCover(data.aboutus.hero);
+        setHasError(false);
+      } else {
+        setHasError(true);
       }
     } catch (error) {
       console.error('Error fetching page cover:', error);
-      // Keep fallback image if API fails
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,35 +207,63 @@ export function AboutPage({ onContactClick }: { onContactClick?: () => void }) {
       <div className="relative h-screen flex items-center justify-center">
         {/* Cover Image Background */}
         <div className="absolute inset-0">
-          <img 
-            src={pageCover}
-            alt="About us cover"
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.src = '/uploads/home-cover-1760127314788.png';
-            }}
-          />
+          {isLoading && !pageCover ? (
+            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="animate-pulse">
+                <div className="w-16 h-16 bg-gray-300 rounded-full"></div>
+              </div>
+            </div>
+          ) : hasError ? (
+            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <button 
+                  onClick={() => fetchPageCover(true)}
+                  className="text-sm text-gray-600 hover:text-gray-800 underline"
+                >
+                  {isRTL ? 'إعادة المحاولة' : 'Retry'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <img 
+              src={pageCover}
+              alt="About us cover"
+              className="w-full h-full object-cover"
+              onError={() => setHasError(true)}
+            />
+          )}
         </div>
 
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content over the cover */}
-        <MDiv 
-          className="relative z-10 container mx-auto px-4 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="relative z-10 container mx-auto px-4 text-center">
           <MH1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-wide"
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
           >
             {t('aboutTitle')}
           </MH1>
-        </MDiv>
+          <MP 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl md:text-2xl text-white/90 mt-4 font-light"
+          >
+            {language === 'ar' 
+              ? 'نحن فريق من الخبراء المتخصصين في تصميم وتنفيذ الأسقف الفرنسية المعلقة والحلول الصوتية المتقدمة' 
+              : 'We are a team of experts specialized in designing and implementing French suspended ceilings and advanced acoustic solutions'
+            }
+          </MP>
+        </div>
       </div>
 
       {/* Content Section */}

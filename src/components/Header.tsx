@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -14,6 +16,7 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMobileMenuOpen = false }: HeaderProps) {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [acousticDropdownPos, setAcousticDropdownPos] = useState({ top: 0, left: 0 });
@@ -88,40 +91,50 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMob
     onMenuToggle(!isMobileMenuOpen);
   };
 
+  // Helper function to check if current path matches
+  const isActivePath = (path: string) => {
+    if (!pathname) return false;
+    if (path === '/' && pathname === '/') return true;
+    if (path !== '/' && pathname.startsWith(path)) return true;
+    return false;
+  };
+
   const navItems = [
-    { key: 'HOME', translation: t('home') },
-    { key: 'ABOUT US', translation: t('about') },
+    { key: 'HOME', translation: t('home'), href: '/' },
+    { key: 'ABOUT US', translation: t('about'), href: '/about' },
     { 
       key: 'ACOUSTIC PANELS', 
       translation: t('acousticPanels'),
+      href: '/acoustic-panels',
       hasDropdown: true,
       dropdownItems: [
-        { key: 'FLOOR_INSULATION', translation: t('floorInsulation') },
-        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels') },
-        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps') }
+        { key: 'FLOOR_INSULATION', translation: t('floorInsulation'), href: '/acoustic-panels/floor-insulation' },
+        { key: 'POLYESTER_ACOUSTIC', translation: t('polyesterAcousticPanels'), href: '/acoustic-panels/polyester-acoustic' },
+        { key: 'ACOUSTIC_FABRIC_WRAPS', translation: t('acousticFabricWraps'), href: '/acoustic-panels/acoustic-fabric-wraps' }
       ]
     },
     { 
       key: 'STRETCH CEILINGS', 
       translation: t('stretchCeilings'),
+      href: '/stretch-ceilings',
       hasDropdown: true,
       dropdownItems: [
-        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy') },
-        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting') },
-        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic') },
-        { key: 'STRETCH_3D', translation: t('stretch3D') },
-        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective') },
-        { key: 'STRETCH_MATTE', translation: t('stretchMatte') },
-        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose') },
-        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted') },
-        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting') },
-        { key: 'STRETCH_PAPER', translation: t('stretchPaper') }
+        { key: 'STRETCH_GLOSSY', translation: t('stretchGlossy'), href: '/stretch-ceilings/glossy' },
+        { key: 'STRETCH_HIDDEN_LIGHTING', translation: t('stretchHiddenLighting'), href: '/stretch-ceilings/hidden-lighting' },
+        { key: 'STRETCH_PERFORATED_ACOUSTIC', translation: t('stretchPerforatedAcoustic'), href: '/stretch-ceilings/perforated-acoustic' },
+        { key: 'STRETCH_3D', translation: t('stretch3D'), href: '/stretch-ceilings/3d' },
+        { key: 'STRETCH_REFLECTIVE', translation: t('stretchReflective'), href: '/stretch-ceilings/reflective' },
+        { key: 'STRETCH_MATTE', translation: t('stretchMatte'), href: '/stretch-ceilings/matte' },
+        { key: 'STRETCH_FIBER_OPTIC_ROSE', translation: t('stretchFiberOpticRose'), href: '/stretch-ceilings/fiber-optic-rose' },
+        { key: 'STRETCH_PRINTED', translation: t('stretchPrinted'), href: '/stretch-ceilings/printed' },
+        { key: 'STRETCH_LIGHT_TRANSMITTING', translation: t('stretchLightTransmitting'), href: '/stretch-ceilings/light-transmitting' },
+        { key: 'STRETCH_PAPER', translation: t('stretchPaper'), href: '/stretch-ceilings/paper' }
       ]
     },
-    { key: 'OUR WORK', translation: t('ourWork') },
-    { key: 'FAQS', translation: t('faqs') },
-    { key: 'BLOG', translation: t('blog') },
-    { key: 'CONTACT US', translation: t('contact') }
+    { key: 'OUR WORK', translation: t('ourWork'), href: '/our-work' },
+    { key: 'FAQS', translation: t('faqs'), href: '/faqs' },
+    { key: 'BLOG', translation: t('blog'), href: '/blog' },
+    { key: 'CONTACT US', translation: t('contact'), href: '/contact' }
   ];
 
   return (
@@ -132,9 +145,9 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMob
         <div className={`flex items-center justify-between relative w-full`} style={{ overflow: 'visible' }}>
           {/* Logo */}
           <div className="flex items-center">
-            <a href="#" onClick={() => onPageChange('HOME')} className="flex items-center">
+            <Link href="/" className="flex items-center">
               <img src="/newlogo.png" alt="Ceilings Art" className="h-[50px] w-auto" />
-            </a>
+            </Link>
           </div>
 
           {/* Mobile: language toggle + menu */}
@@ -182,16 +195,14 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMob
                     onMouseLeave={scheduleClose}
                   >
                     <div className="flex items-center cursor-pointer">
-                      <button
-                        onClick={() => {
-                          onPageChange(item.key);
-                        }}
+                      <Link
+                        href={item.href}
                         className={`text-sm leading-none font-semibold tracking-wider transition-colors hover:text-orange-400 text-center ${
-                          currentPage === item.key ? 'text-orange-400' : 'text-white'
+                          isActivePath(item.href) ? 'text-orange-400' : 'text-white'
                         }`}
                       >
                         {item.translation}
-                      </button>
+                      </Link>
                       <span className="ml-1 text-white group-hover:text-orange-400 transition-all duration-300 group-hover:rotate-180">
                         <ChevronDown size={14} />
                       </span>
@@ -220,15 +231,13 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMob
                         >
                           <div className="bg-gray-800 rounded-lg shadow-xl border border-gray-700 py-2">
                             {item.dropdownItems?.map((dropdownItem) => (
-                              <button
+                              <Link
                                 key={dropdownItem.key}
-                                onClick={() => {
-                                  onPageChange(dropdownItem.key);
-                                }}
+                                href={dropdownItem.href}
                                 className="w-full text-center px-4 py-3 text-sm text-gray-300 hover:text-orange-400 hover:bg-gray-700 transition-colors block"
                               >
                                 {dropdownItem.translation}
-                              </button>
+                              </Link>
                             ))}
                           </div>
                         </div>
@@ -241,17 +250,15 @@ export function Header({ onMenuToggle, currentPage = 'HOME', onPageChange, isMob
               }
               
               return (
-                <button
+                <Link
                   key={item.key}
-                  onClick={() => {
-                    onPageChange(item.key);
-                  }}
+                  href={item.href}
                   className={`text-sm leading-none font-semibold tracking-wider transition-colors hover:text-orange-400 text-center ${
-                    currentPage === item.key ? 'text-orange-400' : 'text-white'
+                    isActivePath(item.href) ? 'text-orange-400' : 'text-white'
                   }`}
                 >
                   {item.translation}
-                </button>
+                </Link>
               );
             })}
             </nav>

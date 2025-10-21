@@ -10,6 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await connectDB();
     
+    // Set cache headers for 10 minutes (same as blogs API)
+    res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+    
     const { pageType, coverType } = req.query;
     
     let query: any = {};
