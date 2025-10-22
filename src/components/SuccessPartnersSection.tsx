@@ -29,30 +29,30 @@ export function SuccessPartnersSection() {
 
   // Partner images from the شركاء النجاح folder
   const partnerImages = [
-    '/شركاء النجاح/IMG-20251004-WA0050.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0051.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0052.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0053.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0054.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0055.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0056.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0057.jpg',
-    '/شركاء النجاح/IMG-20251004-WA0058.jpg',
-    '/شركاء النجاح/WhatsApp Image 2025-10-12 at 20.00.28_899bc694.jpg',
+    '/شركاء النجاح/noor_riyadh_resized_800x800.webp',
+    '/شركاء النجاح/aramco.webp',
+    '/شركاء النجاح/binladin group.webp',
+    '/شركاء النجاح/ministry_energy_resized_800x800.webp',
+    '/شركاء النجاح/opera.webp',
+    '/شركاء النجاح/magmo3a (2).webp',
+    '/شركاء النجاح/alinma_bank_800x800.webp',
+    '/شركاء النجاح/Designer.webp',
+    '/شركاء النجاح/protouch.webp',
+    '/شركاء النجاح/masah).webp',
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-12 md:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className={`text-center mb-16 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div className={`text-center mb-8 md:mb-16 ${isRTL ? 'text-right' : 'text-left'}`}>
           <MDiv
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-wide">
               {t('successPartnersTitle')}
             </h2>
           </MDiv>
@@ -62,7 +62,7 @@ export function SuccessPartnersSection() {
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <p className="text-xl text-gray-600 mb-6">
+            <p className="text-lg md:text-xl text-gray-600 mb-4 md:mb-6">
               {t('successPartnersSubtitle')}
             </p>
           </MDiv>
@@ -72,14 +72,14 @@ export function SuccessPartnersSection() {
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <p className="text-lg text-gray-500 max-w-3xl mx-auto">
+            <p className="text-sm md:text-lg text-gray-500 max-w-3xl mx-auto">
               {t('successPartnersDescription')}
             </p>
           </MDiv>
         </div>
 
         {/* Partners Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
           {partnerImages.map((image, index) => {
             const rowIndex = Math.floor(index / Math.max(1, columns));
             const dir = rowIndex % 2 === 0 ? -40 : 40; // first row from left, second from right
@@ -87,17 +87,17 @@ export function SuccessPartnersSection() {
             return (
               <MDiv
                 key={index}
-                className="group relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+                className={`group relative bg-white rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden ${index === 9 ? 'col-start-2 md:col-start-auto' : ''}`}
                 initial={{ opacity: 0, x: dir }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut', delay: delayInRow }}
                 viewport={{ once: true, amount: 0.2 }}
               >
-                <div className="aspect-square">
+                <div className={`aspect-[4/3] md:aspect-square max-h-48 md:max-h-56 lg:max-h-none ${image.includes('magmo3a') ? 'bg-white' : ''}`}>
                   <img
                     src={image}
                     alt={`Success Partner ${index + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className={`w-full h-full transition-transform duration-300 group-hover:scale-105 ${image.includes('magmo3a') ? 'object-contain p-2' : 'object-cover'}`}
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -107,7 +107,7 @@ export function SuccessPartnersSection() {
         </div>
 
         {/* Additional Info */}
-        <div className={`text-center mt-12 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div className={`text-center mt-8 md:mt-12 ${isRTL ? 'text-right' : 'text-left'}`}>
           <p className="text-gray-500 text-sm">
             {isRTL 
               ? 'نحن فخورون بشراكاتنا مع هذه المؤسسات الرائدة في مجالها'
