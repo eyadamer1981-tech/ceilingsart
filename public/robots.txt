@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# منع فهرسة صفحات النظام أو الأكواد (اختياري)
+Disallow: /_next/
+Disallow: /api/
+Disallow: /static/
+
+# رابط خريطة الموقع
+Sitemap: https://www.ceilingsart.sa/sitemap.xml
