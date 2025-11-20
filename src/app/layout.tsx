@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s | Ceilings Art',
   },
   description:
-    'سلينجز ارت بالسعودية – خبراء تصميم وتركيب الاسقف الفرنسيه المشدوده Stretch Ceilings بجوده اوروبيه وتصاميم فاخره تناسب الفلل والمنازل والمعارض والفنادق. نقدم حلول مبتكره في الاضاءه والاسقف المضيئه وسقف روز مع خامات باريسول الاصليه.',
+    'سلينجز ارت بالسعودية – خبراء تصميم وتركيب الاسقف الفرنسيه المشدوده Stretch Ceilings بجوده اوروبيه وتصاميم فاخره تناسب الفلل والمنازل والمعارض والفنادق. نقدم حلول مبتكره في الاضاءه والاسقف المضيئه وسقف روز مع خامات باريسول الاصليه، بالإضافة إلى خدمات ألواح العزل الصوتي بالسعودية، عزل صوتي للجدران وعزل صوتي للغرف وتركيب ألواح أكوستيك عالية الجودة.',
   keywords: [
     'Ceilings Art',
     'سلينجز ارت',
@@ -49,6 +49,23 @@ export const metadata: Metadata = {
     'ديكور اسقف 2025',
     'افضل شركه اسقف بالسعودية',
     'اسقف مضيئه للصالات',
+
+    /* ======================
+       كلمات العزل الصوتي الجديدة
+    =======================*/
+    'ألواح عزل صوتي بالسعودية',
+    'عزل صوتي بالرياض',
+    'عزل صوتي للغرف',
+    'عزل صوتي للجدران',
+    'الواح فوم عزل صوتي',
+    'أفضل مواد العزل الصوتي',
+    'sound insulation saudi',
+    'soundproof panels ksa',
+    'acoustic panels saudi arabia',
+    'ألواح أكوستيك',
+    'ألواح عزل صوتي للمنازل',
+    'تركيب عزل صوتي',
+    'عزل صوتي للمباني'
   ],
   metadataBase: new URL('https://www.ceilingsart.sa/'),
   alternates: {
@@ -57,7 +74,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'سلينجز ارت بالسعودية | الاسقف الفرنسيه المشدوده والمضيئه – Ceilings Art',
     description:
-      'شركه سلينجز ارت بالسعودية متخصصه في تصميم وتركيب الاسقف الفرنسيه المشدوده والمضيئه باعلى معايير الجوده. خامات باريسول الاصليه واضاءه مبتكره واشكال عصريه فاخره تناسب كل المساحات.',
+      'شركه سلينجز ارت بالسعودية متخصصه في تصميم وتركيب الاسقف الفرنسيه المشدوده والمضيئه باعلى معايير الجوده. خامات باريسول الاصليه واضاءه مبتكره واشكال عصريه فاخره تناسب كل المساحات، مع توفير خدمات العزل الصوتي وألواح الأكوستيك.',
     url: 'https://www.ceilingsart.sa/',
     siteName: 'Ceilings Art',
     images: [
@@ -81,16 +98,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl">
       <head>
 
-        {/* ==================== سكيما السعودية ==================== */}
+        {/* ==================== سكيما ==================== */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -100,7 +113,7 @@ export default function RootLayout({
   "@type": "LocalBusiness",
   "@id": "https://www.ceilingsart.sa/#business",
   "name": "Ceilings Art - سلينجز ارت للاسقف الفرنسيه المشدوده بالسعودية",
-  "description": "سلينجز ارت بالسعودية – خبراء تصميم وتركيب الاسقف الفرنسيه المشدوده Stretch Ceilings بجوده اوروبيه وتصاميم فاخره تناسب الفلل والمنازل والمعارض والفنادق.",
+  "description": "سلينجز ارت بالسعودية متخصصون في تركيب الاسقف الفرنسيه وخدمات العزل الصوتي وألواح الأكوستيك عالية الجودة.",
   "url": "https://www.ceilingsart.sa/",
   "image": "https://www.ceilingsart.sa/newlogo.png",
   "logo": "https://www.ceilingsart.sa/newlogo.png",
@@ -179,8 +192,6 @@ export default function RootLayout({
           }}
         />
 
-        {/* ==================== نهاية السكيما ==================== */}
-
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
@@ -193,7 +204,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* End Google Tag Manager */}
 
         {/* Google tag (gtag.js) */}
         <script
@@ -214,8 +224,6 @@ export default function RootLayout({
       </head>
 
       <body className={inter.className}>
-
-        {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KZLX7XJS"
