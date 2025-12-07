@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { InternalLinkMapping } from '../../../lib/models';
+import { triggerBackgroundRegeneration } from '../../../lib/regenerate-blog-links';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectDB();
@@ -52,6 +53,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       await mapping.save();
+
+      // Trigger background regeneration of all blogs
+      triggerBackgroundRegeneration();
+
       res.status(201).json(mapping);
     } catch (error: any) {
       console.error('Error creating link mapping:', error);

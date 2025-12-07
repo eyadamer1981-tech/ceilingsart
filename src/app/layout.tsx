@@ -7,17 +7,17 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ceilings Art | سلينجز ارت للاسقف الفرنسيه المشدوده بالرياض',
+    default: 'Ceilings Art | سلينجز ارت للاسقف الفرنسيه المشدوده بالسعودية',
     template: '%s | Ceilings Art',
   },
   description:
-    'سلينجز ارت بالرياض – خبراء تصميم وتركيب الاسقف الفرنسيه المشدوده Stretch Ceilings بجوده اوروبيه وتصاميم فاخره تناسب الفلل والمنازل والمعارض والفنادق. نقدم حلول مبتكره في الاضاءه والاسقف المضيئه وسقف روز مع خامات باريسول الاصليه.',
+    'سلينجز ارت بالسعودية – خبراء تصميم وتركيب الاسقف الفرنسيه المشدوده Stretch Ceilings بجوده اوروبيه وتصاميم فاخره تناسب الفلل والمنازل والمعارض والفنادق. نقدم حلول مبتكره في الاضاءه والاسقف المضيئه وسقف روز مع خامات باريسول الاصليه، بالإضافة إلى خدمات ألواح العزل الصوتي بالسعودية، عزل صوتي للجدران وعزل صوتي للغرف وتركيب ألواح أكوستيك عالية الجودة.',
   keywords: [
     'Ceilings Art',
     'سلينجز ارت',
-    'الاسقف الفرنسيه بالرياض',
-    'شركه اسقف فرنسيه بالرياض',
-    'الاسقف الفرنسيه',
+    'الاسقف الفرنسيه بالسعودية',
+    'شركه اسقف فرنسيه بالسعودية',
+    'الاسقف الفرنسيه في السعودية',
     'اسقف فرنسيه',
     'الاسقف الفرنسيه المشدوده',
     'السقف الفرنسي',
@@ -47,17 +47,34 @@ export const metadata: Metadata = {
     'اسقف مطابخ حديثه',
     'اسقف غرف نوم',
     'ديكور اسقف 2025',
-    'افضل شركه اسقف بالرياض',
+    'افضل شركه اسقف بالسعودية',
     'اسقف مضيئه للصالات',
+
+    /* ======================
+       كلمات العزل الصوتي الجديدة
+    =======================*/
+    'ألواح عزل صوتي بالسعودية',
+    'عزل صوتي بالرياض',
+    'عزل صوتي للغرف',
+    'عزل صوتي للجدران',
+    'الواح فوم عزل صوتي',
+    'أفضل مواد العزل الصوتي',
+    'sound insulation saudi',
+    'soundproof panels ksa',
+    'acoustic panels saudi arabia',
+    'ألواح أكوستيك',
+    'ألواح عزل صوتي للمنازل',
+    'تركيب عزل صوتي',
+    'عزل صوتي للمباني'
   ],
   metadataBase: new URL('https://www.ceilingsart.sa/'),
   alternates: {
     canonical: 'https://www.ceilingsart.sa/',
   },
   openGraph: {
-    title: 'سلينجز ارت بالرياض | الاسقف الفرنسيه المشدوده والمضيئه – Ceilings Art',
+    title: 'سلينجز ارت بالسعودية | الاسقف الفرنسيه المشدوده والمضيئه – Ceilings Art',
     description:
-      'شركه سلينجز ارت بالرياض متخصصه في تصميم وتركيب الاسقف الفرنسيه المشدوده والمضيئه باعلى معايير الجوده. خامات باريسول الاصليه واضاءه مبتكره واشكال عصريه فاخره تناسب كل المساحات.',
+      'شركه سلينجز ارت بالسعودية متخصصه في تصميم وتركيب الاسقف الفرنسيه المشدوده والمضيئه باعلى معايير الجوده. خامات باريسول الاصليه واضاءه مبتكره واشكال عصريه فاخره تناسب كل المساحات، مع توفير خدمات العزل الصوتي وألواح الأكوستيك.',
     url: 'https://www.ceilingsart.sa/',
     siteName: 'Ceilings Art',
     images: [
@@ -65,7 +82,7 @@ export const metadata: Metadata = {
         url: '/newlogo.png',
         width: 1200,
         height: 630,
-        alt: 'Ceilings Art Stretch Ceilings Riyadh',
+        alt: 'Ceilings Art Stretch Ceilings Saudi Arabia',
       },
     ],
     locale: 'ar_SA',
@@ -81,14 +98,100 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl">
       <head>
+
+        {/* ==================== سكيما ==================== */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: `
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://www.ceilingsart.sa/#business",
+  "name": "Ceilings Art - سلينجز ارت للاسقف الفرنسيه المشدوده بالسعودية",
+  "description": "سلينجز ارت بالسعودية متخصصون في تركيب الاسقف الفرنسيه وخدمات العزل الصوتي وألواح الأكوستيك عالية الجودة.",
+  "url": "https://www.ceilingsart.sa/",
+  "image": "https://www.ceilingsart.sa/newlogo.png",
+  "logo": "https://www.ceilingsart.sa/newlogo.png",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "SA",
+    "addressRegion": "الرياض",
+    "addressLocality": "السعودية",
+    "streetAddress": "-"
+  },
+  "areaServed": "SA",
+  "telephone": "+96657547469",
+  "priceRange": "$$",
+  "sameAs": [
+    "https://www.ceilingsart.sa/"
+  ]
+}
+            `,
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: `
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.ceilingsart.sa/#website",
+  "url": "https://www.ceilingsart.sa/",
+  "name": "Ceilings Art",
+  "alternateName": "سلينجز ارت",
+  "inLanguage": "ar-SA",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.ceilingsart.sa/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+            `,
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: `
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.ceilingsart.sa/#organization",
+  "name": "Ceilings Art",
+  "url": "https://www.ceilingsart.sa/",
+  "logo": "https://www.ceilingsart.sa/newlogo.png",
+  "sameAs": [
+    "https://www.ceilingsart.sa/"
+  ]
+}
+            `,
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: `
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "@id": "https://www.ceilingsart.sa/#logo",
+  "url": "https://www.ceilingsart.sa/newlogo.png",
+  "width": 1200,
+  "height": 630
+}
+            `,
+          }}
+        />
+
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
@@ -101,7 +204,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* End Google Tag Manager */}
 
         {/* Google tag (gtag.js) */}
         <script
@@ -118,9 +220,10 @@ export default function RootLayout({
             `,
           }}
         />
+
       </head>
+
       <body className={inter.className}>
-        {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KZLX7XJS"
@@ -129,7 +232,6 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-        {/* End Google Tag Manager (noscript) */}
 
         <LanguageProvider>{children}</LanguageProvider>
       </body>

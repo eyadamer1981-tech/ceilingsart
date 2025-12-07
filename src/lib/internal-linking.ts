@@ -10,6 +10,7 @@ export interface LinkMapping {
   caseSensitive: boolean;
   maxOccurrences: number;
   isActive: boolean;
+  flexibleMatch?: boolean; // Allow matching plurals and variations
 }
 
 export interface InternalLinkResult {
@@ -91,11 +92,38 @@ export function injectInternalLinks(
     }
 
     // Create regex pattern for the keyword
-    const flags = mapping.caseSensitive ? 'g' : 'gi';
-    const pattern = new RegExp(
-      `\\b${escapeRegex(mapping.keyword)}\\b`,
-      flags
-    );
+    // Use Unicode flag for proper Arabic/Unicode character support
+    const flags = mapping.caseSensitive ? 'gu' : 'giu';
+    let escapedKeyword = escapeRegex(mapping.keyword);
+
+    // If flexible matching is enabled (default), allow optional 's' at the end for plurals
+    // This makes "panel" match both "panel" and "panels"
+    if (mapping.flexibleMatch !== false) {
+      escapedKeyword = escapedKeyword + 's?';
+    }
+
+    // For Arabic/Unicode text, \b doesn't work well
+    // Match the keyword and verify word boundaries manually
+    // This pattern matches the keyword anywhere, we'll check boundaries in code
+    const pattern = new RegExp(escapedKeyword, flags);
+
+    // Helper function to check if a character is a word character (Unicode-aware)
+    const isWordChar = (char: string): boolean => {
+      if (!char) return false;
+      const code = char.charCodeAt(0);
+      // Check for Arabic, English letters, numbers, underscore
+      return (
+        (code >= 0x0600 && code <= 0x06FF) || // Arabic
+        (code >= 0x0750 && code <= 0x077F) || // Arabic Supplement
+        (code >= 0x08A0 && code <= 0x08FF) || // Arabic Extended-A
+        (code >= 0xFB50 && code <= 0xFDFF) || // Arabic Presentation Forms-A
+        (code >= 0xFE70 && code <= 0xFEFF) || // Arabic Presentation Forms-B
+        (code >= 0x0041 && code <= 0x005A) || // A-Z
+        (code >= 0x0061 && code <= 0x007A) || // a-z
+        (code >= 0x0030 && code <= 0x0039) || // 0-9
+        code === 0x005F // underscore
+      );
+    };
 
     // Find all matches
     const matches: { index: number; text: string }[] = [];
@@ -108,17 +136,30 @@ export function injectInternalLinks(
 
     while ((match = regex.exec(searchContent)) !== null) {
       const absoluteIndex = match.index + offset;
-
-      // Check if this match is inside an HTML tag or existing link
-      if (!isInsideTag(processedContent, absoluteIndex)) {
-        matches.push({
-          index: absoluteIndex,
-          text: match[0]
-        });
+      const matchedText = match[0];
+      
+      // Check word boundaries manually (Unicode-aware)
+      const charBefore = absoluteIndex > 0 ? processedContent[absoluteIndex - 1] : '';
+      const charAfter = absoluteIndex + matchedText.length < processedContent.length 
+        ? processedContent[absoluteIndex + matchedText.length] 
+        : '';
+      
+      // Verify it's at a word boundary (not in the middle of a word)
+      const isAtStartBoundary = absoluteIndex === 0 || !isWordChar(charBefore);
+      const isAtEndBoundary = absoluteIndex + matchedText.length === processedContent.length || !isWordChar(charAfter);
+      
+      if (isAtStartBoundary && isAtEndBoundary) {
+        // Check if this match is inside an HTML tag or existing link
+        if (!isInsideTag(processedContent, absoluteIndex)) {
+          matches.push({
+            index: absoluteIndex,
+            text: matchedText
+          });
+        }
       }
 
       // Move past this match to find others
-      offset = absoluteIndex + match[0].length;
+      offset = absoluteIndex + matchedText.length;
       searchContent = processedContent.substring(offset);
       regex.lastIndex = 0;
     }

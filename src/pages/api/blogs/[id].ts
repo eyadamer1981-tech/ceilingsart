@@ -20,8 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { id } = req.query;
 
   if (req.method === 'PUT') {
-    // Handle file upload
-    upload.single('image')(req as any, res as any, async (err: any) => {
+    // Handle file uploads (image and gallery)
+    upload.fields([
+      { name: 'image', maxCount: 1 },
+      { name: 'gallery', maxCount: 20 }
+    ])(req as any, res as any, async (err: any) => {
       if (err) {
         return res.status(400).json({ message: 'File upload error' });
       }
@@ -37,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           autoInternalLinks,
           manualSEO,
           manualLinks,
+          existingGallery,
         } = req.body;
 
         // Get existing blog
@@ -119,6 +123,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         }
 
+        // Process gallery images
+        let gallery: string[] = [];
+        
+        // Keep existing gallery images if provided
+        if (existingGallery) {
+          const existing = Array.isArray(existingGallery) ? existingGallery : [existingGallery];
+          gallery = existing.filter((url: string) => 
+            url && (url.startsWith('data:') || url.startsWith('http') || url.startsWith('/'))
+          );
+        } else if (existingBlog.gallery) {
+          // Keep existing gallery if no new images and no explicit existingGallery array
+          gallery = existingBlog.gallery;
+        }
+
+        // Add new gallery images
+        const galleryFiles = (req as any).files?.gallery || [];
+        galleryFiles.forEach((file: Express.Multer.File) => {
+          gallery.push(bufferToDataUrl(file));
+        });
+
         const updateData: any = {
           title,
           content,
@@ -135,11 +159,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           manualLinks: parsedManualLinks,
           processedContent,
           internalLinksApplied,
+          gallery,
           updatedAt: new Date(),
         };
 
-        if ((req as any).file) {
-          updateData.image = bufferToDataUrl((req as any).file);
+        if ((req as any).files?.image?.[0]) {
+          updateData.image = bufferToDataUrl((req as any).files.image[0]);
         }
 
         const blog = await Blog.findByIdAndUpdate(id, updateData, { new: true });

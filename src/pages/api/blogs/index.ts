@@ -29,8 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ message: 'Server error' });
     }
   } else if (req.method === 'POST') {
-    // Handle file upload
-    upload.single('image')(req as any, res as any, async (err: any) => {
+    // Handle file uploads (image and gallery)
+    upload.fields([
+      { name: 'image', maxCount: 1 },
+      { name: 'gallery', maxCount: 20 }
+    ])(req as any, res as any, async (err: any) => {
       if (err) {
         return res.status(400).json({ message: 'File upload error' });
       }
@@ -56,7 +59,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           manualLinks,
         } = req.body;
 
-        const image = (req as any).file ? bufferToDataUrl((req as any).file) : '';
+        const image = (req as any).files?.image?.[0] ? bufferToDataUrl((req as any).files.image[0]) : '';
+        
+        // Process gallery images
+        const galleryFiles = (req as any).files?.gallery || [];
+        const gallery = galleryFiles.map((file: Express.Multer.File) => bufferToDataUrl(file));
 
         // Get global config
         let config = await SEOConfig.findOne({ configKey: 'global' });
@@ -150,6 +157,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           manualLinks: parsedManualLinks,
           processedContent,
           internalLinksApplied,
+          gallery,
           updatedAt: new Date(),
         });
 

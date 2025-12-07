@@ -68,6 +68,8 @@ export interface Translations {
   newsletterDescription: string;
   yourEmailAddress: string;
   subscribe: string;
+  shareThisArticle: string;
+  backToAllPosts: string;
   
   // Contact Section
   contactTitle: string;
@@ -148,6 +150,7 @@ export interface Translations {
   author: string;
   image: string;
   featured: string;
+  featuredPost: string;
   yes: string;
   no: string;
   loading: string;
@@ -331,6 +334,8 @@ export const translations: Record<Language, Translations> = {
     newsletterDescription: 'Subscribe to our newsletter for the latest ceiling design trends, tips, and project showcases.',
     yourEmailAddress: 'Your email address',
     subscribe: 'Subscribe',
+    shareThisArticle: 'Share this article',
+    backToAllPosts: 'Back to All Posts',
     
     // Contact Section
     contactTitle: 'Contact Us',
@@ -411,6 +416,7 @@ export const translations: Record<Language, Translations> = {
     author: 'Author',
     image: 'Image',
     featured: 'Featured',
+    featuredPost: 'Featured Post',
     yes: 'Yes',
     no: 'No',
     loading: 'Loading...',
@@ -592,6 +598,8 @@ export const translations: Record<Language, Translations> = {
     newsletterDescription: 'اشترك في نشرتنا الإخبارية للحصول على أحدث اتجاهات تصميم الأسقف والنصائح وعروض المشاريع.',
     yourEmailAddress: 'عنوان بريدك الإلكتروني',
     subscribe: 'اشترك',
+    shareThisArticle: 'شارك هذه المقالة',
+    backToAllPosts: 'العودة إلى جميع المقالات',
     
     // Contact Section
     contactTitle: 'اتصل بنا',
@@ -672,6 +680,7 @@ export const translations: Record<Language, Translations> = {
     author: 'المؤلف',
     image: 'الصورة',
     featured: 'مميز',
+    featuredPost: 'مقال مميز',
     yes: 'نعم',
     no: 'لا',
     loading: 'جاري التحميل...',

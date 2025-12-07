@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Star, Image as ImageIcon, X, RefreshCw } from 'lucide-react';
 
 interface Blog {
   _id: string;
@@ -18,6 +18,8 @@ export function BlogsManager() {
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [regeneratingLinks, setRegeneratingLinks] = useState(false);
+  const [regenerateMessage, setRegenerateMessage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -27,6 +29,8 @@ export function BlogsManager() {
     featured: false,
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
 
   useEffect(() => {
     fetchBlogs();
@@ -56,6 +60,22 @@ export function BlogsManager() {
 
     if (imageFile) {
       formDataToSend.append('image', imageFile);
+    }
+
+    // Append gallery images
+    galleryFiles.forEach((file, index) => {
+      formDataToSend.append(`gallery`, file);
+    });
+    
+    // Append existing gallery previews (for editing)
+    // Send all previews as existingGallery array
+    if (galleryPreviews.length > 0) {
+      galleryPreviews.forEach((preview) => {
+        // Only send if it's a data URL (new upload) or existing URL
+        if (preview && (preview.startsWith('data:') || preview.startsWith('http') || preview.startsWith('/'))) {
+          formDataToSend.append('existingGallery', preview);
+        }
+      });
     }
 
     try {
@@ -114,14 +134,108 @@ export function BlogsManager() {
       author: blog.author,
       featured: Boolean(blog.featured),
     });
+    // Load existing gallery images if any
+    if ((blog as any).gallery && Array.isArray((blog as any).gallery)) {
+      setGalleryPreviews((blog as any).gallery);
+    } else {
+      setGalleryPreviews([]);
+    }
+    setGalleryFiles([]);
     setShowForm(true);
   };
 
   const resetForm = () => {
     setFormData({ title: '', content: '', excerpt: '', author: '', featured: false });
     setImageFile(null);
+    setGalleryFiles([]);
+    setGalleryPreviews([]);
     setEditingBlog(null);
     setShowForm(false);
+  };
+
+  const handleGalleryFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const newFiles: File[] = [];
+    const newPreviews: string[] = [];
+    
+    files.forEach((file) => {
+      newFiles.push(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        newPreviews.push(reader.result as string);
+        if (newPreviews.length === files.length) {
+          setGalleryFiles([...galleryFiles, ...newFiles]);
+          setGalleryPreviews([...galleryPreviews, ...newPreviews]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeGalleryImage = (index: number) => {
+    const newFiles = galleryFiles.filter((_, i) => i !== index);
+    const newPreviews = galleryPreviews.filter((_, i) => i !== index);
+    setGalleryFiles(newFiles);
+    setGalleryPreviews(newPreviews);
+  };
+
+  const insertGalleryPlaceholder = (galleryIndex: number) => {
+    const placeholder = `\n\n[GALLERY:${galleryIndex}]\n\n`;
+    const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newContent =
+        formData.content.substring(0, start) +
+        placeholder +
+        formData.content.substring(end);
+      setFormData({ ...formData, content: newContent });
+
+      // Set cursor position after the placeholder
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + placeholder.length, start + placeholder.length);
+      }, 0);
+    } else {
+      // Fallback: just append to content
+      setFormData({ ...formData, content: formData.content + placeholder });
+    }
+  };
+
+  const handleRegenerateLinks = async () => {
+    if (!confirm('This will regenerate internal links for ALL blogs based on your current link mappings. Continue?')) {
+      return;
+    }
+
+    setRegeneratingLinks(true);
+    setRegenerateMessage(null);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/blogs/regenerate-links', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setRegenerateMessage(`✅ ${data.message}`);
+        // Refresh the blogs list
+        fetchBlogs();
+      } else {
+        setRegenerateMessage(`❌ Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error regenerating links:', error);
+      setRegenerateMessage('❌ Failed to regenerate internal links. Please try again.');
+    } finally {
+      setRegeneratingLinks(false);
+      // Clear message after 5 seconds
+      setTimeout(() => setRegenerateMessage(null), 5000);
+    }
   };
 
   return (
@@ -133,13 +247,30 @@ export function BlogsManager() {
         <p className="text-gray-600 text-lg mb-8">
           Manage your blog posts and articles
         </p>
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 flex items-center space-x-2 mx-auto shadow-lg hover:shadow-xl transform hover:scale-105"
-        >
-          <Plus className="w-5 h-5" />
-          <span className="font-medium">Add New Blog</span>
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-8 py-3 rounded-full hover:from-orange-500 hover:to-yellow-600 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="font-medium">Add New Blog</span>
+          </button>
+          <button
+            onClick={handleRegenerateLinks}
+            disabled={regeneratingLinks}
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-full hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <RefreshCw className={`w-5 h-5 ${regeneratingLinks ? 'animate-spin' : ''}`} />
+            <span className="font-medium">
+              {regeneratingLinks ? 'Regenerating...' : 'Regenerate Internal Links'}
+            </span>
+          </button>
+        </div>
+        {regenerateMessage && (
+          <div className={`mt-4 p-4 rounded-lg ${regenerateMessage.startsWith('✅') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            {regenerateMessage}
+          </div>
+        )}
       </div>
 
       {showForm && (
@@ -200,11 +331,14 @@ export function BlogsManager() {
                 rows={8}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Tip: Use the gallery section below to insert gallery placeholders in your content
+              </p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Image
+                Featured Image
               </label>
               <input
                 type="file"
@@ -213,6 +347,57 @@ export function BlogsManager() {
                 required={!editingBlog}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Gallery Images
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleGalleryFilesChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black mb-3"
+              />
+              
+              {galleryPreviews.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-gray-700 mb-2">
+                    Gallery Images ({galleryPreviews.length})
+                  </p>
+                  <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
+                    {galleryPreviews.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={preview}
+                          alt={`Gallery ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border border-gray-300"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(index)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => insertGalleryPlaceholder(index)}
+                          className="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
+                          title="Insert gallery at cursor position"
+                        >
+                          <ImageIcon className="w-3 h-3" />
+                          Insert
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Click "Insert" on an image to add [GALLERY:X] placeholder at cursor position in content
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center">

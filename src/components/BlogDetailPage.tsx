@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Skeleton } from './ui/skeleton';
 import { SEO, mergeSEOData, SEOProps } from './SEO';
-import { NewsletterSubscription } from './NewsletterSubscription';
+import { BlogShareButtons } from './BlogShareButtons';
+import { BlogGallery } from './BlogGallery';
 
 interface Blog {
   _id: string;
@@ -31,6 +31,7 @@ interface Blog {
   };
   manualLinks?: any[];
   internalLinksApplied?: string[];
+  gallery?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -46,6 +47,7 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Get slug from props or route params (App Router)
   const slug = propSlug || (params?.slug as string);
@@ -55,6 +57,37 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
       fetchBlog();
     }
   }, [slug]);
+
+  // Handle internal link clicks for client-side navigation
+  useEffect(() => {
+    if (!contentRef.current || !blog) return;
+
+    const handleInternalLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a.internal-link') as HTMLAnchorElement;
+      
+      if (link) {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) {
+          // Check if it's an internal link (starts with /)
+          if (href.startsWith('/')) {
+            router.push(href);
+          } else {
+            // External link - open in new tab
+            window.open(href, '_blank', 'noopener,noreferrer');
+          }
+        }
+      }
+    };
+
+    const contentElement = contentRef.current;
+    contentElement.addEventListener('click', handleInternalLinkClick);
+
+    return () => {
+      contentElement.removeEventListener('click', handleInternalLinkClick);
+    };
+  }, [blog, router]);
 
   const fetchBlog = async () => {
     try {
@@ -164,6 +197,123 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
 
   const finalSEO = mergeSEOData(autoSEOData, manualSEOData, blog.autoSEO !== false);
 
+  // Parse content and replace gallery placeholders with gallery components
+  const parseContentWithGalleries = () => {
+    if (!blog.processedContent && !blog.content) return null;
+    
+    const content = blog.processedContent || blog.content;
+    const gallery = blog.gallery || [];
+    
+    // Split content by gallery placeholders [GALLERY:0], [GALLERY:1], etc.
+    const parts: Array<{ type: 'text' | 'gallery'; content?: string; galleryIndex?: number }> = [];
+    const galleryRegex = /\[GALLERY:(\d+)\]/g;
+    let lastIndex = 0;
+    let match;
+    let galleryCounter = 0;
+
+    while ((match = galleryRegex.exec(content)) !== null) {
+      // Add text before gallery
+      if (match.index > lastIndex) {
+        parts.push({
+          type: 'text',
+          content: content.substring(lastIndex, match.index)
+        });
+      }
+      
+      // Add gallery
+      const galleryIndex = parseInt(match[1], 10);
+      parts.push({
+        type: 'gallery',
+        galleryIndex: galleryIndex
+      });
+      
+      lastIndex = match.index + match[0].length;
+      galleryCounter++;
+    }
+    
+    // Add remaining text
+    if (lastIndex < content.length) {
+      parts.push({
+        type: 'text',
+        content: content.substring(lastIndex)
+      });
+    }
+    
+    // If no galleries found, return all as text
+    if (parts.length === 0) {
+      return (
+        <div
+          ref={contentRef}
+          className="prose prose-lg max-w-none text-gray-900
+            prose-headings:font-light prose-headings:text-gray-900
+            prose-p:text-gray-900 prose-p:leading-relaxed
+            prose-a:text-orange-500 prose-a:no-underline hover:prose-a:text-orange-600 hover:prose-a:underline
+            prose-strong:text-gray-900 prose-strong:font-semibold
+            prose-ul:text-gray-900 prose-ol:text-gray-900
+            prose-li:text-gray-900
+            prose-img:rounded-lg prose-img:shadow-lg
+            prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:italic prose-blockquote:text-gray-900
+            [&_p]:text-gray-900 [&_span]:text-gray-900 [&_div]:text-gray-900
+            [&_a.internal-link]:text-orange-600 [&_a.internal-link]:font-medium [&_a.internal-link]:underline
+            [&_a.internal-link]:decoration-orange-300 [&_a.internal-link]:decoration-2
+            [&_a.internal-link]:underline-offset-2 [&_a.internal-link]:cursor-pointer
+            [&_a.internal-link]:transition-all [&_a.internal-link]:duration-200
+            hover:[&_a.internal-link]:text-orange-700 hover:[&_a.internal-link]:decoration-orange-500
+            hover:[&_a.internal-link]:decoration-[3px]"
+          style={{ color: '#111827' }}
+          dangerouslySetInnerHTML={{
+            __html: content
+          }}
+        />
+      );
+    }
+    
+    // Render parts with galleries
+    return (
+      <div ref={contentRef}>
+        {parts.map((part, index) => {
+          if (part.type === 'text' && part.content) {
+            return (
+              <div
+                key={`text-${index}`}
+                className="prose prose-lg max-w-none text-gray-900
+                  prose-headings:font-light prose-headings:text-gray-900
+                  prose-p:text-gray-900 prose-p:leading-relaxed
+                  prose-a:text-orange-500 prose-a:no-underline hover:prose-a:text-orange-600 hover:prose-a:underline
+                  prose-strong:text-gray-900 prose-strong:font-semibold
+                  prose-ul:text-gray-900 prose-ol:text-gray-900
+                  prose-li:text-gray-900
+                  prose-img:rounded-lg prose-img:shadow-lg
+                  prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:italic prose-blockquote:text-gray-900
+                  [&_p]:text-gray-900 [&_span]:text-gray-900 [&_div]:text-gray-900
+                  [&_a.internal-link]:text-orange-600 [&_a.internal-link]:font-medium [&_a.internal-link]:underline
+                  [&_a.internal-link]:decoration-orange-300 [&_a.internal-link]:decoration-2
+                  [&_a.internal-link]:underline-offset-2 [&_a.internal-link]:cursor-pointer
+                  [&_a.internal-link]:transition-all [&_a.internal-link]:duration-200
+                  hover:[&_a.internal-link]:text-orange-700 hover:[&_a.internal-link]:decoration-orange-500
+                  hover:[&_a.internal-link]:decoration-[3px]"
+                style={{ color: '#111827' }}
+                dangerouslySetInnerHTML={{
+                  __html: part.content
+                }}
+              />
+            );
+          } else if (part.type === 'gallery' && part.galleryIndex !== undefined) {
+            // For now, show all gallery images. In future, could support multiple galleries
+            return (
+              <BlogGallery
+                key={`gallery-${index}`}
+                images={gallery}
+                galleryIndex={part.galleryIndex}
+              />
+            );
+          }
+          return null;
+        })}
+      </div>
+    );
+  };
+
   return (
     <>
       <SEO {...finalSEO} />
@@ -174,7 +324,7 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
           <div className="container mx-auto px-4 max-w-4xl">
             {blog.featured && (
               <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-                Featured Post
+                {t('featuredPost')}
               </span>
             )}
 
@@ -214,20 +364,8 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
             {blog.excerpt}
           </div>
 
-          {/* Main Content - Use processedContent with internal links */}
-          <div
-            className="prose prose-lg max-w-none
-              prose-headings:font-light prose-headings:text-gray-900
-              prose-p:text-gray-700 prose-p:leading-relaxed
-              prose-a:text-orange-500 prose-a:no-underline hover:prose-a:text-orange-600 hover:prose-a:underline
-              prose-strong:text-gray-900 prose-strong:font-semibold
-              prose-ul:text-gray-700 prose-ol:text-gray-700
-              prose-img:rounded-lg prose-img:shadow-lg
-              prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:italic"
-            dangerouslySetInnerHTML={{
-              __html: blog.processedContent || blog.content
-            }}
-          />
+          {/* Main Content - Use processedContent with internal links and galleries */}
+          {parseContentWithGalleries()}
 
           {/* Internal Links Applied (for debugging - remove in production) */}
           {blog.internalLinksApplied && blog.internalLinksApplied.length > 0 && (
@@ -246,15 +384,12 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
             </div>
           )}
 
-          {/* Newsletter Subscription */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <NewsletterSubscription 
-              source="blog_detail"
-              compact={true}
-              title={t('stayUpdated')}
-              description={t('newsletterDescription')}
-            />
-          </div>
+          {/* Social Share Buttons */}
+          <BlogShareButtons 
+            title={blog.title}
+            url={getFullUrl()}
+            description={blog.excerpt}
+          />
 
           {/* Back to Blog */}
           <div className="mt-12 pt-8 border-t border-gray-200">
@@ -263,7 +398,7 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
               className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-2 transition-colors"
             >
               <span>←</span>
-              <span>Back to All Posts</span>
+              <span>{t('backToAllPosts')}</span>
             </button>
           </div>
         </div>

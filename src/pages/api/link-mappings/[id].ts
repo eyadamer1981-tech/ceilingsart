@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { InternalLinkMapping } from '../../../lib/models';
+import { triggerBackgroundRegeneration } from '../../../lib/regenerate-blog-links';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectDB();
@@ -68,6 +69,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: 'Link mapping not found' });
       }
 
+      // Trigger background regeneration of all blogs
+      triggerBackgroundRegeneration();
+
       res.json(mapping);
     } catch (error: any) {
       console.error('Error updating link mapping:', error);
@@ -82,6 +86,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!mapping) {
         return res.status(404).json({ message: 'Link mapping not found' });
       }
+
+      // Trigger background regeneration of all blogs
+      triggerBackgroundRegeneration();
+
       res.json({ message: 'Link mapping deleted successfully' });
     } catch (error) {
       console.error('Error deleting link mapping:', error);
