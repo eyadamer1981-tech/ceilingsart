@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Skeleton } from './ui/skeleton';
@@ -40,13 +41,14 @@ interface BlogDetailPageProps {
 
 export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
   const router = useRouter();
+  const params = useParams();
   const { t } = useLanguage();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get slug from props or router
-  const slug = propSlug || (router.query.slug as string);
+  // Get slug from props or route params (App Router)
+  const slug = propSlug || (params?.slug as string);
 
   useEffect(() => {
     if (slug) {
