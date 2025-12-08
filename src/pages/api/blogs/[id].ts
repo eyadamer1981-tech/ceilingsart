@@ -19,12 +19,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { id } = req.query;
 
-  if (req.method === 'PUT') {
-    // Handle file uploads (image and gallery)
-    upload.fields([
-      { name: 'image', maxCount: 1 },
-      { name: 'gallery', maxCount: 20 }
-    ])(req as any, res as any, async (err: any) => {
+  if (req.method === 'GET') {
+    try {
+      const blog = await Blog.findById(id);
+
+      if (!blog) {
+        return res.status(404).json({ message: 'Blog not found' });
+      }
+
+      // Auto-generate internal links if missing or auto-links is enabled
+      if (!blog.processedContent || blog.autoInternalLinks !== false) {
+        const config = await SEOConfig.findOne({ configKey: 'global' });
+
+        if (config && config.globalAutoInternalLinks && blog.autoInternalLinks !== false) {
+          const autoLinkMappings = await InternalLinkMapping.find({ isActive: true });
+
+          if (autoLinkMappings.length > 0) {
+            const manualLinks = blog.manualLinks || [];
+            const linkResult = generateInternalLinks({
+              content: blog.content,
+              autoLinks: autoLinkMappings,
+              manualLinks: manualLinks,
+              useAutoLinks: true,
+              maxLinksPerPost: config.maxInternalLinksPerPost || 5,
+            });
+
+            if (linkResult.processedContent !== blog.processedContent) {
+              await Blog.findByIdAndUpdate(blog._id, {
+                processedContent: linkResult.processedContent,
+                internalLinksApplied: linkResult.linksApplied,
+                updatedAt: new Date(),
+              });
+
+              blog.processedContent = linkResult.processedContent;
+              blog.internalLinksApplied = linkResult.linksApplied;
+            }
+          }
+        }
+      }
+
+      res.json(blog);
+    } catch (error) {
+      console.error('Error fetching blog by id:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  } else if (req.method === 'PUT') {
+    // Handle file upload
+    upload.single('image')(req as any, res as any, async (err: any) => {
       if (err) {
         return res.status(400).json({ message: 'File upload error' });
       }
@@ -40,7 +81,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           autoInternalLinks,
           manualSEO,
           manualLinks,
-          existingGallery,
         } = req.body;
 
         // Get existing blog
@@ -123,26 +163,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         }
 
-        // Process gallery images
-        let gallery: string[] = [];
-        
-        // Keep existing gallery images if provided
-        if (existingGallery) {
-          const existing = Array.isArray(existingGallery) ? existingGallery : [existingGallery];
-          gallery = existing.filter((url: string) => 
-            url && (url.startsWith('data:') || url.startsWith('http') || url.startsWith('/'))
-          );
-        } else if (existingBlog.gallery) {
-          // Keep existing gallery if no new images and no explicit existingGallery array
-          gallery = existingBlog.gallery;
-        }
-
-        // Add new gallery images
-        const galleryFiles = (req as any).files?.gallery || [];
-        galleryFiles.forEach((file: Express.Multer.File) => {
-          gallery.push(bufferToDataUrl(file));
-        });
-
         const updateData: any = {
           title,
           content,
@@ -159,12 +179,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           manualLinks: parsedManualLinks,
           processedContent,
           internalLinksApplied,
-          gallery,
           updatedAt: new Date(),
         };
 
-        if ((req as any).files?.image?.[0]) {
-          updateData.image = bufferToDataUrl((req as any).files.image[0]);
+        if ((req as any).file) {
+          updateData.image = bufferToDataUrl((req as any).file);
         }
 
         const blog = await Blog.findByIdAndUpdate(id, updateData, { new: true });

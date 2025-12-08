@@ -83,9 +83,6 @@ const blogSchema = new mongoose.Schema({
   processedContent: { type: String },
   internalLinksApplied: { type: [String], default: [] },
 
-  // Gallery images
-  gallery: { type: [String], default: [] },
-
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -171,7 +168,6 @@ const internalLinkMappingSchema = new mongoose.Schema({
   caseSensitive: { type: Boolean, default: false },
   maxOccurrences: { type: Number, default: 1 }, // Max times this keyword can be linked per post
   isActive: { type: Boolean, default: true },
-  flexibleMatch: { type: Boolean, default: true }, // Allow matching plurals and variations
   description: { type: String, default: '' }, // Admin note
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

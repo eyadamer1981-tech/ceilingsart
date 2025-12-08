@@ -48,14 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       let updatedCount = 0;
-      const updateResults: Array<{
-        id: any;
-        title: any;
-        status: 'skipped' | 'updated' | 'error';
-        reason?: string;
-        linksApplied?: number;
-        keywords?: string[];
-      }> = [];
+      const updateResults = [];
 
       // Process each blog
       for (const blog of blogs) {
