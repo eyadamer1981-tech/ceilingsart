@@ -176,6 +176,23 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
 
   const finalSEO = mergeSEOData(autoSEOData, manualSEOData, blog.autoSEO !== false);
 
+  const proseStyles = {
+    '--tw-prose-body': '#000',
+    '--tw-prose-headings': '#000',
+    '--tw-prose-lead': '#000',
+    '--tw-prose-links': '#ea580c',
+    '--tw-prose-bold': '#000',
+    '--tw-prose-counters': '#000',
+    '--tw-prose-bullets': '#000',
+    '--tw-prose-hr': '#000',
+    '--tw-prose-quotes': '#000',
+    '--tw-prose-quote-borders': '#000',
+    '--tw-prose-captions': '#000',
+    '--tw-prose-code': '#000',
+    '--tw-prose-th-borders': '#000',
+    '--tw-prose-td-borders': '#000',
+  } as CSSProperties;
+
   return (
     <>
       <SEO {...finalSEO} />
@@ -229,24 +246,7 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
           {/* Main Content - Use processedContent with internal links */}
           <div
             className="prose prose-lg max-w-none prose-headings:font-light prose-headings:text-gray-900 prose-p:text-black prose-p:leading-relaxed text-black prose-a:text-orange-500 prose-a:no-underline hover:prose-a:text-orange-600 hover:prose-a:underline prose-strong:text-gray-900 prose-strong:font-semibold prose-ul:text-black prose-ol:text-black prose-li:text-black prose-em:text-black prose-strong:text-black prose-img:rounded-lg prose-img:shadow-lg prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:italic"
-            style={
-              {
-                '--tw-prose-body': '#000',
-                '--tw-prose-headings': '#000',
-                '--tw-prose-lead': '#000',
-                '--tw-prose-links': '#ea580c',
-                '--tw-prose-bold': '#000',
-                '--tw-prose-counters': '#000',
-                '--tw-prose-bullets': '#000',
-                '--tw-prose-hr': '#000',
-                '--tw-prose-quotes': '#000',
-                '--tw-prose-quote-borders': '#000',
-                '--tw-prose-captions': '#000',
-                '--tw-prose-code': '#000',
-                '--tw-prose-th-borders': '#000',
-                '--tw-prose-td-borders': '#000',
-              } satisfies CSSProperties
-            }
+            style={proseStyles}
             dangerouslySetInnerHTML={{
               __html: blog.processedContent || blog.content
             }}

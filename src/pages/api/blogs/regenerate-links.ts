@@ -48,7 +48,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       let updatedCount = 0;
-      const updateResults = [];
+      type UpdateStatus = 'skipped' | 'updated' | 'error';
+      type UpdateResult = {
+        id: string;
+        title: string;
+        status: UpdateStatus;
+        reason?: string;
+        linksApplied?: number;
+        keywords?: string[];
+      };
+
+      const updateResults: UpdateResult[] = [];
 
       // Process each blog
       for (const blog of blogs) {
@@ -73,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             autoLinks: autoLinkMappings,
             manualLinks: manualLinks,
             useAutoLinks: true,
-            maxLinksPerPost: config.maxInternalLinksPerPost,
+            maxLinksPerPost: config.maxInternalLinksPerPost || 5,
           });
 
           // Update the blog
