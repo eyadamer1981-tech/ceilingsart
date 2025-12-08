@@ -27,34 +27,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: 'Blog not found' });
       }
 
-      // Auto-generate internal links if missing or auto-links is enabled
-      if (!blog.processedContent || blog.autoInternalLinks !== false) {
-        const config = await SEOConfig.findOne({ configKey: 'global' });
+      // Get global config (create with defaults if it doesn't exist)
+      let config = await SEOConfig.findOne({ configKey: 'global' });
+      if (!config) {
+        config = new SEOConfig({ configKey: 'global' });
+        await config.save();
+      }
 
-        if (config && config.globalAutoInternalLinks && blog.autoInternalLinks !== false) {
-          const autoLinkMappings = await InternalLinkMapping.find({ isActive: true });
+      // Get manual links for this blog
+      const manualLinks = blog.manualLinks || [];
 
-          if (autoLinkMappings.length > 0) {
-            const manualLinks = blog.manualLinks || [];
-            const linkResult = generateInternalLinks({
-              content: blog.content,
-              autoLinks: autoLinkMappings,
-              manualLinks: manualLinks,
-              useAutoLinks: true,
-              maxLinksPerPost: config.maxInternalLinksPerPost || 5,
-            });
+      // Determine if we should use auto links
+      const useAutoLinks = config.globalAutoInternalLinks && blog.autoInternalLinks !== false;
 
-            if (linkResult.processedContent !== blog.processedContent) {
-              await Blog.findByIdAndUpdate(blog._id, {
-                processedContent: linkResult.processedContent,
-                internalLinksApplied: linkResult.linksApplied,
-                updatedAt: new Date(),
-              });
+      // Apply links if: auto-links is enabled OR manual links exist
+      if (useAutoLinks || manualLinks.length > 0) {
+        // Get all active link mappings (empty if auto is disabled)
+        const autoLinkMappings = useAutoLinks ? await InternalLinkMapping.find({ isActive: true }) : [];
 
-              blog.processedContent = linkResult.processedContent;
-              blog.internalLinksApplied = linkResult.linksApplied;
-            }
-          }
+        // Generate internal links (manual links are always applied if they exist)
+        const linkResult = generateInternalLinks({
+          content: blog.content,
+          autoLinks: autoLinkMappings,
+          manualLinks: manualLinks,
+          useAutoLinks: useAutoLinks,
+          maxLinksPerPost: config.maxInternalLinksPerPost || 5,
+        });
+
+        // Update the blog if processedContent changed
+        if (linkResult.processedContent !== blog.processedContent) {
+          await Blog.findByIdAndUpdate(blog._id, {
+            processedContent: linkResult.processedContent,
+            internalLinksApplied: linkResult.linksApplied,
+            updatedAt: new Date(),
+          });
+
+          blog.processedContent = linkResult.processedContent;
+          blog.internalLinksApplied = linkResult.linksApplied;
         }
       }
 

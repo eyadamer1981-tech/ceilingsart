@@ -224,8 +224,28 @@ section, div {
   .mobile-menu-button {
     display: none !important;
   }
-  
+
   .mobile-menu-container {
     display: none !important;
   }
+}
+
+/* Internal Link Styling - Make links visually distinct */
+.prose .internal-link {
+  color: #ea580c !important; /* orange-600 */
+  text-decoration: underline;
+  text-decoration-color: #fed7aa; /* orange-200 */
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.prose .internal-link:hover {
+  color: #c2410c !important; /* orange-700 */
+  text-decoration-color: #ea580c; /* orange-600 */
+  text-decoration-thickness: 2px;
+  background-color: #ffedd5; /* orange-100 */
+  padding: 0 4px;
+  border-radius: 3px;
 }
