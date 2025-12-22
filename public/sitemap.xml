@@ -130,6 +130,12 @@
   </url>
 
   <url>
+    <loc>https://www.ceilingsart.sa/blog/-2</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://www.ceilingsart.sa/blog/693626bc2fa53094611cdf5f</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
