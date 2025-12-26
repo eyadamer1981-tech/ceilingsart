@@ -1,5 +1,5 @@
 import { Blog, InternalLinkMapping, SEOConfig } from './models';
-import { generateInternalLinks } from './generateInternalLinks';
+import { generateInternalLinks } from './internal-linking';
 
 /**
  * Regenerate internal links for all blogs in the background

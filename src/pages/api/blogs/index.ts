@@ -3,7 +3,7 @@ import connectDB from '../../../lib/mongodb';
 import { Blog, InternalLinkMapping, SEOConfig } from '../../../lib/models';
 import multer from 'multer';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
-import { generateInternalLinks } from '../../../lib/generateInternalLinks';
+import { generateInternalLinks } from '../../../lib/internal-linking';
 
 // Use memory storage to keep files in RAM and store in MongoDB
 const upload = multer({ storage: multer.memoryStorage() });

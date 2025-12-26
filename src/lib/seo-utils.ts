@@ -17,7 +17,7 @@ export function generateSlug(text: string): string {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/[^\w\s-\u0600-\u06FF]/g, '') // Remove special characters but keep Arabic
     .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
 }
@@ -38,7 +38,7 @@ export function extractKeywords(text: string, maxKeywords: number = 10): string[
   // Extract words
   const words = text
     .toLowerCase()
-    .replace(/[^\w\s]/g, ' ')
+    .replace(/[^\w\s\u0600-\u06FF]/g, ' ')
     .split(/\s+/)
     .filter(word => word.length > 3 && !stopWords.has(word));
 
