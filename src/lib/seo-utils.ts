@@ -14,12 +14,14 @@ interface SEOMetadata {
  * Generate a URL-friendly slug from text
  */
 export function generateSlug(text: string): string {
-  return text
+  const slug = text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-\u0600-\u06FF]/g, '') // Remove special characters but keep Arabic
+    .replace(/[^\w\s\-\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, '') // Remove special characters but keep Arabic (all ranges)
     .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+
+  return encodeURIComponent(slug);
 }
 
 /**

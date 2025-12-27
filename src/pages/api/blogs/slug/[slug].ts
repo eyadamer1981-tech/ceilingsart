@@ -10,7 +10,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
-      const blog = await Blog.findOne({ slug });
+      let blog = await Blog.findOne({ slug });
+
+      if (!blog && typeof slug === 'string') {
+        // Try encoded version if the DB stores encoded slugs but Next.js decoded the param
+        blog = await Blog.findOne({ slug: encodeURIComponent(slug) });
+      }
 
       if (!blog) {
         return res.status(404).json({ message: 'Blog not found' });

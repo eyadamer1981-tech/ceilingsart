@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { Blog, InternalLinkMapping, SEOConfig } from '../../../lib/models';
 import multer from 'multer';
-import { generateSEOMetadata } from '../../../lib/seo-utils';
+import { generateSEOMetadata, generateSlug } from '../../../lib/seo-utils';
 import { generateInternalLinks } from '../../../lib/internal-linking';
 
 // Use memory storage to keep files in RAM and store in MongoDB
@@ -83,7 +83,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           metaKeywords = seoMetadata.metaKeywords;
         } else {
           // Use manual slug or generate from title
-          slug = manualSEO?.slug || title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
+          // Use manual slug or generate from title
+          slug = manualSEO?.slug ? generateSlug(manualSEO.slug) : generateSlug(title);
         }
 
         // Ensure unique slug
