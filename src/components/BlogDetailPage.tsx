@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import type { CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
@@ -38,24 +40,25 @@ interface Blog {
 
 interface BlogDetailPageProps {
   slug?: string;
+  initialBlog?: Blog | null;
 }
 
-export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
+export function BlogDetailPage({ slug: propSlug, initialBlog }: BlogDetailPageProps) {
   const router = useRouter();
   const params = useParams();
   const { t } = useLanguage();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [blog, setBlog] = useState<Blog | null>(initialBlog || null);
+  const [loading, setLoading] = useState(!initialBlog);
   const [error, setError] = useState<string | null>(null);
 
   // Get slug from props or route params (App Router)
   const slug = propSlug || (params?.slug as string);
 
   useEffect(() => {
-    if (slug) {
+    if (!initialBlog && slug) {
       fetchBlog();
     }
-  }, [slug]);
+  }, [slug, initialBlog]);
 
   const isObjectId = (value: string | undefined) => {
     if (!value) return false;
@@ -195,8 +198,6 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
 
   return (
     <>
-      <SEO {...finalSEO} />
-
       <article className="min-h-screen bg-white">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 py-20">
@@ -271,7 +272,7 @@ export function BlogDetailPage({ slug: propSlug }: BlogDetailPageProps) {
 
           {/* Newsletter Subscription */}
           <div className="mt-12 pt-8 border-t border-gray-200">
-            <NewsletterSubscription 
+            <NewsletterSubscription
               source="blog_detail"
               compact={true}
               title={t('stayUpdated')}

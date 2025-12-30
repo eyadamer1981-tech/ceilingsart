@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -19,19 +21,23 @@ interface Blog {
 
 interface BlogPageProps {
   onBlogSelect?: (blogSlug: string) => void;
+  initialBlogs?: Blog[];
 }
 
-export function BlogPage({ onBlogSelect }: BlogPageProps) {
+export function BlogPage({ onBlogSelect, initialBlogs }: BlogPageProps) {
   const { t } = useLanguage();
-  const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [blogPosts, setBlogPosts] = useState<Blog[]>(initialBlogs || []);
+  const [loading, setLoading] = useState(!initialBlogs);
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    if (!initialBlogs) {
+      fetchBlogs();
+    }
+  }, [initialBlogs]);
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/blogs');
       const data = await response.json();
       setBlogPosts(data);
@@ -81,7 +87,7 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
           alt="Blog Banner"
           className="w-full h-full object-cover"
         />
-        
+
         {/* Content Overlay */}
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl px-8">
@@ -210,7 +216,7 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  
+
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="inline-block bg-gradient-to-r from-orange-400 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -218,15 +224,15 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
                       </span>
                       <span className="text-sm text-gray-500">{formatDate(post.createdAt)}</span>
                     </div>
-                    
+
                     <h2 className="text-xl font-medium text-gray-900 mb-3 line-clamp-2 group-hover:text-orange-500 transition-colors duration-300">
                       {post.title}
                     </h2>
-                    
+
                     <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
                       {post.excerpt}
                     </p>
-                    
+
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-sm text-gray-500">By {post.author}</span>
                       <button className="text-orange-500 font-medium hover:text-orange-600 transition-colors duration-300">
@@ -240,7 +246,7 @@ export function BlogPage({ onBlogSelect }: BlogPageProps) {
           )}
 
           {/* Newsletter Signup */}
-          <NewsletterSubscription 
+          <NewsletterSubscription
             source="blog"
             className="mt-20"
           />
