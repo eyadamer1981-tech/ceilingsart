@@ -149,10 +149,16 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- المقال الجديد -->
-
   <url>
     <loc>https://www.ceilingsart.sa/blog/soundproofing-panels-installation-company-in-saudi-arabia</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- المقال المضاف -->
+
+  <url>
+    <loc>https://www.ceilingsart.sa/blog/french-ceiling-installation-company-in-saudi-arabia</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
