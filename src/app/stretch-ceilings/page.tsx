@@ -1,21 +1,35 @@
-'use client';
+import type { Metadata } from 'next';
+import { StretchCeilingsPageClient } from './StretchCeilingsPageClient';
 
-import { ServicesPage } from '../../components/ServicesPage';
-import { Footer } from '../../components/Footer';
-import { useLanguage } from '../../contexts/LanguageContext';
-import PageLayout from '../../components/PageLayout';
+export const metadata: Metadata = {
+  title: 'الاسقف الفرنسية المشدودة | سلينجز ارت بالسعودية',
+  description:
+    'اكتشف أنواع الاسقف الفرنسية المشدودة من سلينجز ارت: أسقف لامعة، مضيئة، مطبوعة، ثلاثية الأبعاد، سقف روز بالألياف الضوئية، وأسقف أكوستيك بخامات باريسول الأصلية.',
+  keywords: [
+    'اسقف فرنسية مشدودة',
+    'السقف الفرنسي',
+    'اسقف مضيئة',
+    'stretch ceilings',
+    'barrisol saudi',
+    'سقف روز',
+    'سقف لامع',
+    'سقف مطبوع',
+    'اسقف 3D',
+  ],
+  alternates: {
+    canonical: 'https://www.ceilingsart.sa/stretch-ceilings',
+  },
+  openGraph: {
+    title: 'الاسقف الفرنسية المشدودة | سلينجز ارت',
+    description:
+      'اكتشف أنواع الاسقف الفرنسية المشدودة: لامعة، مضيئة، مطبوعة، ثلاثية الأبعاد، سقف روز بخامات باريسول.',
+    url: 'https://www.ceilingsart.sa/stretch-ceilings',
+    siteName: 'Ceilings Art',
+    locale: 'ar_SA',
+    type: 'website',
+  },
+};
 
 export default function StretchCeilings() {
-  const { t } = useLanguage();
-  
-  return (
-    <PageLayout>
-      <ServicesPage 
-        category="stretch" 
-        pageTitle={t('stretchCeilingPageTitle')}
-        pageSubtitle={t('stretchCeilingPageSubtitle')}
-      />
-      <Footer />
-    </PageLayout>
-  );
+  return <StretchCeilingsPageClient />;
 }

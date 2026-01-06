@@ -1,14 +1,31 @@
-'use client';
+import type { Metadata } from 'next';
+import { OurWorkPageClient } from './OurWorkPageClient';
 
-import { OurWorkPage } from '../../components/OurWorkPage';
-import { Footer } from '../../components/Footer';
-import PageLayout from '../../components/PageLayout';
+export const metadata: Metadata = {
+  title: 'أعمالنا | سلينجز ارت - مشاريع الاسقف الفرنسية والعزل الصوتي',
+  description:
+    'استعرض مشاريع سلينجز ارت الناجحة في تركيب الاسقف الفرنسية المشدودة وألواح العزل الصوتي للفلل والمنازل والفنادق والمعارض بالسعودية.',
+  keywords: [
+    'مشاريع اسقف فرنسية',
+    'أعمال سلينجز ارت',
+    'صور اسقف مشدودة',
+    'مشاريع العزل الصوتي',
+    'stretch ceiling projects',
+  ],
+  alternates: {
+    canonical: 'https://www.ceilingsart.sa/our-work',
+  },
+  openGraph: {
+    title: 'أعمالنا | سلينجز ارت',
+    description:
+      'استعرض مشاريع سلينجز ارت الناجحة في تركيب الاسقف الفرنسية المشدودة والعزل الصوتي.',
+    url: 'https://www.ceilingsart.sa/our-work',
+    siteName: 'Ceilings Art',
+    locale: 'ar_SA',
+    type: 'website',
+  },
+};
 
 export default function OurWork() {
-  return (
-    <PageLayout>
-      <OurWorkPage onStartProject={() => window.location.href = '/contact'} />
-      <Footer />
-    </PageLayout>
-  );
+  return <OurWorkPageClient />;
 }

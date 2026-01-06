@@ -109,7 +109,16 @@ export async function generateMetadata(
   }
 
   const previousImages = (await parent).openGraph?.images || [];
-  const ogImage = blog.manualSEO?.ogImage || blog.image || (config?.defaultOGImage) || (previousImages.length > 0 ? previousImages[0].url : '/newlogo.png');
+  let fallbackImage = '/newlogo.png';
+  if (previousImages.length > 0) {
+    const item = previousImages[0];
+    if (typeof item === 'string') {
+      fallbackImage = item;
+    } else if (typeof item === 'object' && item !== null && 'url' in item) {
+      fallbackImage = (item as any).url;
+    }
+  }
+  const ogImage = blog.manualSEO?.ogImage || blog.image || (config?.defaultOGImage) || fallbackImage;
 
   return {
     title: `${title} | ${config?.siteName || 'سلينجز ارت'}`,

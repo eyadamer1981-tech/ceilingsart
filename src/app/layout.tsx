@@ -90,6 +90,13 @@ export const metadata: Metadata = {
     locale: 'ar_SA',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'سلينجز ارت بالسعودية | الاسقف الفرنسية وألواح العزل الصوتي',
+    description:
+      'شركة سلينجز ارت بالسعودية متخصصة في الاسقف الفرنسية المشدودة والمضيئة، وخدمات العزل الصوتي وألواح الأكوستيك.',
+    images: ['/newlogo.png'],
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -108,6 +115,11 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <head>
+        {/* ========= hreflang for regional targeting ========= */}
+        <link rel="alternate" hrefLang="ar-SA" href="https://www.ceilingsart.sa/" />
+        <link rel="alternate" hrefLang="ar" href="https://www.ceilingsart.sa/" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.ceilingsart.sa/" />
+
         {/* ========= Schema LocalBusiness ========= */}
         <script
           type="application/ld+json"
