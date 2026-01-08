@@ -151,6 +151,13 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- NEW ARTICLE -->
+  <url>
+    <loc>https://www.ceilingsart.sa/blog/الواح-العزل-الصوتي-بالرياض</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <url>
     <loc>https://www.ceilingsart.sa/blog/soundproofing-panels-installation-company-in-saudi-arabia</loc>
     <changefreq>yearly</changefreq>
