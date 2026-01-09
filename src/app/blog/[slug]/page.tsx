@@ -14,52 +14,47 @@ interface Props {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
+/* =======================
+   GET BLOG
+======================= */
 async function getBlog(slug: string) {
   try {
     await connectDB();
 
-    // 1. Try exact match
     let blog: any = await BlogModel.findOne({ slug }).lean();
 
-    // 2. Try decode matches
     if (!blog) {
       try {
-        const decodedSlug = decodeURIComponent(slug);
-        blog = await BlogModel.findOne({ slug: decodedSlug }).lean();
+        const decoded = decodeURIComponent(slug);
+        blog = await BlogModel.findOne({ slug: decoded }).lean();
         if (!blog) {
-          const doubleDecoded = decodeURIComponent(decodedSlug);
-          blog = await BlogModel.findOne({ slug: doubleDecoded }).lean();
+          blog = await BlogModel.findOne({ slug: decodeURIComponent(decoded) }).lean();
         }
-      } catch (e) { }
+      } catch {}
     }
 
-    // 3. Fallback to ID
     if (!blog && /^[0-9a-fA-F]{24}$/.test(slug)) {
       blog = await BlogModel.findById(slug).lean();
     }
 
     if (!blog) return null;
 
-    // Apply SEO and Internal Links logic like in the API
     const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
-    const configToUse = config || {
-      configKey: 'global',
-      globalAutoInternalLinks: true,
-      maxInternalLinksPerPost: 5
-    };
+    const useAutoLinks =
+      config?.globalAutoInternalLinks && blog.autoInternalLinks !== false;
 
-    const useAutoLinks = configToUse.globalAutoInternalLinks && blog.autoInternalLinks !== false;
-    const manualLinks = blog.manualLinks || [];
+    if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
+      const autoLinks = useAutoLinks
+        ? await InternalLinkMapping.find({ isActive: true }).lean()
+        : [];
 
-    if (useAutoLinks || manualLinks.length > 0) {
-      const autoLinkMappings = useAutoLinks ? await InternalLinkMapping.find({ isActive: true }).lean() : [];
       const linkResult = generateInternalLinks({
         content: blog.content,
-        autoLinks: autoLinkMappings,
-        manualLinks: manualLinks,
-        useAutoLinks: useAutoLinks,
-        maxLinksPerPost: configToUse.maxInternalLinksPerPost || 5,
+        autoLinks,
+        manualLinks: blog.manualLinks || [],
+        useAutoLinks,
+        maxLinksPerPost: config?.maxInternalLinksPerPost || 5
       });
 
       blog.processedContent = linkResult.processedContent;
@@ -67,107 +62,99 @@ async function getBlog(slug: string) {
     }
 
     return JSON.parse(JSON.stringify(blog));
-  } catch (error) {
-    console.error("Error in getBlog Server Component:", error);
+  } catch (e) {
+    console.error(e);
     return null;
   }
 }
 
+/* =======================
+   METADATA
+======================= */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const blog: any = await getBlog(params.slug);
+  if (!blog) return { title: 'المقال غير موجود | Ceilings Art' };
 
-  if (!blog) {
-    return {
-      title: 'المقال غير موجود | سلينجز ارت',
-    };
-  }
-
-  // Get global SEO defaults
   const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
-  // Use the stored metadata or generate it dynamically
   let title = blog.metaTitle || blog.title;
   let description = blog.metaDescription || blog.excerpt;
   let keywords = blog.metaKeywords;
 
-  // Use manual SEO if provided
   if (blog.manualSEO) {
-    if (blog.manualSEO.title) title = blog.manualSEO.title;
-    if (blog.manualSEO.description) description = blog.manualSEO.description;
-    if (blog.manualSEO.keywords && blog.manualSEO.keywords.length > 0) keywords = blog.manualSEO.keywords;
+    title = blog.manualSEO.title || title;
+    description = blog.manualSEO.description || description;
+    keywords = blog.manualSEO.keywords?.length
+      ? blog.manualSEO.keywords
+      : keywords;
   }
 
-  // Auto-generate if missing
   if (!title || !description) {
     const generated = generateSEOMetadata(blog.title, blog.content, blog.excerpt);
-    if (!title) title = generated.metaTitle;
-    if (!description) description = generated.metaDescription;
-    if (!keywords || keywords.length === 0) keywords = generated.metaKeywords;
+    title ||= generated.metaTitle;
+    description ||= generated.metaDescription;
+    keywords ||= generated.metaKeywords;
   }
 
-  const previousImages = (await parent).openGraph?.images || [];
-  let fallbackImage = '/newlogo.png';
-  if (previousImages.length > 0) {
-    const item = previousImages[0];
-    if (typeof item === 'string') {
-      fallbackImage = item;
-    } else if (typeof item === 'object' && item !== null && 'url' in item) {
-      fallbackImage = (item as any).url;
-    }
-  }
-  const ogImage = blog.manualSEO?.ogImage || blog.image || (config?.defaultOGImage) || fallbackImage;
+  const canonical = `https://www.ceilingsart.sa/blog/${blog.slug || blog._id}`;
+  const ogImage =
+    blog.manualSEO?.ogImage ||
+    blog.image ||
+    config?.defaultOGImage ||
+    'https://www.ceilingsart.sa/newlogo.png';
 
   return {
-    title: `${title} | ${config?.siteName || 'سلينجز ارت'}`,
-    description: description,
-    keywords: keywords,
-    authors: [{ name: blog.author || 'Ceilings Art' }],
-    alternates: {
-      canonical: blog.manualSEO?.canonicalUrl || `https://www.ceilingsart.sa/blog/${blog.slug || blog._id}`,
-    },
+    title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
+    description,
+    keywords,
+    alternates: { canonical },
     openGraph: {
-      title: title,
-      description: description,
-      url: `https://www.ceilingsart.sa/blog/${blog.slug || blog._id}`,
+      title,
+      description,
+      url: canonical,
       siteName: config?.siteName || 'Ceilings Art',
       images: [ogImage],
       type: 'article',
-      publishedTime: blog.createdAt,
-      modifiedTime: blog.updatedAt,
-      locale: 'ar_SA',
+      publishedTime: new Date(blog.createdAt).toISOString(),
+      modifiedTime: new Date(blog.updatedAt || blog.createdAt).toISOString(),
+      locale: 'ar_SA'
     },
     twitter: {
       card: 'summary_large_image',
-      title: title,
-      description: description,
-      images: [ogImage],
-      site: config?.twitterHandle || undefined,
-    },
+      title,
+      description,
+      images: [ogImage]
+    }
   };
 }
 
+/* =======================
+   PAGE
+======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
+  if (!blog) notFound();
 
-  if (!blog) {
-    notFound();
-  }
-
-  // Prepare JSON-LD Schema
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.ceilingsart.sa/blog/${blog.slug || blog._id}`
+    },
     "headline": blog.title,
-    "description": blog.excerpt || blog.metaDescription,
-    "image": blog.image,
-    "datePublished": blog.createdAt,
-    "dateModified": blog.updatedAt || blog.createdAt,
+    "description": blog.excerpt || blog.metaDescription || blog.title,
+    "image": [
+      blog.image?.startsWith('http')
+        ? blog.image
+        : 'https://www.ceilingsart.sa/newlogo.png'
+    ],
     "author": {
-      "@type": "Person",
-      "name": blog.author || 'Ceilings Art'
+      "@type": "Organization",
+      "name": "Ceilings Art"
     },
     "publisher": {
       "@type": "Organization",
@@ -177,10 +164,9 @@ export default async function BlogPostPage({ params }: Props) {
         "url": "https://www.ceilingsart.sa/newlogo.png"
       }
     },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://www.ceilingsart.sa/blog/${blog.slug || blog._id}`
-    }
+    "datePublished": new Date(blog.createdAt).toISOString(),
+    "dateModified": new Date(blog.updatedAt || blog.createdAt).toISOString(),
+    "inLanguage": "ar-SA"
   };
 
   return (
