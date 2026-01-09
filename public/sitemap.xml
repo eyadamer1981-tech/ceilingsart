@@ -120,40 +120,27 @@
     <priority>0.6</priority>
   </url>
 
-  <url>
-    <loc>https://www.ceilingsart.sa/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Blog Articles -->
   <url>
-    <loc>https://www.ceilingsart.sa/blog/ما-هي-الاسقف-الفرنسية-المشدودة-في-السعودية-ومميزاتها-الأساسية؟</loc>
+    <loc>https://www.ceilingsart.sa/blog/%D9%85%D8%A7-%D9%87%D9%8A-%D8%A7%D9%84%D8%A7%D8%B3%D9%82%D9%81-%D8%A7%D9%84%D9%81%D8%B1%D9%86%D8%B3%D9%8A%D8%A9-%D8%A7%D9%84%D9%85%D8%B4%D8%AF%D9%88%D8%AF%D8%A9-%D9%81%D9%8A-%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9-%D8%9F</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.ceilingsart.sa/blog/شركة-تركيب-اسقف-فرنسية-بالسعودية-خبرة-واحترافية-مع-سيلنجز-ارت</loc>
+    <loc>https://www.ceilingsart.sa/blog/شركة-تركيب-اسقف-فرنسية-بالسعودية</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.ceilingsart.sa/blog/الواح-العزل-الصوتي-بالسعودية-حلول-احترافية-من-سيلنجز-ارت</loc>
+    <loc>https://www.ceilingsart.sa/blog/الواح-العزل-الصوتي-بالسعودية</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.ceilingsart.sa/blog/شركة-تركيب-الواح-العزل-الصوتي-بالسعودية-جودة-عالية-في-عزل-الصوت-من-سيلنجز-ارت</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- NEW ARTICLE -->
-  <url>
-    <loc>https://www.ceilingsart.sa/blog/الواح-العزل-الصوتي-بالرياض</loc>
+    <loc>https://www.ceilingsart.sa/blog/شركة-تركيب-الواح-العزل-الصوتي-بالسعودية</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -166,6 +153,12 @@
 
   <url>
     <loc>https://www.ceilingsart.sa/blog/french-ceiling-installation-company-in-saudi-arabia</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ceilingsart.sa/blog/الواح-العزل-الصوتي-بالرياض</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
