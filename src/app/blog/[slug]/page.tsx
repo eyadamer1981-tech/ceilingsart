@@ -1,17 +1,22 @@
-// app/blog/[slug]/page.tsx
-
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { Blog as BlogModel, SEOConfig, InternalLinkMapping } from '../../../lib/models';
+import { BlogDetailPage } from '../../../components/BlogDetailPage';
 import PageLayout from '../../../components/PageLayout';
 import { notFound } from 'next/navigation';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
 import { generateInternalLinks } from '../../../lib/internal-linking';
 
+/* =======================
+   IMPORTANT SEO SETTINGS
+======================= */
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 interface Props {
   params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 /* =======================
@@ -27,6 +32,9 @@ async function getBlog(slug: string) {
       try {
         const decoded = decodeURIComponent(slug);
         blog = await BlogModel.findOne({ slug: decoded }).lean();
+        if (!blog) {
+          blog = await BlogModel.findOne({ slug: decodeURIComponent(decoded) }).lean();
+        }
       } catch {}
     }
 
@@ -55,7 +63,11 @@ async function getBlog(slug: string) {
       });
 
       blog.processedContent = linkResult.processedContent;
-    } else {
+      blog.internalLinksApplied = linkResult.linksApplied;
+    }
+
+    /* ======= FIX IMPORTANT ======= */
+    if (!blog.processedContent) {
       blog.processedContent = blog.content;
     }
 
@@ -67,9 +79,12 @@ async function getBlog(slug: string) {
 }
 
 /* =======================
-   METADATA (SEO)
+   METADATA
 ======================= */
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const blog: any = await getBlog(params.slug);
   if (!blog) return { title: 'المقال غير موجود | Ceilings Art' };
 
@@ -77,45 +92,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   let title = blog.metaTitle || blog.title;
   let description = blog.metaDescription || blog.excerpt || blog.title;
+  let keywords = blog.metaKeywords || [];
+
+  if (blog.manualSEO) {
+    title = blog.manualSEO.title || title;
+    description = blog.manualSEO.description || description;
+    keywords = blog.manualSEO.keywords?.length
+      ? blog.manualSEO.keywords
+      : keywords;
+  }
 
   if (!title || !description) {
     const generated = generateSEOMetadata(blog.title, blog.content, blog.excerpt);
     title ||= generated.metaTitle;
     description ||= generated.metaDescription;
+    keywords ||= generated.metaKeywords;
   }
-
-  // منع القطع في نتائج جوجل
-  title = title.length > 60 ? title.slice(0, 60) : title;
-  description = description.length > 160 ? description.slice(0, 160) : description;
 
   const canonical = `https://www.ceilingsart.sa/blog/${blog.slug}`;
   const ogImage =
-    blog.image ||
     blog.manualSEO?.ogImage ||
+    blog.image ||
     config?.defaultOGImage ||
     'https://www.ceilingsart.sa/newlogo.png';
 
   return {
     title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
     description,
+    keywords,
     alternates: { canonical },
     openGraph: {
       title,
       description,
       url: canonical,
       siteName: config?.siteName || 'Ceilings Art',
+      images: [ogImage],
       type: 'article',
-      locale: 'ar_SA',
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title
-        }
-      ],
       publishedTime: new Date(blog.createdAt).toISOString(),
-      modifiedTime: new Date(blog.updatedAt || blog.createdAt).toISOString()
+      modifiedTime: new Date(blog.updatedAt || blog.createdAt).toISOString(),
+      locale: 'ar_SA'
     },
     twitter: {
       card: 'summary_large_image',
@@ -131,9 +146,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 ======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
-  if (!blog) notFound();
 
-  const imageUrl = blog.image || 'https://www.ceilingsart.sa/newlogo.png';
+  if (!blog || !blog.content) {
+    notFound();
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -144,12 +160,11 @@ export default async function BlogPostPage({ params }: Props) {
     },
     "headline": blog.title,
     "description": blog.excerpt || blog.metaDescription || blog.title,
-    "image": {
-      "@type": "ImageObject",
-      "url": imageUrl,
-      "width": 1200,
-      "height": 630
-    },
+    "image": [
+      blog.image?.startsWith('http')
+        ? blog.image
+        : 'https://www.ceilingsart.sa/newlogo.png'
+    ],
     "author": {
       "@type": "Organization",
       "name": "Ceilings Art"
@@ -164,7 +179,6 @@ export default async function BlogPostPage({ params }: Props) {
     },
     "datePublished": new Date(blog.createdAt).toISOString(),
     "dateModified": new Date(blog.updatedAt || blog.createdAt).toISOString(),
-    "wordCount": blog.content?.split(' ').length || 0,
     "inLanguage": "ar-SA"
   };
 
@@ -174,22 +188,7 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <article>
-        <h1>{blog.title}</h1>
-
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={blog.title}
-            width="1200"
-            height="630"
-            loading="eager"
-          />
-        )}
-
-        <div dangerouslySetInnerHTML={{ __html: blog.processedContent }} />
-      </article>
+      <BlogDetailPage initialBlog={blog} slug={params.slug} />
     </PageLayout>
   );
 }
