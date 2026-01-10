@@ -1,14 +1,251 @@
-'use client';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-import { FabricWrapsPage } from '../../../components/FabricWrapsPage';
-import { Footer } from '../../../components/Footer';
-import PageLayout from '../../../components/PageLayout';
+ :root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
 
-export default function AcousticFabricWraps() {
-  return (
-    <PageLayout>
-      <FabricWrapsPage />
-      <Footer />
-    </PageLayout>
-  );
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Force LTR for sliders to prevent flipping */
+.slider-container,
+.slider-container * {
+  direction: ltr !important;
+}
+
+[dir="rtl"] .space-x-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+[dir="rtl"] .space-x-6 > * + * {
+  margin-left: 0;
+  margin-right: 1.5rem;
+}
+
+[dir="rtl"] .space-x-8 > * + * {
+  margin-left: 0;
+  margin-right: 2rem;
+}
+
+[dir="rtl"] .space-x-reverse > * + * {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* Arabic font support */
+[dir="rtl"] {
+  font-family: 'Inter', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Performance optimizations */
+.bg-blob-bg {
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+
+.bg-center-image {
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+
+/* Prevent layout thrashing */
+* {
+  box-sizing: border-box;
+}
+
+/* Hide scroll bars but keep functionality */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Hide scroll bars on all elements */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Ensure all containers respect viewport width */
+.container {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Fix for any elements that might cause horizontal overflow */
+section, div {
+  max-width: 100%;
+}
+
+/* Specific fixes for stretch ceiling pages */
+.min-h-screen {
+  overflow-x: hidden;
+}
+
+/* Fix for grid layouts that might overflow */
+.grid {
+  max-width: 100%;
+}
+
+/* Fix for flex containers */
+.flex {
+  max-width: 100%;
+}
+
+/* Fix for text that might be too long */
+.text-center, .text-left, .text-right {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Prevent scroll bars during animations */
+* {
+  overflow-x: hidden !important;
+}
+
+/* Fix for motion animations that might cause overflow */
+.motion-safe {
+  overflow-x: hidden;
+}
+
+/* Fix for hover scale animations */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+  overflow: hidden;
+}
+
+/* Fix for transform animations */
+.transform {
+  overflow: hidden;
+}
+
+/* Ensure animations don't cause horizontal scroll */
+[data-motion] {
+  overflow-x: hidden;
+}
+
+/* Fix for grid items with animations */
+.grid > * {
+  overflow: hidden;
+}
+
+/* Fix for motion components */
+[data-framer-motion] {
+  overflow: hidden;
+}
+
+/* Fix for scale animations */
+.scale-105, .hover\:scale-105 {
+  overflow: hidden;
+}
+
+/* Fix for translate animations */
+.translate-x-30, .translate-x--30 {
+  overflow: hidden;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile Menu Button - Ensure it's always visible */
+@media (max-width: 1023px) {
+  .mobile-menu-button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 50 !important;
+  }
+  
+  /* Ensure the mobile menu button container is always visible */
+  .mobile-menu-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Force visibility of mobile menu elements */
+  .lg\\:hidden {
+    display: flex !important;
+  }
+}
+
+/* Desktop - Hide mobile menu button */
+@media (min-width: 1024px) {
+  .mobile-menu-button {
+    display: none !important;
+  }
+
+  .mobile-menu-container {
+    display: none !important;
+  }
+}
+
+/* Internal Link Styling - Make links visually distinct */
+.prose .internal-link {
+  color: #ea580c !important; /* orange-600 */
+  text-decoration: underline;
+  text-decoration-color: #fed7aa; /* orange-200 */
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.prose .internal-link:hover {
+  color: #c2410c !important; /* orange-700 */
+  text-decoration-color: #ea580c; /* orange-600 */
+  text-decoration-thickness: 2px;
+  background-color: #ffedd5; /* orange-100 */
+  padding: 0 4px;
+  border-radius: 3px;
 }
