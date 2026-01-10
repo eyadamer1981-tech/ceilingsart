@@ -1,7 +1,7 @@
 // app/fabric-wraps/page.tsx
-import { FabricWrapsPage } from '../../../components/FabricWrapsPage';
-import { Footer } from '../../../components/Footer';
-import PageLayout from '../../../components/PageLayout';
+import { FabricWrapsPage } from '../../../components/FabricWrapsPage'; // Client Component
+import { Footer } from '../../../components/Footer'; // Client Component
+import PageLayout from '../../../components/PageLayout'; // ممكن Server Component
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -37,4 +37,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية'
+    title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
+    description:
+      'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية. خدماتنا متاحة في جميع أنحاء السعودية.',
+    images: ['https://www.ceilingsart.sa/newlogo.png'],
+  },
+};
+
+export default function AcousticFabricWraps() {
+  return (
+    <PageLayout>
+      <FabricWrapsPage /> {/* Client Component */}
+      <Footer /> {/* Client Component */}
+    </PageLayout>
+  );
+}
