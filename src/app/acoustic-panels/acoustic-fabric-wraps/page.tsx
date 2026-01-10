@@ -7,14 +7,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
   description:
-    'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية. خدماتنا متاحة في جميع أنحاء السعودية.',
-  keywords: [
-    'أغطية قماشية عازلة للصوت الرياض',
-    'سلينجز ارت الرياض',
-    'عزل الصوت بالرياض',
-    'اسقف فرنسية السعودية',
-    'Ceilings Art Saudi Arabia',
-  ],
+    'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية.',
   alternates: {
     canonical: 'https://www.ceilingsart.sa/acoustic-panels/acoustic-fabric-wraps',
   },
@@ -47,8 +40,9 @@ export const metadata: Metadata = {
 export default function AcousticFabricWraps() {
   return (
     <PageLayout>
-      <FabricWrapsPage /> {/* Client Component داخل Server Component */}
-      <Footer />
+      {/* FabricWrapsPage هو Client Component داخلي */}
+      <FabricWrapsPage />  
+      <Footer />  
     </PageLayout>
   );
 }
