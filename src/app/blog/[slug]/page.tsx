@@ -1,17 +1,13 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import connectDB from '../../../lib/mongodb';
-import {
-  Blog as BlogModel,
-  SEOConfig,
-  InternalLinkMapping
-} from '../../../lib/models';
+import { Blog as BlogModel, SEOConfig, InternalLinkMapping } from '../../../lib/models';
 import { BlogDetailPage } from '../../../components/BlogDetailPage';
 import PageLayout from '../../../components/PageLayout';
 import { notFound } from 'next/navigation';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
 import { generateInternalLinks } from '../../../lib/internal-linking';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'auto'; // أفضل خيار لـ SEO
 
 interface Props {
   params: { slug: string };
@@ -32,9 +28,7 @@ async function getBlog(slug: string) {
         const decoded = decodeURIComponent(slug);
         blog = await BlogModel.findOne({ slug: decoded }).lean();
         if (!blog) {
-          blog = await BlogModel.findOne({
-            slug: decodeURIComponent(decoded)
-          }).lean();
+          blog = await BlogModel.findOne({ slug: decodeURIComponent(decoded) }).lean();
         }
       } catch {}
     }
@@ -45,13 +39,9 @@ async function getBlog(slug: string) {
 
     if (!blog) return null;
 
-    const config: any = await SEOConfig.findOne({
-      configKey: 'global'
-    }).lean();
+    const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
-    const useAutoLinks =
-      config?.globalAutoInternalLinks &&
-      blog.autoInternalLinks !== false;
+    const useAutoLinks = config?.globalAutoInternalLinks && blog.autoInternalLinks !== false;
 
     if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
       const autoLinks = useAutoLinks
@@ -70,7 +60,6 @@ async function getBlog(slug: string) {
       blog.internalLinksApplied = linkResult.linksApplied;
     }
 
-    // ضمان عرض المحتوى
     if (!blog.processedContent) {
       blog.processedContent = blog.content;
     }
@@ -83,97 +72,61 @@ async function getBlog(slug: string) {
 }
 
 /* =======================
-   METADATA (SEO + SOCIAL)
+   METADATA + SEO
 ======================= */
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const blog: any = await getBlog(params.slug);
-  if (!blog)
-    return { title: 'المقال غير موجود | Ceilings Art' };
+  if (!blog) return { title: 'المقال غير موجود | Ceilings Art' };
 
-  const config: any = await SEOConfig.findOne({
-    configKey: 'global'
-  }).lean();
+  const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
-  let title = blog.metaTitle || blog.title;
-  let description =
-    blog.metaDescription || blog.excerpt || blog.title;
+  // Title / Description / Keywords
+  let title = blog.metaTitle || blog.title || 'مقال Ceilings Art';
+  let description = blog.metaDescription || blog.excerpt || blog.title || 'مقال من Ceilings Art';
   let keywords = blog.metaKeywords || [];
 
   if (blog.manualSEO) {
     title = blog.manualSEO.title || title;
-    description =
-      blog.manualSEO.description || description;
-    keywords = blog.manualSEO.keywords?.length
-      ? blog.manualSEO.keywords
-      : keywords;
+    description = blog.manualSEO.description || description;
+    keywords = blog.manualSEO.keywords?.length ? blog.manualSEO.keywords : keywords;
   }
 
+  // fallback تلقائي
   if (!title || !description) {
-    const generated = generateSEOMetadata(
-      blog.title,
-      blog.content,
-      blog.excerpt
-    );
+    const generated = generateSEOMetadata(blog.title, blog.content, blog.excerpt);
     title ||= generated.metaTitle;
     description ||= generated.metaDescription;
     keywords ||= generated.metaKeywords;
   }
 
-  const canonical = `https://www.ceilingsart.sa/blog/${
-    blog.slug || blog._id
-  }`;
+  const canonical = `https://www.ceilingsart.sa/blog/${encodeURIComponent(blog.slug || blog._id)}`;
 
-  /* ===== صور المقال ===== */
+  // الصور لجميع المنصات
   const images: string[] = [];
-
-  if (blog.image) {
-    images.push(
-      blog.image.startsWith('http')
-        ? blog.image
-        : 'https://www.ceilingsart.sa/newlogo.png'
-    );
-  }
-
+  if (blog.image?.startsWith('http')) images.push(blog.image);
   if (Array.isArray(blog.gallery)) {
     blog.gallery.forEach((img: string) => {
-      if (img?.startsWith('http')) {
-        images.push(img);
-      }
+      if (img?.startsWith('http')) images.push(img);
     });
   }
-
-  if (images.length === 0) {
-    images.push('https://www.ceilingsart.sa/newlogo.png');
-  }
+  if (images.length === 0) images.push(config?.defaultOGImage || 'https://www.ceilingsart.sa/newlogo.png');
 
   return {
     title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
     description,
     keywords,
     alternates: { canonical },
-
     openGraph: {
       title,
       description,
       url: canonical,
       siteName: config?.siteName || 'Ceilings Art',
-      images: images.map((img) => ({
-        url: img,
-        width: 1200,
-        height: 630,
-        alt: title
-      })),
+      images: images.map(img => ({ url: img, width: 1200, height: 630, alt: title })),
       type: 'article',
       publishedTime: new Date(blog.createdAt).toISOString(),
-      modifiedTime: new Date(
-        blog.updatedAt || blog.createdAt
-      ).toISOString(),
+      modifiedTime: new Date(blog.updatedAt || blog.createdAt).toISOString(),
       locale: 'ar_SA'
     },
-
     twitter: {
       card: 'summary_large_image',
       title,
@@ -184,80 +137,43 @@ export async function generateMetadata(
 }
 
 /* =======================
-   PAGE
+   PAGE COMPONENT
 ======================= */
-export default async function BlogPostPage({
-  params
-}: Props) {
+export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
+  // الصور للـ JSON-LD
   const images: string[] = [];
-
-  if (blog.image?.startsWith('http')) {
-    images.push(blog.image);
-  }
-
+  if (blog.image?.startsWith('http')) images.push(blog.image);
   if (Array.isArray(blog.gallery)) {
-    blog.gallery.forEach((img: string) => {
-      if (img?.startsWith('http')) {
-        images.push(img);
-      }
-    });
+    blog.gallery.forEach(img => { if (img?.startsWith('http')) images.push(img); });
   }
+  if (images.length === 0) images.push('https://www.ceilingsart.sa/newlogo.png');
 
-  if (images.length === 0) {
-    images.push('https://www.ceilingsart.sa/newlogo.png');
-  }
-
+  // JSON-LD Article Schema
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://www.ceilingsart.sa/blog/${
-        blog.slug || blog._id
-      }`
-    },
-    headline: blog.title,
-    description:
-      blog.excerpt || blog.metaDescription || blog.title,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.ceilingsart.sa/blog/${encodeURIComponent(blog.slug || blog._id)}` },
+    headline: blog.title || 'مقال Ceilings Art',
+    description: blog.excerpt || blog.metaDescription || blog.title || 'مقال من Ceilings Art',
     image: images,
-    author: {
-      '@type': 'Organization',
-      name: 'Ceilings Art'
-    },
+    author: { '@type': 'Organization', name: 'Ceilings Art' },
     publisher: {
       '@type': 'Organization',
       name: 'Ceilings Art',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://www.ceilingsart.sa/newlogo.png'
-      }
+      logo: { '@type': 'ImageObject', url: 'https://www.ceilingsart.sa/newlogo.png' }
     },
     datePublished: new Date(blog.createdAt).toISOString(),
-    dateModified: new Date(
-      blog.updatedAt || blog.createdAt
-    ).toISOString(),
+    dateModified: new Date(blog.updatedAt || blog.createdAt).toISOString(),
     inLanguage: 'ar-SA'
   };
 
   return (
     <PageLayout>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd)
-        }}
-      />
-
-      <BlogDetailPage
-        initialBlog={{
-          ...blog,
-          content: blog.processedContent
-        }}
-        slug={params.slug}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <BlogDetailPage initialBlog={{ ...blog, content: blog.processedContent }} slug={params.slug} />
     </PageLayout>
   );
 }
