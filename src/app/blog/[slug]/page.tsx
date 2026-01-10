@@ -70,7 +70,7 @@ async function getBlog(slug: string) {
       blog.internalLinksApplied = linkResult.linksApplied;
     }
 
-    // 🔴 مهم جدا: ضمان عرض المحتوى دايما بروابط
+    // ضمان عرض المحتوى
     if (!blog.processedContent) {
       blog.processedContent = blog.content;
     }
@@ -83,7 +83,7 @@ async function getBlog(slug: string) {
 }
 
 /* =======================
-   METADATA (SEO)
+   METADATA (SEO + SOCIAL)
 ======================= */
 export async function generateMetadata(
   { params }: Props,
@@ -126,23 +126,46 @@ export async function generateMetadata(
     blog.slug || blog._id
   }`;
 
-  const ogImage =
-    blog.manualSEO?.ogImage ||
-    blog.image ||
-    config?.defaultOGImage ||
-    'https://www.ceilingsart.sa/newlogo.png';
+  /* ===== صور المقال ===== */
+  const images: string[] = [];
+
+  if (blog.image) {
+    images.push(
+      blog.image.startsWith('http')
+        ? blog.image
+        : 'https://www.ceilingsart.sa/newlogo.png'
+    );
+  }
+
+  if (Array.isArray(blog.gallery)) {
+    blog.gallery.forEach((img: string) => {
+      if (img?.startsWith('http')) {
+        images.push(img);
+      }
+    });
+  }
+
+  if (images.length === 0) {
+    images.push('https://www.ceilingsart.sa/newlogo.png');
+  }
 
   return {
     title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
     description,
     keywords,
     alternates: { canonical },
+
     openGraph: {
       title,
       description,
       url: canonical,
       siteName: config?.siteName || 'Ceilings Art',
-      images: [ogImage],
+      images: images.map((img) => ({
+        url: img,
+        width: 1200,
+        height: 630,
+        alt: title
+      })),
       type: 'article',
       publishedTime: new Date(blog.createdAt).toISOString(),
       modifiedTime: new Date(
@@ -150,11 +173,12 @@ export async function generateMetadata(
       ).toISOString(),
       locale: 'ar_SA'
     },
+
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImage]
+      images: [images[0]]
     }
   };
 }
@@ -168,6 +192,24 @@ export default async function BlogPostPage({
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
+  const images: string[] = [];
+
+  if (blog.image?.startsWith('http')) {
+    images.push(blog.image);
+  }
+
+  if (Array.isArray(blog.gallery)) {
+    blog.gallery.forEach((img: string) => {
+      if (img?.startsWith('http')) {
+        images.push(img);
+      }
+    });
+  }
+
+  if (images.length === 0) {
+    images.push('https://www.ceilingsart.sa/newlogo.png');
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -180,11 +222,7 @@ export default async function BlogPostPage({
     headline: blog.title,
     description:
       blog.excerpt || blog.metaDescription || blog.title,
-    image: [
-      blog.image?.startsWith('http')
-        ? blog.image
-        : 'https://www.ceilingsart.sa/newlogo.png'
-    ],
+    image: images,
     author: {
       '@type': 'Organization',
       name: 'Ceilings Art'
@@ -213,11 +251,10 @@ export default async function BlogPostPage({
         }}
       />
 
-      {/* صفحة المقال */}
       <BlogDetailPage
         initialBlog={{
           ...blog,
-          content: blog.processedContent // 👈 مهم
+          content: blog.processedContent
         }}
         slug={params.slug}
       />
