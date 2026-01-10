@@ -6,8 +6,9 @@ import PageLayout from '../../../components/PageLayout';
 import { notFound } from 'next/navigation';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
 import { generateInternalLinks } from '../../../lib/internal-linking';
+import Image from 'next/image';
 
-export const dynamic = 'auto'; // أفضل خيار لـ SEO
+export const dynamic = 'auto'; // الأفضل للـ SEO
 
 interface Props {
   params: { slug: string };
@@ -80,7 +81,6 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
   const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
-  // Title / Description / Keywords
   let title = blog.metaTitle || blog.title || 'مقال Ceilings Art';
   let description = blog.metaDescription || blog.excerpt || blog.title || 'مقال من Ceilings Art';
   let keywords = blog.metaKeywords || [];
@@ -91,7 +91,6 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     keywords = blog.manualSEO.keywords?.length ? blog.manualSEO.keywords : keywords;
   }
 
-  // fallback تلقائي
   if (!title || !description) {
     const generated = generateSEOMetadata(blog.title, blog.content, blog.excerpt);
     title ||= generated.metaTitle;
@@ -105,9 +104,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   const images: string[] = [];
   if (blog.image?.startsWith('http')) images.push(blog.image);
   if (Array.isArray(blog.gallery)) {
-    blog.gallery.forEach((img: string) => {
-      if (img?.startsWith('http')) images.push(img);
-    });
+    blog.gallery.forEach((img: string) => { if (img?.startsWith('http')) images.push(img); });
   }
   if (images.length === 0) images.push(config?.defaultOGImage || 'https://www.ceilingsart.sa/newlogo.png');
 
@@ -143,7 +140,6 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  // الصور للـ JSON-LD
   const images: string[] = [];
   if (blog.image?.startsWith('http')) images.push(blog.image);
   if (Array.isArray(blog.gallery)) {
@@ -151,7 +147,6 @@ export default async function BlogPostPage({ params }: Props) {
   }
   if (images.length === 0) images.push('https://www.ceilingsart.sa/newlogo.png');
 
-  // JSON-LD Article Schema
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -160,11 +155,7 @@ export default async function BlogPostPage({ params }: Props) {
     description: blog.excerpt || blog.metaDescription || blog.title || 'مقال من Ceilings Art',
     image: images,
     author: { '@type': 'Organization', name: 'Ceilings Art' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ceilings Art',
-      logo: { '@type': 'ImageObject', url: 'https://www.ceilingsart.sa/newlogo.png' }
-    },
+    publisher: { '@type': 'Organization', name: 'Ceilings Art', logo: { '@type': 'ImageObject', url: 'https://www.ceilingsart.sa/newlogo.png' } },
     datePublished: new Date(blog.createdAt).toISOString(),
     dateModified: new Date(blog.updatedAt || blog.createdAt).toISOString(),
     inLanguage: 'ar-SA'
@@ -173,6 +164,21 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <PageLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      {/* معرض الصور */}
+      {images.map((img, idx) => (
+        <div key={idx} style={{ marginBottom: '16px', width: '100%', textAlign: 'center' }}>
+          <Image
+            src={img}
+            alt={blog.title || `صورة المقال ${idx + 1}`}
+            width={1200}
+            height={630}
+            style={{ width: '100%', height: 'auto', objectFit: 'contain', objectPosition: 'center' }}
+            sizes="(max-width: 768px) 100vw, 1200px"
+          />
+        </div>
+      ))}
+
       <BlogDetailPage initialBlog={{ ...blog, content: blog.processedContent }} slug={params.slug} />
     </PageLayout>
   );
