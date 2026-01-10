@@ -3,10 +3,13 @@ import dynamic from 'next/dynamic';
 import PageLayout from '@/components/PageLayout';
 import type { Metadata } from 'next';
 
-// استدعاء Client Components بدون SSR
-const FabricWrapsPage = dynamic(() => import('@/components/FabricWrapsPage'), { ssr: false });
+// Dynamic import للـ Client Components
+const FabricWrapsPage = dynamic(() => import('@/components/FabricWrapsPage'), {
+  ssr: false,
+});
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 
+// Metadata للصفحة
 export const metadata: Metadata = {
   title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
   description:
@@ -19,7 +22,8 @@ export const metadata: Metadata = {
     'Ceilings Art Saudi Arabia',
   ],
   alternates: {
-    canonical: 'https://www.ceilingsart.sa/acoustic-panels/acoustic-fabric-wraps',
+    canonical:
+      'https://www.ceilingsart.sa/acoustic-panels/acoustic-fabric-wraps',
   },
   openGraph: {
     title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
