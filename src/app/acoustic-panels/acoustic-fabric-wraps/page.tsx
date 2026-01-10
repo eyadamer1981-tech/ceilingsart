@@ -1,42 +1,40 @@
-'use client';
-
-import Head from 'next/head';
+// app/fabric-wraps/page.tsx
 import { FabricWrapsPage } from '../../../components/FabricWrapsPage';
 import { Footer } from '../../../components/Footer';
 import PageLayout from '../../../components/PageLayout';
+import type { Metadata } from 'next';
 
-export default function AcousticFabricWraps() {
-  const pageTitle = 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية';
-  const pageDescription =
-    'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية. خدماتنا متاحة في جميع أنحاء السعودية.';
-  const canonicalUrl = 'https://www.ceilingsart.sa/fabric-wraps';
-  const ogImage = 'https://www.ceilingsart.sa/newlogo.png';
-
-  return (
-    <PageLayout>
-      <Head>
-        {/* Title and Meta */}
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={canonicalUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Ceilings Art" />
-        <meta property="og:type" content="product" />
-        <meta property="og:image" content={ogImage} />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content={ogImage} />
-      </Head>
-
-      <FabricWrapsPage />
-      <Footer />
-    </PageLayout>
-  );
-}
+export const metadata: Metadata = {
+  title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
+  description:
+    'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية. خدماتنا متاحة في جميع أنحاء السعودية.',
+  keywords: [
+    'أغطية قماشية عازلة للصوت الرياض',
+    'سلينجز ارت الرياض',
+    'عزل الصوت بالرياض',
+    'اسقف فرنسية السعودية',
+    'Ceilings Art Saudi Arabia',
+  ],
+  alternates: {
+    canonical: 'https://www.ceilingsart.sa/fabric-wraps',
+  },
+  openGraph: {
+    title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
+    description:
+      'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية، لتجربة صوتية محسّنة مع تصميم أنيق وجودة أوروبية. خدماتنا متاحة في جميع أنحاء السعودية.',
+    url: 'https://www.ceilingsart.sa/fabric-wraps',
+    siteName: 'Ceilings Art',
+    locale: 'ar_SA',
+    type: 'product',
+    images: [
+      {
+        url: 'https://www.ceilingsart.sa/newlogo.png',
+        width: 1200,
+        height: 630,
+        alt: 'أغطية قماشية صوتية - سلينجز ارت - الرياض',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية'
