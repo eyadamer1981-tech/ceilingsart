@@ -3,11 +3,10 @@ import PageLayout from '@/components/PageLayout';
 import dynamic from 'next/dynamic';
 import type { Metadata } from 'next';
 
-// استيراد Client Components بشكل ديناميكي
+// استدعاء Client Components ديناميكيًا
 const FabricWrapsPage = dynamic(() => import('@/components/FabricWrapsPage'), { ssr: false });
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 
-// Metadata للصفحة
 export const metadata: Metadata = {
   title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
   description:
@@ -24,8 +23,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'أغطية القماشية الصوتية | سلينجز ارت - الرياض، السعودية',
-    description:
-      'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية.',
+    description: 'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض، السعودية.',
     url: 'https://www.ceilingsart.sa/acoustic-panels/acoustic-fabric-wraps',
     siteName: 'Ceilings Art',
     locale: 'ar_SA',
@@ -42,8 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'أغطية القماشية الصوتية | سلينجز ارت',
-    description:
-      'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض - السعودية.',
+    description: 'اكتشف أغطية القماشية العازلة للصوت من سلينجز ارت في الرياض - السعودية.',
     images: ['https://www.ceilingsart.sa/newlogo.png'],
   },
 };
