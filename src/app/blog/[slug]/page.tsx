@@ -1,7 +1,8 @@
-import { Metadata, ResolvingMetadata } from 'next';
+// app/blog/[slug]/page.tsx
+
+import { Metadata } from 'next';
 import connectDB from '../../../lib/mongodb';
 import { Blog as BlogModel, SEOConfig, InternalLinkMapping } from '../../../lib/models';
-import { BlogDetailPage } from '../../../components/BlogDetailPage';
 import PageLayout from '../../../components/PageLayout';
 import { notFound } from 'next/navigation';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
@@ -27,9 +28,6 @@ async function getBlog(slug: string) {
       try {
         const decoded = decodeURIComponent(slug);
         blog = await BlogModel.findOne({ slug: decoded }).lean();
-        if (!blog) {
-          blog = await BlogModel.findOne({ slug: decodeURIComponent(decoded) }).lean();
-        }
       } catch {}
     }
 
@@ -59,6 +57,8 @@ async function getBlog(slug: string) {
 
       blog.processedContent = linkResult.processedContent;
       blog.internalLinksApplied = linkResult.linksApplied;
+    } else {
+      blog.processedContent = blog.content;
     }
 
     return JSON.parse(JSON.stringify(blog));
@@ -71,25 +71,20 @@ async function getBlog(slug: string) {
 /* =======================
    METADATA
 ======================= */
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const blog: any = await getBlog(params.slug);
   if (!blog) return { title: 'المقال غير موجود | Ceilings Art' };
 
   const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
 
   let title = blog.metaTitle || blog.title;
-  let description = blog.metaDescription || blog.excerpt;
-  let keywords = blog.metaKeywords;
+  let description = blog.metaDescription || blog.excerpt || blog.title;
+  let keywords = blog.metaKeywords || [];
 
   if (blog.manualSEO) {
     title = blog.manualSEO.title || title;
     description = blog.manualSEO.description || description;
-    keywords = blog.manualSEO.keywords?.length
-      ? blog.manualSEO.keywords
-      : keywords;
+    keywords = blog.manualSEO.keywords?.length ? blog.manualSEO.keywords : keywords;
   }
 
   if (!title || !description) {
@@ -132,7 +127,7 @@ export async function generateMetadata(
 }
 
 /* =======================
-   PAGE
+   PAGE COMPONENT
 ======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
@@ -152,17 +147,11 @@ export default async function BlogPostPage({ params }: Props) {
         ? blog.image
         : 'https://www.ceilingsart.sa/newlogo.png'
     ],
-    "author": {
-      "@type": "Organization",
-      "name": "Ceilings Art"
-    },
+    "author": { "@type": "Organization", "name": "Ceilings Art" },
     "publisher": {
       "@type": "Organization",
       "name": "Ceilings Art",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.ceilingsart.sa/newlogo.png"
-      }
+      "logo": { "@type": "ImageObject", "url": "https://www.ceilingsart.sa/newlogo.png" }
     },
     "datePublished": new Date(blog.createdAt).toISOString(),
     "dateModified": new Date(blog.updatedAt || blog.createdAt).toISOString(),
@@ -175,7 +164,10 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogDetailPage initialBlog={blog} slug={params.slug} />
+      <article>
+        <h1>{blog.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: blog.processedContent }} />
+      </article>
     </PageLayout>
   );
 }
