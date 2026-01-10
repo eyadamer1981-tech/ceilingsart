@@ -1,18 +1,17 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import connectDB from '../../../lib/mongodb';
-import { Blog as BlogModel, SEOConfig, InternalLinkMapping } from '../../../lib/models';
+import {
+  Blog as BlogModel,
+  SEOConfig,
+  InternalLinkMapping
+} from '../../../lib/models';
 import { BlogDetailPage } from '../../../components/BlogDetailPage';
 import PageLayout from '../../../components/PageLayout';
 import { notFound } from 'next/navigation';
 import { generateSEOMetadata } from '../../../lib/seo-utils';
 import { generateInternalLinks } from '../../../lib/internal-linking';
 
-/* =======================
-   IMPORTANT SEO SETTINGS
-======================= */
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
 
 interface Props {
   params: { slug: string };
@@ -33,7 +32,9 @@ async function getBlog(slug: string) {
         const decoded = decodeURIComponent(slug);
         blog = await BlogModel.findOne({ slug: decoded }).lean();
         if (!blog) {
-          blog = await BlogModel.findOne({ slug: decodeURIComponent(decoded) }).lean();
+          blog = await BlogModel.findOne({
+            slug: decodeURIComponent(decoded)
+          }).lean();
         }
       } catch {}
     }
@@ -44,10 +45,13 @@ async function getBlog(slug: string) {
 
     if (!blog) return null;
 
-    const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
+    const config: any = await SEOConfig.findOne({
+      configKey: 'global'
+    }).lean();
 
     const useAutoLinks =
-      config?.globalAutoInternalLinks && blog.autoInternalLinks !== false;
+      config?.globalAutoInternalLinks &&
+      blog.autoInternalLinks !== false;
 
     if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
       const autoLinks = useAutoLinks
@@ -66,50 +70,62 @@ async function getBlog(slug: string) {
       blog.internalLinksApplied = linkResult.linksApplied;
     }
 
-    /* ======= FIX IMPORTANT ======= */
+    // 🔴 مهم جدا: ضمان عرض المحتوى دايما بروابط
     if (!blog.processedContent) {
       blog.processedContent = blog.content;
     }
 
     return JSON.parse(JSON.stringify(blog));
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
 /* =======================
-   METADATA
+   METADATA (SEO)
 ======================= */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const blog: any = await getBlog(params.slug);
-  if (!blog) return { title: 'المقال غير موجود | Ceilings Art' };
+  if (!blog)
+    return { title: 'المقال غير موجود | Ceilings Art' };
 
-  const config: any = await SEOConfig.findOne({ configKey: 'global' }).lean();
+  const config: any = await SEOConfig.findOne({
+    configKey: 'global'
+  }).lean();
 
   let title = blog.metaTitle || blog.title;
-  let description = blog.metaDescription || blog.excerpt || blog.title;
+  let description =
+    blog.metaDescription || blog.excerpt || blog.title;
   let keywords = blog.metaKeywords || [];
 
   if (blog.manualSEO) {
     title = blog.manualSEO.title || title;
-    description = blog.manualSEO.description || description;
+    description =
+      blog.manualSEO.description || description;
     keywords = blog.manualSEO.keywords?.length
       ? blog.manualSEO.keywords
       : keywords;
   }
 
   if (!title || !description) {
-    const generated = generateSEOMetadata(blog.title, blog.content, blog.excerpt);
+    const generated = generateSEOMetadata(
+      blog.title,
+      blog.content,
+      blog.excerpt
+    );
     title ||= generated.metaTitle;
     description ||= generated.metaDescription;
     keywords ||= generated.metaKeywords;
   }
 
-  const canonical = `https://www.ceilingsart.sa/blog/${blog.slug}`;
+  const canonical = `https://www.ceilingsart.sa/blog/${
+    blog.slug || blog._id
+  }`;
+
   const ogImage =
     blog.manualSEO?.ogImage ||
     blog.image ||
@@ -129,7 +145,9 @@ export async function generateMetadata(
       images: [ogImage],
       type: 'article',
       publishedTime: new Date(blog.createdAt).toISOString(),
-      modifiedTime: new Date(blog.updatedAt || blog.createdAt).toISOString(),
+      modifiedTime: new Date(
+        blog.updatedAt || blog.createdAt
+      ).toISOString(),
       locale: 'ar_SA'
     },
     twitter: {
@@ -144,51 +162,65 @@ export async function generateMetadata(
 /* =======================
    PAGE
 ======================= */
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({
+  params
+}: Props) {
   const blog = await getBlog(params.slug);
-
-  if (!blog || !blog.content) {
-    notFound();
-  }
+  if (!blog) notFound();
 
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://www.ceilingsart.sa/blog/${blog.slug}`
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.ceilingsart.sa/blog/${
+        blog.slug || blog._id
+      }`
     },
-    "headline": blog.title,
-    "description": blog.excerpt || blog.metaDescription || blog.title,
-    "image": [
+    headline: blog.title,
+    description:
+      blog.excerpt || blog.metaDescription || blog.title,
+    image: [
       blog.image?.startsWith('http')
         ? blog.image
         : 'https://www.ceilingsart.sa/newlogo.png'
     ],
-    "author": {
-      "@type": "Organization",
-      "name": "Ceilings Art"
+    author: {
+      '@type': 'Organization',
+      name: 'Ceilings Art'
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Ceilings Art",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.ceilingsart.sa/newlogo.png"
+    publisher: {
+      '@type': 'Organization',
+      name: 'Ceilings Art',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.ceilingsart.sa/newlogo.png'
       }
     },
-    "datePublished": new Date(blog.createdAt).toISOString(),
-    "dateModified": new Date(blog.updatedAt || blog.createdAt).toISOString(),
-    "inLanguage": "ar-SA"
+    datePublished: new Date(blog.createdAt).toISOString(),
+    dateModified: new Date(
+      blog.updatedAt || blog.createdAt
+    ).toISOString(),
+    inLanguage: 'ar-SA'
   };
 
   return (
     <PageLayout>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd)
+        }}
       />
-      <BlogDetailPage initialBlog={blog} slug={params.slug} />
+
+      {/* صفحة المقال */}
+      <BlogDetailPage
+        initialBlog={{
+          ...blog,
+          content: blog.processedContent // 👈 مهم
+        }}
+        slug={params.slug}
+      />
     </PageLayout>
   );
 }
