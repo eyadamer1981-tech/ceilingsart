@@ -1,21 +1,50 @@
-// pages/blog/[slug].tsx
-import { GetStaticPaths, GetStaticProps } from 'next';
+// src/app/blog/[slug]/page.tsx
+import connectDB from '../../../lib/mongodb';
+import { Blog, InternalLinkMapping, SEOConfig } from '../../../lib/models';
+import { generateInternalLinks } from '../../../lib/internal-linking';
 import Head from 'next/head';
-import connectDB from '../../lib/mongodb';
-import { Blog } from '../../lib/models';
 
-interface BlogProps {
-  blog: {
-    title: string;
-    content: string;
-    processedContent?: string;
-    metaTitle?: string;
-    metaDescription?: string;
-    metaKeywords?: string[];
-  };
+interface BlogPageProps {
+  params: { slug: string };
 }
 
-export default function BlogPage({ blog }: BlogProps) {
+export default async function BlogPage({ params }: BlogPageProps) {
+  await connectDB();
+
+  // جلب المقال
+  const blog = await Blog.findOne({ slug: params.slug });
+  if (!blog) {
+    return <p>Blog not found</p>;
+  }
+
+  // جلب الإعدادات العامة للـ SEO/Internal links
+  let config = await SEOConfig.findOne({ configKey: 'global' });
+  if (!config) {
+    config = new SEOConfig({ configKey: 'global' });
+    await config.save();
+  }
+
+  const manualLinks = blog.manualLinks || [];
+  const useAutoLinks = config.globalAutoInternalLinks && blog.autoInternalLinks !== false;
+
+  let processedContent = blog.content;
+  let internalLinksApplied: string[] = [];
+
+  if (useAutoLinks || manualLinks.length > 0) {
+    const autoLinkMappings = useAutoLinks ? await InternalLinkMapping.find({ isActive: true }) : [];
+
+    const linkResult = generateInternalLinks({
+      content: blog.content,
+      autoLinks: autoLinkMappings,
+      manualLinks: manualLinks,
+      useAutoLinks: useAutoLinks,
+      maxLinksPerPost: config.maxInternalLinksPerPost || 5,
+    });
+
+    processedContent = linkResult.processedContent;
+    internalLinksApplied = linkResult.linksApplied;
+  }
+
   return (
     <>
       <Head>
@@ -26,7 +55,7 @@ export default function BlogPage({ blog }: BlogProps) {
       <main style={{ maxWidth: '800px', margin: 'auto', padding: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{blog.title}</h1>
         <article
-          dangerouslySetInnerHTML={{ __html: blog.processedContent || blog.content }}
+          dangerouslySetInnerHTML={{ __html: processedContent }}
           style={{ lineHeight: '1.8', fontSize: '1rem' }}
         />
       </main>
@@ -34,32 +63,9 @@ export default function BlogPage({ blog }: BlogProps) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+// Next.js App Router: توليد static params لكل المقالات
+export async function generateStaticParams() {
   await connectDB();
   const blogs = await Blog.find();
-  const paths = blogs.map((blog) => ({
-    params: { slug: blog.slug },
-  }));
-
-  return {
-    paths,
-    fallback: 'blocking', // لو المقال جديد هيتولد عند الطلب
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  await connectDB();
-  const slug = params?.slug as string;
-
-  const blog = await Blog.findOne({ slug });
-  if (!blog) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      blog: JSON.parse(JSON.stringify(blog)), // تحويل Mongoose document إلى JSON عشان Next.js
-    },
-    revalidate: 60, // يعيد توليد الصفحة كل 60 ثانية لتحديث المحتوى
-  };
-};
+  return blogs.map(blog => ({ slug: blog.slug }));
+}
