@@ -23,7 +23,8 @@ export const metadata: Metadata = {
 export default function AcousticFabricWraps() {
   return (
     <PageLayout>
-      <FabricWrapsPage /> {/* client component داخلي */}
+      {/* FabricWrapsPage هو Client Component داخلي */}
+      <FabricWrapsPage />
       <Footer />
     </PageLayout>
   );
