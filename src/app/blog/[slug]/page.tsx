@@ -15,73 +15,60 @@ export const dynamic = 'auto';
 
 interface Props {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 /* =======================
    GET BLOG
 ======================= */
 async function getBlog(slug: string) {
-  try {
-    await connectDB();
+  await connectDB();
 
-    let blog: any = await BlogModel.findOne({ slug }).lean();
+  let blog: any = await BlogModel.findOne({ slug }).lean();
 
-    if (!blog) {
-      try {
-        const decoded = decodeURIComponent(slug);
-        blog = await BlogModel.findOne({ slug: decoded }).lean();
-        if (!blog) {
-          blog = await BlogModel.findOne({
-            slug: decodeURIComponent(decoded)
-          }).lean();
-        }
-      } catch {}
-    }
-
-    if (!blog && /^[0-9a-fA-F]{24}$/.test(slug)) {
-      blog = await BlogModel.findById(slug).lean();
-    }
-
-    if (!blog) return null;
-
-    const config: any = await SEOConfig.findOne({
-      configKey: 'global'
-    }).lean();
-
-    const useAutoLinks =
-      config?.globalAutoInternalLinks &&
-      blog.autoInternalLinks !== false;
-
-    if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
-      const autoLinks = useAutoLinks
-        ? await InternalLinkMapping.find({ isActive: true }).lean()
-        : [];
-
-      const linkResult = generateInternalLinks({
-        content: blog.content,
-        autoLinks,
-        manualLinks: blog.manualLinks || [],
-        useAutoLinks,
-        maxLinksPerPost: config?.maxInternalLinksPerPost || 5
-      });
-
-      blog.processedContent = linkResult.processedContent;
-    }
-
-    if (!blog.processedContent) {
-      blog.processedContent = blog.content;
-    }
-
-    return JSON.parse(JSON.stringify(blog));
-  } catch (error) {
-    console.error(error);
-    return null;
+  if (!blog) {
+    try {
+      const decoded = decodeURIComponent(slug);
+      blog = await BlogModel.findOne({ slug: decoded }).lean();
+    } catch {}
   }
+
+  if (!blog && /^[0-9a-fA-F]{24}$/.test(slug)) {
+    blog = await BlogModel.findById(slug).lean();
+  }
+
+  if (!blog) return null;
+
+  const config: any = await SEOConfig.findOne({
+    configKey: 'global'
+  }).lean();
+
+  const useAutoLinks =
+    config?.globalAutoInternalLinks &&
+    blog.autoInternalLinks !== false;
+
+  if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
+    const autoLinks = useAutoLinks
+      ? await InternalLinkMapping.find({ isActive: true }).lean()
+      : [];
+
+    const linkResult = generateInternalLinks({
+      content: blog.content,
+      autoLinks,
+      manualLinks: blog.manualLinks || [],
+      useAutoLinks,
+      maxLinksPerPost: config?.maxInternalLinksPerPost || 5
+    });
+
+    blog.processedContent = linkResult.processedContent;
+  }
+
+  blog.processedContent ||= blog.content;
+
+  return JSON.parse(JSON.stringify(blog));
 }
 
 /* =======================
-   METADATA + SEO
+   METADATA
 ======================= */
 export async function generateMetadata(
   { params }: Props,
@@ -90,19 +77,12 @@ export async function generateMetadata(
 
   const blog: any = await getBlog(params.slug);
   if (!blog) {
-    return { title: 'المقال غير موجود | Ceilings Art' };
+    return { title: 'المقال غير موجود' };
   }
 
-  const config: any = await SEOConfig.findOne({
-    configKey: 'global'
-  }).lean();
-
-  let title = blog.metaTitle || blog.title || 'مقال Ceilings Art';
+  let title = blog.metaTitle || blog.title;
   let description =
-    blog.metaDescription ||
-    blog.excerpt ||
-    blog.title ||
-    'مقال من Ceilings Art';
+    blog.metaDescription || blog.excerpt || blog.title;
 
   if (!title || !description) {
     const generated = generateSEOMetadata(
@@ -118,14 +98,14 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
+  // ❗ صورة واحدة فقط من لوحة التحكم
   const image =
-    blog.image?.startsWith('http')
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : config?.defaultOGImage ||
-        'https://www.ceilingsart.sa/newlogo.png';
+      : undefined;
 
   return {
-    title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
+    title,
     description,
     alternates: { canonical },
 
@@ -139,43 +119,47 @@ export async function generateMetadata(
       }
     },
 
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: config?.siteName || 'Ceilings Art',
-      type: 'article',
-      locale: 'ar_SA',
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: title
+    openGraph: image
+      ? {
+          title,
+          description,
+          url: canonical,
+          type: 'article',
+          locale: 'ar_SA',
+          images: [
+            {
+              url: image,
+              width: 1200,
+              height: 630,
+              alt: title
+            }
+          ]
         }
-      ]
-    },
+      : undefined,
 
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [image]
-    }
+    twitter: image
+      ? {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: [image]
+        }
+      : undefined
   };
 }
 
 /* =======================
-   PAGE COMPONENT
+   PAGE
 ======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
+  // ❗ صورة لوحة التحكم فقط
   const image =
-    blog.image?.startsWith('http')
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : 'https://www.ceilingsart.sa/newlogo.png';
+      : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -188,21 +172,11 @@ export default async function BlogPostPage({ params }: Props) {
     },
     headline: blog.title,
     description:
-      blog.excerpt ||
-      blog.metaDescription ||
-      blog.title,
-    image: [image],
+      blog.excerpt || blog.metaDescription || blog.title,
+    image: image ? [image] : undefined,
     author: {
       '@type': 'Organization',
       name: 'Ceilings Art'
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ceilings Art',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://www.ceilingsart.sa/newlogo.png'
-      }
     },
     datePublished: new Date(blog.createdAt).toISOString(),
     dateModified: new Date(
@@ -213,13 +187,12 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PageLayout>
-      {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* صورة المقال الأساسية فقط */}
+      {/* ✅ صورة واحدة فقط – من لوحة التحكم */}
       {image && (
         <img
           src={image}
@@ -230,8 +203,7 @@ export default async function BlogPostPage({ params }: Props) {
           style={{
             width: '100%',
             height: 'auto',
-            marginBottom: '24px',
-            borderRadius: '8px'
+            marginBottom: '24px'
           }}
         />
       )}
