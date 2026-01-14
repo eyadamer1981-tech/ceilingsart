@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 import connectDB from '../../../lib/mongodb';
 import {
   Blog as BlogModel,
@@ -15,80 +15,94 @@ export const dynamic = 'auto';
 
 interface Props {
   params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 /* =======================
    GET BLOG
 ======================= */
 async function getBlog(slug: string) {
-  await connectDB();
+  try {
+    await connectDB();
 
-  let blog: any = await BlogModel.findOne({ slug }).lean();
+    let blog: any = await BlogModel.findOne({ slug }).lean();
 
-  if (!blog) {
-    try {
-      const decoded = decodeURIComponent(slug);
-      blog = await BlogModel.findOne({ slug: decoded }).lean();
-    } catch {}
+    if (!blog) {
+      try {
+        const decoded = decodeURIComponent(slug);
+        blog = await BlogModel.findOne({ slug: decoded }).lean();
+        if (!blog) {
+          blog = await BlogModel.findOne({
+            slug: decodeURIComponent(decoded)
+          }).lean();
+        }
+      } catch {}
+    }
+
+    if (!blog && /^[0-9a-fA-F]{24}$/.test(slug)) {
+      blog = await BlogModel.findById(slug).lean();
+    }
+
+    if (!blog) return null;
+
+    const config: any = await SEOConfig.findOne({
+      configKey: 'global'
+    }).lean();
+
+    const useAutoLinks =
+      config?.globalAutoInternalLinks &&
+      blog.autoInternalLinks !== false;
+
+    if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
+      const autoLinks = useAutoLinks
+        ? await InternalLinkMapping.find({ isActive: true }).lean()
+        : [];
+
+      const linkResult = generateInternalLinks({
+        content: blog.content,
+        autoLinks,
+        manualLinks: blog.manualLinks || [],
+        useAutoLinks,
+        maxLinksPerPost: config?.maxInternalLinksPerPost || 5
+      });
+
+      blog.processedContent = linkResult.processedContent;
+    }
+
+    if (!blog.processedContent) {
+      blog.processedContent = blog.content;
+    }
+
+    return JSON.parse(JSON.stringify(blog));
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-
-  if (!blog && /^[0-9a-fA-F]{24}$/.test(slug)) {
-    blog = await BlogModel.findById(slug).lean();
-  }
-
-  if (!blog) return null;
-
-  const config: any = await SEOConfig.findOne({
-    configKey: 'global'
-  }).lean();
-
-  const useAutoLinks =
-    config?.globalAutoInternalLinks &&
-    blog.autoInternalLinks !== false;
-
-  if (useAutoLinks || (blog.manualLinks?.length ?? 0) > 0) {
-    const autoLinks = useAutoLinks
-      ? await InternalLinkMapping.find({ isActive: true }).lean()
-      : [];
-
-    const linkResult = generateInternalLinks({
-      content: blog.content,
-      autoLinks,
-      manualLinks: blog.manualLinks || [],
-      useAutoLinks,
-      maxLinksPerPost: config?.maxInternalLinksPerPost || 5
-    });
-
-    blog.processedContent = linkResult.processedContent;
-  }
-
-  blog.processedContent ||= blog.content;
-
-  return JSON.parse(JSON.stringify(blog));
 }
 
 /* =======================
-   METADATA (SEO)
+   METADATA + SEO
 ======================= */
 export async function generateMetadata(
-  { params }: Props
+  { params }: Props,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
 
   const blog: any = await getBlog(params.slug);
   if (!blog) {
-    return {
-      title: 'المقال غير موجود | Ceilings Art',
-      robots: { index: false }
-    };
+    return { title: 'المقال غير موجود | Ceilings Art' };
   }
 
   const config: any = await SEOConfig.findOne({
     configKey: 'global'
   }).lean();
 
-  let title = blog.metaTitle || blog.title;
+  let title = blog.metaTitle || blog.title || 'مقال Ceilings Art';
   let description =
-    blog.metaDescription || blog.excerpt || blog.title;
+    blog.metaDescription ||
+    blog.excerpt ||
+    blog.title ||
+    'مقال من Ceilings Art';
 
   if (!title || !description) {
     const generated = generateSEOMetadata(
@@ -113,10 +127,7 @@ export async function generateMetadata(
   return {
     title: `${title} | ${config?.siteName || 'Ceilings Art'}`,
     description,
-
-    alternates: {
-      canonical
-    },
+    alternates: { canonical },
 
     robots: {
       index: true,
@@ -124,9 +135,7 @@ export async function generateMetadata(
       googleBot: {
         index: true,
         follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1
+        'max-image-preview': 'large'
       }
     },
 
@@ -157,7 +166,7 @@ export async function generateMetadata(
 }
 
 /* =======================
-   PAGE
+   PAGE COMPONENT
 ======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
@@ -178,7 +187,10 @@ export default async function BlogPostPage({ params }: Props) {
       )}`
     },
     headline: blog.title,
-    description: blog.excerpt || blog.title,
+    description:
+      blog.excerpt ||
+      blog.metaDescription ||
+      blog.title,
     image: [image],
     author: {
       '@type': 'Organization',
@@ -201,37 +213,33 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PageLayout>
-
-      {/* Article Schema */}
+      {/* Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd)
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* صورة المقال (أساسية لظهور الصورة في جوجل) */}
-      <img
-        src={image}
-        alt={blog.title}
-        width={1200}
-        height={630}
-        loading="eager"
-        style={{
-          width: '100%',
-          height: 'auto',
-          marginBottom: '20px'
-        }}
-      />
+      {/* صورة المقال الأساسية فقط */}
+      {image && (
+        <img
+          src={image}
+          alt={blog.title}
+          width={1200}
+          height={630}
+          loading="eager"
+          style={{
+            width: '100%',
+            height: 'auto',
+            marginBottom: '24px',
+            borderRadius: '8px'
+          }}
+        />
+      )}
 
       <BlogDetailPage
-        initialBlog={{
-          ...blog,
-          content: blog.processedContent
-        }}
+        initialBlog={{ ...blog, content: blog.processedContent }}
         slug={params.slug}
       />
-
     </PageLayout>
   );
 }
