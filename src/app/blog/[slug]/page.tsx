@@ -76,9 +76,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 
   const blog: any = await getBlog(params.slug);
-  if (!blog) {
-    return { title: 'المقال غير موجود' };
-  }
+  if (!blog) return { title: 'المقال غير موجود' };
 
   let title = blog.metaTitle || blog.title;
   let description =
@@ -98,7 +96,7 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // ❗ صورة واحدة فقط من لوحة التحكم
+  // الصورة الوحيدة من لوحة التحكم
   const image =
     blog.image && blog.image.startsWith('http')
       ? blog.image
@@ -155,7 +153,7 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  // ❗ صورة لوحة التحكم فقط
+  // صورة لوحة التحكم فقط
   const image =
     blog.image && blog.image.startsWith('http')
       ? blog.image
@@ -187,12 +185,13 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PageLayout>
+      {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ✅ صورة واحدة فقط – من لوحة التحكم */}
+      {/* صورة المقال من لوحة التحكم فقط */}
       {image && (
         <img
           src={image}
