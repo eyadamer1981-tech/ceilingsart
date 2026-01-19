@@ -4,70 +4,74 @@ import { Blog, InternalLinkMapping, SEOConfig } from '../../../../lib/models';
 import { generateInternalLinks } from '../../../../lib/internal-linking';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await connectDB();
+  try {
+    // 1️⃣ Connect to MongoDB
+    await connectDB();
 
-  const { slug } = req.query;
+    const { slug } = req.query;
 
-  if (req.method === 'GET') {
-    try {
-      let blog = await Blog.findOne({ slug });
+    if (req.method !== 'GET') {
+      return res.status(405).json({ message: 'Method not allowed' });
+    }
 
-      if (!blog && typeof slug === 'string') {
-        // Try encoded version if the DB stores encoded slugs but Next.js decoded the param
-        blog = await Blog.findOne({ slug: encodeURIComponent(slug) });
-      }
+    // 2️⃣ Find the blog by slug
+    let blog = await Blog.findOne({ slug });
 
-      if (!blog) {
-        return res.status(404).json({ message: 'Blog not found' });
-      }
+    // 2a️⃣ Try encoded slug if original not found
+    if (!blog && typeof slug === 'string') {
+      blog = await Blog.findOne({ slug: encodeURIComponent(slug) });
+    }
 
-      // Get global config (create with defaults if it doesn't exist)
-      let config = await SEOConfig.findOne({ configKey: 'global' });
-      if (!config) {
-        config = new SEOConfig({ configKey: 'global' });
-        await config.save();
-      }
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
 
-      // Get manual links for this blog
-      const manualLinks = blog.manualLinks || [];
+    // 3️⃣ Get global SEO/internal link config
+    let config = await SEOConfig.findOne({ configKey: 'global' });
+    if (!config) {
+      config = new SEOConfig({ configKey: 'global' });
+      await config.save();
+    }
 
-      // Determine if we should use auto links
-      const useAutoLinks = config.globalAutoInternalLinks && blog.autoInternalLinks !== false;
+    // 4️⃣ Get manual links from blog
+    const manualLinks = blog.manualLinks || [];
 
-      // Apply links if: auto-links is enabled OR manual links exist
-      if (useAutoLinks || manualLinks.length > 0) {
-        // Get all active link mappings (empty if auto is disabled)
-        const autoLinkMappings = useAutoLinks ? await InternalLinkMapping.find({ isActive: true }) : [];
+    // 5️⃣ Determine whether to use auto internal links
+    const useAutoLinks = config.globalAutoInternalLinks && blog.autoInternalLinks !== false;
 
-        // Generate internal links (manual links are always applied if they exist)
-        const linkResult = generateInternalLinks({
-          content: blog.content,
-          autoLinks: autoLinkMappings,
-          manualLinks: manualLinks,
-          useAutoLinks: useAutoLinks,
-          maxLinksPerPost: config.maxInternalLinksPerPost || 5,
+    if (useAutoLinks || manualLinks.length > 0) {
+      // 5a️⃣ Fetch active internal link mappings if auto-links enabled
+      const autoLinkMappings = useAutoLinks
+        ? await InternalLinkMapping.find({ isActive: true })
+        : [];
+
+      // 5b️⃣ Generate internal links
+      const linkResult = generateInternalLinks({
+        content: blog.content,
+        autoLinks: autoLinkMappings,
+        manualLinks: manualLinks,
+        useAutoLinks: useAutoLinks,
+        maxLinksPerPost: config.maxInternalLinksPerPost || 5,
+      });
+
+      // 5c️⃣ Update blog if content changed
+      if (linkResult.processedContent !== blog.processedContent) {
+        await Blog.findByIdAndUpdate(blog._id, {
+          processedContent: linkResult.processedContent,
+          internalLinksApplied: linkResult.linksApplied,
+          updatedAt: new Date(),
         });
 
-        // Update the blog if processedContent changed
-        if (linkResult.processedContent !== blog.processedContent) {
-          await Blog.findByIdAndUpdate(blog._id, {
-            processedContent: linkResult.processedContent,
-            internalLinksApplied: linkResult.linksApplied,
-            updatedAt: new Date(),
-          });
-
-          // Update the blog object to return the latest data
-          blog.processedContent = linkResult.processedContent;
-          blog.internalLinksApplied = linkResult.linksApplied;
-        }
+        // Update local blog object
+        blog.processedContent = linkResult.processedContent;
+        blog.internalLinksApplied = linkResult.linksApplied;
       }
-
-      res.json(blog);
-    } catch (error) {
-      console.error('Error fetching blog by slug:', error);
-      res.status(500).json({ message: 'Server error' });
     }
-  } else {
-    res.status(405).json({ message: 'Method not allowed' });
+
+    // 6️⃣ Return the blog as JSON
+    return res.status(200).json(blog);
+  } catch (error) {
+    console.error('Error fetching blog by slug:', error);
+    return res.status(500).json({ message: 'Server error', error: error instanceof Error ? error.message : undefined });
   }
 }
