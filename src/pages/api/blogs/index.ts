@@ -22,8 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Set cache headers for 10 minutes
       res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
 
-      // Return only the latest 8 blogs
-      const blogs = await Blog.find().sort({ createdAt: -1 }).limit(8);
+      // Return latest blogs
+      const blogs = await Blog.find().sort({ createdAt: -1 });
       res.json(blogs);
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
@@ -36,13 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       try {
-        // Enforce a maximum of 8 blogs total
-        const totalBlogs = await Blog.countDocuments();
-        if (totalBlogs >= 8) {
-          return res.status(400).json({
-            message: 'Maximum of 8 blogs reached. Please delete an old blog to create a new one.',
-          });
-        }
+
 
         const {
           title,
