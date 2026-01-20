@@ -96,14 +96,15 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // صورة المقال فقط
-  const image =
-    blog.image && blog.image.startsWith('http')
+  // ✅ تحويل صورة المقال الى رابط كامل (Absolute URL)
+  const image = blog.image
+    ? blog.image.startsWith('http')
       ? blog.image
-      : null;
+      : `https://www.ceilingsart.sa${blog.image.startsWith('/') ? '' : '/'}${blog.image}`
+    : null;
 
   return {
-    title, // اسم المقال فقط
+    title,
     description,
     alternates: { canonical },
 
@@ -117,7 +118,6 @@ export async function generateMetadata(
       }
     },
 
-    // ❗ مهم جدا: لا تتركها undefined
     openGraph: {
       title,
       description,
@@ -136,12 +136,11 @@ export async function generateMetadata(
         : [] // يمنع fallback على لوجو الموقع
     },
 
-    // ❗ مهم جدا
     twitter: {
       card: image ? 'summary_large_image' : 'summary',
       title,
       description,
-      images: image ? [image] : [] // يمنع أيقونة الموقع
+      images: image ? [image] : []
     }
   };
 }
@@ -153,10 +152,11 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  const image =
-    blog.image && blog.image.startsWith('http')
+  const image = blog.image
+    ? blog.image.startsWith('http')
       ? blog.image
-      : null;
+      : `https://www.ceilingsart.sa${blog.image.startsWith('/') ? '' : '/'}${blog.image}`
+    : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
