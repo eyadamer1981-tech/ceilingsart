@@ -17,9 +17,6 @@ interface Props {
   params: { slug: string };
 }
 
-/* =======================
-   GET BLOG
-======================= */
 async function getBlog(slug: string) {
   await connectDB();
 
@@ -67,9 +64,6 @@ async function getBlog(slug: string) {
   return JSON.parse(JSON.stringify(blog));
 }
 
-/* =======================
-   METADATA
-======================= */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
@@ -96,11 +90,10 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // ✅ الصورة الوحيدة من لوحة التحكم
   const image = blog.image
     ? blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa/${encodeURI(blog.image)}`
+      : `https://www.ceilingsart.sa/${blog.image.replace(/^\/+/, '')}`
     : undefined;
 
   return {
@@ -145,9 +138,6 @@ export async function generateMetadata(
   };
 }
 
-/* =======================
-   PAGE
-======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
@@ -155,7 +145,7 @@ export default async function BlogPostPage({ params }: Props) {
   const image = blog.image
     ? blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa/${encodeURI(blog.image)}`
+      : `https://www.ceilingsart.sa/${blog.image.replace(/^\/+/, '')}`
     : null;
 
   const jsonLd = {
@@ -184,13 +174,11 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PageLayout>
-      {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* صورة المقال من لوحة التحكم فقط */}
       {image && (
         <img
           src={image}
