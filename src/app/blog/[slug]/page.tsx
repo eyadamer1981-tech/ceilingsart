@@ -68,7 +68,7 @@ async function getBlog(slug: string) {
 }
 
 /* =======================
-   METADATA
+   METADATA (معدل)
 ======================= */
 export async function generateMetadata(
   { params }: Props,
@@ -96,14 +96,14 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // الصورة الوحيدة من لوحة التحكم
+  // صورة المقال فقط
   const image =
     blog.image && blog.image.startsWith('http')
       ? blog.image
-      : undefined;
+      : null;
 
   return {
-    title,
+    title, // اسم المقال فقط
     description,
     alternates: { canonical },
 
@@ -117,14 +117,15 @@ export async function generateMetadata(
       }
     },
 
-    openGraph: image
-      ? {
-          title,
-          description,
-          url: canonical,
-          type: 'article',
-          locale: 'ar_SA',
-          images: [
+    // ❗ مهم جدا: لا تتركها undefined
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'article',
+      locale: 'ar_SA',
+      images: image
+        ? [
             {
               url: image,
               width: 1200,
@@ -132,17 +133,16 @@ export async function generateMetadata(
               alt: title
             }
           ]
-        }
-      : undefined,
+        : [] // يمنع fallback على لوجو الموقع
+    },
 
-    twitter: image
-      ? {
-          card: 'summary_large_image',
-          title,
-          description,
-          images: [image]
-        }
-      : undefined
+    // ❗ مهم جدا
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: image ? [image] : [] // يمنع أيقونة الموقع
+    }
   };
 }
 
@@ -153,7 +153,6 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  // صورة لوحة التحكم فقط
   const image =
     blog.image && blog.image.startsWith('http')
       ? blog.image
@@ -191,7 +190,6 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* صورة المقال من لوحة التحكم فقط */}
       {image && (
         <img
           src={image}
