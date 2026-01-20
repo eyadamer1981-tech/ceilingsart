@@ -203,4 +203,18 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Newly Added URLs -->
+  <url>
+    <loc>https://www.ceilingsart.sa/blog/الواح-الصوف-الخشي-في-السعودية</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ceilingsart.sa/blog/best-wood-wool-panels-in-saudi-arabia-riyadh-jeddah-dammam-all-cities</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
