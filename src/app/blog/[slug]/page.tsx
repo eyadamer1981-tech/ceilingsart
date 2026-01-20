@@ -96,13 +96,12 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // ✅ الصورة الوحيدة من لوحة التحكم (تم تعديلها هنا فقط)
-  const image =
-    blog.image
-      ? blog.image.startsWith('http')
-        ? blog.image
-        : `https://www.ceilingsart.sa/${encodeURI(blog.image)}`
-      : undefined;
+  // ✅ الصورة الوحيدة من لوحة التحكم
+  const image = blog.image
+    ? blog.image.startsWith('http')
+      ? blog.image
+      : `https://www.ceilingsart.sa/${encodeURI(blog.image)}`
+    : undefined;
 
   return {
     title,
@@ -119,14 +118,14 @@ export async function generateMetadata(
       }
     },
 
-    openGraph: image
-      ? {
-          title,
-          description,
-          url: canonical,
-          type: 'article',
-          locale: 'ar_SA',
-          images: [
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'article',
+      locale: 'ar_SA',
+      images: image
+        ? [
             {
               url: image,
               width: 1200,
@@ -134,17 +133,15 @@ export async function generateMetadata(
               alt: title
             }
           ]
-        }
-      : undefined,
+        : []
+    },
 
-    twitter: image
-      ? {
-          card: 'summary_large_image',
-          title,
-          description,
-          images: [image]
-        }
-      : undefined
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: image ? [image] : []
+    }
   };
 }
 
@@ -155,11 +152,11 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  // صورة لوحة التحكم فقط
-  const image =
-    blog.image && blog.image.startsWith('http')
+  const image = blog.image
+    ? blog.image.startsWith('http')
       ? blog.image
-      : null;
+      : `https://www.ceilingsart.sa/${encodeURI(blog.image)}`
+    : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -204,4 +201,15 @@ export default async function BlogPostPage({ params }: Props) {
           style={{
             width: '100%',
             height: 'auto',
-            mar
+            marginBottom: '24px'
+          }}
+        />
+      )}
+
+      <BlogDetailPage
+        initialBlog={{ ...blog, content: blog.processedContent }}
+        slug={params.slug}
+      />
+    </PageLayout>
+  );
+}
