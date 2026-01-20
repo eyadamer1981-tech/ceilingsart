@@ -96,15 +96,14 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // ✅ تحويل صورة المقال الى رابط كامل (Absolute URL)
-  const image = blog.image
-    ? blog.image.startsWith('http')
+  // صورة المقال فقط
+  const image =
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa${blog.image.startsWith('/') ? '' : '/'}${blog.image}`
-    : null;
+      : null;
 
   return {
-    title,
+    title, // اسم المقال فقط
     description,
     alternates: { canonical },
 
@@ -118,6 +117,7 @@ export async function generateMetadata(
       }
     },
 
+    // مهم جدا: الصورة هنا بتكون فقط صورة المقال
     openGraph: {
       title,
       description,
@@ -140,7 +140,7 @@ export async function generateMetadata(
       card: image ? 'summary_large_image' : 'summary',
       title,
       description,
-      images: image ? [image] : []
+      images: image ? [image] : [] // يمنع أيقونة الموقع
     }
   };
 }
@@ -152,11 +152,10 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  const image = blog.image
-    ? blog.image.startsWith('http')
+  const image =
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa${blog.image.startsWith('/') ? '' : '/'}${blog.image}`
-    : null;
+      : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
