@@ -17,6 +17,9 @@ interface Props {
   params: { slug: string };
 }
 
+/* =======================
+   GET BLOG
+======================= */
 async function getBlog(slug: string) {
   await connectDB();
 
@@ -64,6 +67,9 @@ async function getBlog(slug: string) {
   return JSON.parse(JSON.stringify(blog));
 }
 
+/* =======================
+   METADATA
+======================= */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
@@ -90,11 +96,11 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  const image = blog.image
-    ? blog.image.startsWith('http')
+  // الصورة الوحيدة من لوحة التحكم
+  const image =
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa/${blog.image.replace(/^\/+/, '')}`
-    : undefined;
+      : undefined;
 
   return {
     title,
@@ -111,14 +117,14 @@ export async function generateMetadata(
       }
     },
 
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      type: 'article',
-      locale: 'ar_SA',
-      images: image
-        ? [
+    openGraph: image
+      ? {
+          title,
+          description,
+          url: canonical,
+          type: 'article',
+          locale: 'ar_SA',
+          images: [
             {
               url: image,
               width: 1200,
@@ -126,27 +132,32 @@ export async function generateMetadata(
               alt: title
             }
           ]
-        : []
-    },
+        }
+      : undefined,
 
-    twitter: {
-      card: image ? 'summary_large_image' : 'summary',
-      title,
-      description,
-      images: image ? [image] : []
-    }
+    twitter: image
+      ? {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: [image]
+        }
+      : undefined
   };
 }
 
+/* =======================
+   PAGE
+======================= */
 export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  const image = blog.image
-    ? blog.image.startsWith('http')
+  // صورة لوحة التحكم فقط
+  const image =
+    blog.image && blog.image.startsWith('http')
       ? blog.image
-      : `https://www.ceilingsart.sa/${blog.image.replace(/^\/+/, '')}`
-    : null;
+      : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -174,11 +185,13 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PageLayout>
+      {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* صورة المقال من لوحة التحكم فقط */}
       {image && (
         <img
           src={image}
