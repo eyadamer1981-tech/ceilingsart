@@ -68,6 +68,16 @@ async function getBlog(slug: string) {
 }
 
 /* =======================
+   HELPERS
+======================= */
+function getFullImageUrl(img: string | undefined) {
+  if (!img) return undefined;
+  if (img.startsWith('http')) return img;
+  if (img.startsWith('//')) return `https:${img}`;
+  return `https://www.ceilingsart.sa${img.startsWith('/') ? '' : '/'}${img}`;
+}
+
+/* =======================
    METADATA
 ======================= */
 export async function generateMetadata(
@@ -96,11 +106,8 @@ export async function generateMetadata(
     blog.slug || blog._id
   )}`;
 
-  // الصورة الوحيدة من لوحة التحكم
-  const image =
-    blog.image && blog.image.startsWith('http')
-      ? blog.image
-      : undefined;
+  // هنا بقى الصورة كاملة
+  const image = getFullImageUrl(blog.image);
 
   return {
     title,
@@ -153,11 +160,7 @@ export default async function BlogPostPage({ params }: Props) {
   const blog = await getBlog(params.slug);
   if (!blog) notFound();
 
-  // صورة لوحة التحكم فقط
-  const image =
-    blog.image && blog.image.startsWith('http')
-      ? blog.image
-      : null;
+  const image = getFullImageUrl(blog.image);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -191,7 +194,6 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* صورة المقال من لوحة التحكم فقط */}
       {image && (
         <img
           src={image}
